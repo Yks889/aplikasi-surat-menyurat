@@ -45,7 +45,7 @@
 <!-- Info Cards -->
 <div class="row g-3 mb-4">
     <!-- Surat Masuk -->
-    <div class="col-lg-3 col-md-6">
+    <div class="col-12 col-md-6">
         <div class="card bg-primary text-white shadow-sm border-0 h-100">
             <div class="card-body d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -63,7 +63,7 @@
     </div>
 
     <!-- Surat Keluar -->
-    <div class="col-lg-3 col-md-6">
+    <div class="col-12 col-md-6">
         <div class="card bg-success text-white shadow-sm border-0 h-100">
             <div class="card-body d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-center mb-3">
