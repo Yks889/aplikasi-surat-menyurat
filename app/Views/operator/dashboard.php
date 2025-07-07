@@ -123,7 +123,7 @@
                 <h5 class="card-title mb-0">Surat Keluar Terbaru</h5>
                 <a href="/operator/surat-keluar" class="btn btn-sm btn-outline-primary">Lihat Semua</a>
             </div>
-            <div class="card-body p-2">
+            <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
                         <thead class="table-light">
