@@ -1,0 +1,135 @@
+/* Login Page Styles */
+.login-page {
+    background-color: #f8f9fa;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.login-box {
+    width: 360px;
+    margin: 0 auto;
+}
+
+.login-logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-logo a {
+    font-size: 28px;
+    font-weight: 700;
+    color: #343a40;
+    text-decoration: none;
+}
+
+.login-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.login-card-body {
+    padding: 30px;
+    background-color: #fff;
+}
+
+.login-box-msg {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #6c757d;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group-text {
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-right: none;
+}
+
+.form-control {
+    border-left: none;
+    height: 45px;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+.btn-login {
+    background-color: #007bff;
+    border: none;
+    height: 45px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.btn-login:hover {
+    background-color: #0069d9;
+}
+
+.forgot-password {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #6c757d;
+}
+
+.forgot-password:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.social-auth-links {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.social-auth-links p {
+    margin-bottom: 15px;
+    color: #6c757d;
+}
+
+.social-auth-links a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    margin: 0 5px;
+    color: #fff;
+    font-size: 18px;
+}
+
+.social-auth-links a:hover {
+    opacity: 0.9;
+}
+
+.bg-facebook {
+    background-color: #3b5998;
+}
+
+.bg-google {
+    background-color: #dd4b39;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+    .login-box {
+        width: 90%;
+    }
+    
+    .login-card-body {
+        padding: 20px;
+    }
+}

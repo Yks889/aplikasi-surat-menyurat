@@ -1,0 +1,75 @@
+/* DataTables Custom Styles */
+.dataTables_wrapper {
+    padding: 10px 0;
+}
+
+.dataTables_length select {
+    border-radius: 4px;
+    padding: 4px 8px;
+    border: 1px solid #ced4da;
+}
+
+.dataTables_filter input {
+    border-radius: 4px;
+    padding: 4px 8px;
+    border: 1px solid #ced4da;
+    margin-left: 10px;
+}
+
+.dataTables_info {
+    padding-top: 12px !important;
+}
+
+.dataTables_paginate .paginate_button {
+    padding: 4px 10px;
+    margin-left: 2px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #007bff !important;
+    background-color: transparent;
+}
+
+.dataTables_paginate .paginate_button:hover {
+    border: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    color: #0056b3 !important;
+}
+
+.dataTables_paginate .paginate_button.current {
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+    color: white !important;
+}
+
+.dataTables_paginate .paginate_button.disabled {
+    color: #6c757d !important;
+    cursor: not-allowed;
+}
+
+/* Responsive DataTables */
+@media screen and (max-width: 767px) {
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        float: none;
+        text-align: center;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate {
+        margin-top: 10px;
+    }
+    
+    .dataTables_length,
+    .dataTables_filter {
+        float: none;
+        text-align: center;
+    }
+    
+    .dataTables_filter {
+        margin-top: 10px;
+    }
+    
+    .dataTables_filter input {
+        margin-left: 0;
+        width: 100%;
+    }
+}
