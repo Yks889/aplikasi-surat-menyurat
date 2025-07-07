@@ -153,9 +153,9 @@
         <div><?= esc($user['full_name'] ?? 'Guest') ?> <br> <small><?= esc(ucfirst($user['role'] ?? '')) ?></small></div>
       </div>
       <a href="/admin/dashboard" class="nav-link <?= current_url() == site_url('/admin/dashboard') ? 'active' : '' ?>"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+      <a href="/admin/users" class="nav-link <?= strpos(current_url(), 'users') !== false ? 'active' : '' ?>"><i class="bi bi-people me-2"></i> Kelola User</a>
       <a href="/admin/surat-masuk" class="nav-link <?= strpos(current_url(), 'surat-masuk') !== false ? 'active' : '' ?>"><i class="bi bi-envelope me-2"></i> Surat Masuk</a>
       <a href="/admin/surat-keluar" class="nav-link <?= strpos(current_url(), 'surat-keluar') !== false ? 'active' : '' ?>"><i class="bi bi-envelope-open me-2"></i> Surat Keluar</a>
-      <a href="/admin/users" class="nav-link <?= strpos(current_url(), 'users') !== false ? 'active' : '' ?>"><i class="bi bi-people me-2"></i> Kelola User</a>
       <a href="/admin/tanda-tangan" class="nav-link <?= strpos(current_url(), 'tanda-tangan') !== false ? 'active' : '' ?>"><i class="bi bi-pen me-2"></i> Tanda Tangan</a>
       <a href="/admin/perusahaan" class="nav-link <?= strpos(current_url(), 'perusahaan') !== false ? 'active' : '' ?>"><i class="bi bi-building me-2"></i> Perusahaan</a>
       <a href="/admin/jenis-surat" class="nav-link <?= strpos(current_url(), 'jenis-surat') !== false ? 'active' : '' ?>"><i class="bi bi-file-earmark-text me-2"></i> Jenis Surat</a>
