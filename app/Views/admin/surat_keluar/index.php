@@ -162,7 +162,7 @@
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '/admin/surat-keluar/delete/' + id;
+                window.location.href = '/admin/surat-keluar/hapus/' + id;
             }
         });
     }
