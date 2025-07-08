@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Tambah Surat Masuk</h3>
+        <h3 class="card-title fs-5">Tambah Surat Masuk</h3>
     </div>
     <div class="card-body">
         <form action="/admin/surat-masuk/simpan" method="post" enctype="multipart/form-data">
@@ -21,7 +21,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="perusahaan_id">Perusahaan</label>
+                        <label for="perusahaan_id">Kepada Perusahaan</label>
                         <select class="form-control <?= ($validation->hasError('perusahaan_id')) ? 'is-invalid' : '' ?>" 
                             id="perusahaan_id" name="perusahaan_id">
                             <option value="">-- Pilih Perusahaan --</option>
