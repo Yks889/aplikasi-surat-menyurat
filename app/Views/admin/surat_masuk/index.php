@@ -113,13 +113,11 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
-<!-- DataTables & SweetAlert2 -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
-<!-- Table Responsive Fix -->
 <style>
     .table.nowrap td,
     .table.nowrap th {
@@ -159,9 +157,20 @@
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '/admin/surat-masuk/hapus/' + id;
+                window.location.href = '/admin/surat-masuk/delete/' + id;
             }
         });
     }
+
+    // ✅ Tampilkan SweetAlert jika ada pesan sukses
+    <?php if (session()->getFlashdata('message')): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '<?= session()->getFlashdata('message') ?>',
+            timer: 3000,
+            showConfirmButton: false
+        });
+    <?php endif; ?>
 </script>
 <?= $this->endSection() ?>

@@ -3,18 +3,15 @@
 <?= $this->section('content') ?>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h3 class="card-title">Daftar Perusahaan</h3>
-        <a href="/admin/perusahaan/create" class="btn btn-primary">
+        <h3 class="card-title fs-5 mb-0">Daftar Perusahaan</h3>
+        <a href="/admin/perusahaan/create" class="btn btn-primary btn-sm">
             <i class="bi bi-plus-circle"></i> Tambah Perusahaan
         </a>
     </div>
     <div class="card-body">
-        <?php if (session()->getFlashdata('success')): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?= session()->getFlashdata('success') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
+
+        <!-- TIDAK PERLU ALERT BAWAAN BOOTSTRAP, DIGANTI SWEETALERT -->
+        <!-- Flash message akan muncul melalui SweetAlert -->
 
         <div class="table-responsive">
             <table class="table table-bordered table-striped" id="perusahaanTable">
@@ -50,6 +47,12 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
+<!-- SweetAlert2 & DataTables -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"/>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
 <script>
     $(document).ready(function() {
         $('#perusahaanTable').DataTable({
@@ -85,5 +88,16 @@
             }
         });
     }
+
+    // ✅ Tampilkan alert jika ada flash message 'success'
+    <?php if (session()->getFlashdata('success')): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '<?= session()->getFlashdata('success') ?>',
+            timer: 3000,
+            showConfirmButton: false
+        });
+    <?php endif; ?>
 </script>
 <?= $this->endSection() ?>

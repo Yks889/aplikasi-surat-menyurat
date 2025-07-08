@@ -15,6 +15,7 @@
     </div>
 
     <div class="card-body">
+        <!-- Komponen Alert Biasa (jika tidak pakai SweetAlert) -->
         <?= view('components/alert') ?>
 
         <div class="table-responsive">
@@ -118,6 +119,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
+<!-- DataTables & SweetAlert2 -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
@@ -162,9 +164,20 @@
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '/admin/surat-keluar/hapus/' + id;
+                window.location.href = '/admin/surat-keluar/delete/' + id;
             }
         });
     }
+
+    // ✅ Flash Message dari session
+    <?php if (session()->getFlashdata('message')): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '<?= session()->getFlashdata('message') ?>',
+            timer: 3000,
+            showConfirmButton: false
+        });
+    <?php endif; ?>
 </script>
 <?= $this->endSection() ?>
