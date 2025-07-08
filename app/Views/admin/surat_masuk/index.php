@@ -3,11 +3,17 @@
 <?= $this->section('content') ?>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h3 class="card-title mb-0">Daftar Surat Masuk</h3>
-        <a href="/admin/surat-masuk/tambah" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Tambah Surat Masuk
-        </a>
+        <h3 class="card-title fs-5 mb-0">Daftar Surat Masuk</h3>
+        <div>
+            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#filterModal">
+                <i class="bi bi-funnel"></i> Filter
+            </button>
+            <a href="/admin/surat-masuk/tambah" class="btn btn-primary btn-sm ms-2">
+                <i class="bi bi-plus-circle"></i> Tambah Surat Masuk
+            </a>
+        </div>
     </div>
+
     <div class="card-body">
         <?= view('components/alert') ?>
 
@@ -36,7 +42,7 @@
                         <td><?= esc($surat['perihal']) ?></td>
                         <td><?= date('d/m/Y', strtotime($surat['tgl_surat'])) ?></td>
                         <td><?= date('d/m/Y H:i', strtotime($surat['waktu_diterima'])) ?></td>
-                        <td><?= esc($surat['pengirim']) ?></td>
+                        <td><?= esc($surat['pengirim'] ?? '-') ?></td>
                         <td>
                             <a href="/uploads/surat_masuk/<?= esc($surat['file_surat']) ?>" target="_blank" class="btn btn-sm btn-info" title="Lihat File">
                                 <i class="bi bi-file-earmark-text"></i>
@@ -54,6 +60,55 @@
             </table>
         </div>
     </div>
+</div>
+
+<!-- Modal Filter -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="get" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Filter Surat Masuk</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body row g-3">
+        <div class="col-md-6">
+          <label for="bulan" class="form-label">Bulan</label>
+          <select name="bulan" id="bulan" class="form-select">
+            <?php for ($i = 1; $i <= 12; $i++): ?>
+              <option value="<?= $i ?>" <?= $i == $bulan ? 'selected' : '' ?>>
+                <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
+              </option>
+            <?php endfor; ?>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="tahun" class="form-label">Tahun</label>
+          <select name="tahun" id="tahun" class="form-select">
+            <?php for ($y = date('Y'); $y >= 2020; $y--): ?>
+              <option value="<?= $y ?>" <?= $y == $tahun ? 'selected' : '' ?>><?= $y ?></option>
+            <?php endfor; ?>
+          </select>
+        </div>
+        <div class="col-md-12">
+          <label for="perusahaan_id" class="form-label">Perusahaan</label>
+          <select name="perusahaan_id" id="perusahaan_id" class="form-select">
+            <option value="">Semua Perusahaan</option>
+            <?php foreach ($perusahaanList as $p): ?>
+              <option value="<?= $p['id'] ?>" <?= $p['id'] == $perusahaan_id ? 'selected' : '' ?>>
+                <?= esc($p['nama']) ?>
+              </option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-funnel-fill me-1"></i> Terapkan
+        </button>
+        <a href="/admin/surat-masuk/reset-filter" class="btn btn-outline-secondary">Reset</a>
+      </div>
+    </form>
+  </div>
 </div>
 <?= $this->endSection() ?>
 
@@ -110,4 +165,3 @@
     }
 </script>
 <?= $this->endSection() ?>
-    

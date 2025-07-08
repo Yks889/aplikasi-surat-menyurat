@@ -19,13 +19,37 @@ class SuratMasuk extends BaseController
 
     public function index()
     {
+        $bulan = $this->request->getGet('bulan') ?? date('n'); // 1-12
+        $tahun = $this->request->getGet('tahun') ?? date('Y');
+        $perusahaanId = $this->request->getGet('perusahaan_id');
+
+        $builder = $this->suratMasukModel
+            ->select('surat_masuk.*, perusahaan.nama AS perusahaan, users.full_name AS pengirim')
+            ->join('perusahaan', 'perusahaan.id = surat_masuk.perusahaan_id', 'left')
+            ->join('users', 'users.id = surat_masuk.created_by', 'left')
+            ->where('MONTH(tgl_surat)', $bulan)
+            ->where('YEAR(tgl_surat)', $tahun);
+
+        if (!empty($perusahaanId)) {
+            $builder->where('surat_masuk.perusahaan_id', $perusahaanId);
+        }
+
         $data = [
             'title' => 'Surat Masuk',
-            'suratMasuk' => $this->suratMasukModel->getSuratMasukWithRelations(),
+            'suratMasuk' => $builder->orderBy('tgl_surat', 'DESC')->findAll(),
+            'perusahaanList' => $this->perusahaanModel->findAll(),
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'perusahaan_id' => $perusahaanId,
             'user' => session()->get('user')
         ];
 
         return view('admin/surat_masuk/index', $data);
+    }
+
+    public function resetFilter()
+    {
+        return redirect()->to('/admin/surat-masuk');
     }
 
     public function create()
@@ -42,7 +66,7 @@ class SuratMasuk extends BaseController
 
     public function store()
     {
-        $createdBy = session()->get('user')['id']; // Dapatkan user ID dari session
+        $createdBy = session()->get('user')['id'];
 
         if (!$this->validate([
             'nomor_surat' => 'required',

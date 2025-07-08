@@ -35,6 +35,8 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('surat-masuk/edit/(:num)', 'Admin\SuratMasuk::edit/$1');
     $routes->post('surat-masuk/update/(:num)', 'Admin\SuratMasuk::update/$1');
     $routes->get('surat-masuk/hapus/(:num)', 'Admin\SuratMasuk::delete/$1');
+    $routes->get('surat-masuk/reset-filter', 'Admin\SuratMasuk::resetFilter');
+
 
     // Surat Keluar
     $routes->get('surat-keluar', 'Admin\SuratKeluar::index');
