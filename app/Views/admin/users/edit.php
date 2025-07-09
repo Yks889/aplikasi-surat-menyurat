@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Edit User</h3>
+        <h3 class="card-title fs-5 mb-0">Edit User</h3>
     </div>
     <div class="card-body">
         <form action="/admin/users/update/<?= $userData['id'] ?>" method="post">
