@@ -19,7 +19,7 @@
         <?= view('components/alert') ?>
 
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover nowrap table-primary" id="suratKeluarTable">
+            <table class="table table-bordered table-striped table-hover nowrap table-primary w-100" id="suratKeluarTable">
                 <thead>
                     <tr>
                         <th>No</th>
