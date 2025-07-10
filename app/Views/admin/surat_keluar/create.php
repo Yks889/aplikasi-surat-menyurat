@@ -1,9 +1,20 @@
 <?= $this->extend('layouts/admin') ?>
 
 <?= $this->section('content') ?>
+
+<?php if (session('errors') && is_array(session('errors'))): ?>
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            <?php foreach (session('errors') as $error): ?>
+                <li><?= esc($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Tambah Surat Keluar</h3>
+        <h3 class="card-title fs-5">Tambah Surat Keluar</h3>
     </div>
     <div class="card-body">
         <form action="/admin/surat-keluar/simpan" method="post" enctype="multipart/form-data">

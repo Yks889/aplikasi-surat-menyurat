@@ -127,7 +127,6 @@ class SuratKeluar extends BaseController
             'tanggal_surat' => $this->request->getPost('tanggal_surat'),
             'perihal' => $this->request->getPost('perihal'),
             'penandatangan_id' => $this->request->getPost('penandatangan_id'),
-            'isi_surat' => $this->request->getPost('isi_surat'),
             'file_surat' => $fileName,
             'created_by' => $createdBy
         ]);
@@ -150,55 +149,62 @@ class SuratKeluar extends BaseController
         return view('admin/surat_keluar/edit', $data);
     }
 
-    public function update($id)
-    {
-        $rules = [
-            'nomor_surat' => 'required',
-            'untuk' => 'required',
-            'perusahaan_id' => 'required',
-            'tanggal_surat' => 'required',
-            'perihal' => 'required',
-            'penandatangan_id' => 'required',
-            'isi_surat' => 'required',
-            'file_surat' => [
-                'mime_in[file_surat,application/pdf,image/jpeg,image/png,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]',
-                'max_size[file_surat,5120]'
-            ]
-        ];
+public function update($id)
+{
+    $rules = [
+        'jenis_surat' => 'required',
+        'untuk' => 'required',
+        'perusahaan_id' => 'required',
+        'tanggal_surat' => 'required',
+        'perihal' => 'required',
+        'penandatangan_id' => 'required',
+        'file_surat' => [
+            'permit_empty',
+            'mime_in[file_surat,application/pdf,image/jpeg,image/png,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]',
+            'max_size[file_surat,5120]'
+        ]
+    ];
 
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        }
-
-        $surat = $this->suratKeluarModel->find($id);
-        $file = $this->request->getFile('file_surat');
-
-        $data = [
-            'nomor_surat' => $this->request->getPost('nomor_surat'),
-            'untuk' => $this->request->getPost('untuk'),
-            'perusahaan_id' => $this->request->getPost('perusahaan_id'),
-            'tanggal_surat' => $this->request->getPost('tanggal_surat'),
-            'perihal' => $this->request->getPost('perihal'),
-            'penandatangan_id' => $this->request->getPost('penandatangan_id'),
-            'isi_surat' => $this->request->getPost('isi_surat')
-        ];
-
-        if ($file && $file->isValid() && !$file->hasMoved()) {
-            $fileName = $file->getRandomName();
-            $file->move('uploads/surat_keluar', $fileName);
-
-            if (is_file('uploads/surat_keluar/' . $surat['file_surat'])) {
-                unlink('uploads/surat_keluar/' . $surat['file_surat']);
-            }
-
-            $data['file_surat'] = $fileName;
-        }
-
-        $this->suratKeluarModel->update($id, $data);
-
-        return redirect()->to('/admin/surat-keluar')->with('message', 'Surat keluar berhasil diperbarui');
+    if (!$this->validate($rules)) {
+        return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
     }
 
+    $jenisSurat = $this->jenisSuratModel->find($this->request->getPost('jenis_surat'));
+    $perusahaan = $this->perusahaanModel->find($this->request->getPost('perusahaan_id'));
+    $tanggalSurat = $this->request->getPost('tanggal_surat');
+    $generateNomorSurat = $this->generateNomorSurat($jenisSurat['singkatan'], $perusahaan['singkatan'], $tanggalSurat);
+
+    // Generate ulang nomor surat
+    $nomorSurat = $generateNomorSurat;
+
+    $surat = $this->suratKeluarModel->find($id);
+    $file = $this->request->getFile('file_surat');
+
+    $data = [
+        'kode_surat' => $jenisSurat['singkatan'],
+        'nomor_surat' => $nomorSurat,
+        'untuk' => $this->request->getPost('untuk'),
+        'perusahaan_id' => $this->request->getPost('perusahaan_id'),
+        'tanggal_surat' => $tanggalSurat,
+        'perihal' => $this->request->getPost('perihal'),
+        'penandatangan_id' => $this->request->getPost('penandatangan_id'),
+    ];
+
+    if ($file && $file->isValid() && !$file->hasMoved()) {
+        $fileName = $file->getRandomName();
+        $file->move('uploads/surat_keluar', $fileName);
+
+        if (is_file('uploads/surat_keluar/' . $surat['file_surat'])) {
+            unlink('uploads/surat_keluar/' . $surat['file_surat']);
+        }
+
+        $data['file_surat'] = $fileName;
+    }
+
+    $this->suratKeluarModel->update($id, $data);
+
+    return redirect()->to('/admin/surat-keluar')->with('message', 'Surat keluar berhasil diperbarui');
+}
     public function delete($id)
     {
         $surat = $this->suratKeluarModel->find($id);
