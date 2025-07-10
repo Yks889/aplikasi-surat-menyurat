@@ -40,43 +40,39 @@
     </div>
 </div>
 
-<!-- Info Cards -->
 <div class="row g-3 mb-4">
-    <div class="col-lg-4 col-md-6">
+    <!-- Surat Masuk -->
+    <div class="col-12 col-md-6">
         <div class="card bg-primary text-white shadow-sm border-0 h-100">
             <div class="card-body d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3 class="card-title mb-0"><?= $totalSuratMasuk ?></h3>
-                    <div class="icon-circle bg-white bg-opacity-25"><i class="bi bi-envelope fs-4"></i></div>
+                    <div class="icon-circle bg-white bg-opacity-25">
+                        <i class="bi bi-envelope fs-4"></i>
+                    </div>
                 </div>
                 <p class="card-text mb-3">Surat Masuk</p>
-                <a href="/operator/surat-masuk" class="mt-auto btn btn-sm btn-light">Lihat Semua <i class="bi bi-arrow-right ms-1"></i></a>
+                <a href="/admin/surat-masuk" class="mt-auto btn btn-sm btn-light align-self-start">
+                    Lihat Semua <i class="bi bi-arrow-right ms-1"></i>
+                </a>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-4 col-md-6">
+    <!-- Surat Keluar -->
+    <div class="col-12 col-md-6">
         <div class="card bg-success text-white shadow-sm border-0 h-100">
             <div class="card-body d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3 class="card-title mb-0"><?= $totalSuratKeluar ?></h3>
-                    <div class="icon-circle bg-white bg-opacity-25"><i class="bi bi-envelope-open fs-4"></i></div>
+                    <div class="icon-circle bg-white bg-opacity-25">
+                        <i class="bi bi-envelope-open fs-4"></i>
+                    </div>
                 </div>
                 <p class="card-text mb-3">Surat Keluar</p>
-                <a href="/operator/surat-keluar" class="mt-auto btn btn-sm btn-light">Lihat Semua <i class="bi bi-arrow-right ms-1"></i></a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-4 col-md-6">
-        <div class="card bg-warning text-dark shadow-sm border-0 h-100">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="card-title mb-0"><?= $totalUsers ?></h3>
-                    <div class="icon-circle bg-dark bg-opacity-10"><i class="bi bi-people fs-4"></i></div>
-                </div>
-                <p class="card-text mb-3">User Biasa</p>
-                <a href="/operator/users" class="mt-auto btn btn-sm btn-dark">Kelola User <i class="bi bi-arrow-right ms-1"></i></a>
+                <a href="/admin/surat-keluar" class="mt-auto btn btn-sm btn-light align-self-start">
+                    Lihat Semua <i class="bi bi-arrow-right ms-1"></i>
+                </a>
             </div>
         </div>
     </div>

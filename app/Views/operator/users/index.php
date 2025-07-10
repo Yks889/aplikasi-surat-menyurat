@@ -98,5 +98,15 @@
             }
         });
     }
+
+        <?php if (session()->getFlashdata('message')): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '<?= session()->getFlashdata('message') ?>',
+            timer: 3000,
+            showConfirmButton: false
+        });
+    <?php endif; ?>
 </script>
 <?= $this->endSection() ?>

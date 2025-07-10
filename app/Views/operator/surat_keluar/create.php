@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Tambah Surat Keluar</h3>
+        <h3 class="card-title fs-5 mb-0">Tambah Surat Keluar</h3>
     </div>
     <div class="card-body">
         <form action="/operator/surat-keluar/simpan" method="post" enctype="multipart/form-data">

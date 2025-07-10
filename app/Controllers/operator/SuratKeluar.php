@@ -25,14 +25,37 @@ class SuratKeluar extends BaseController
 
     public function index()
     {
+        $bulan = $this->request->getGet('bulan') ?? date('n');
+        $tahun = $this->request->getGet('tahun') ?? date('Y');
+        $perusahaanId = $this->request->getGet('perusahaan_id');
+
+        $builder = $this->suratKeluarModel
+            ->select('surat_keluar.*, perusahaan.nama AS perusahaan, users.full_name AS penandatangan')
+            ->join('perusahaan', 'perusahaan.id = surat_keluar.perusahaan_id', 'left')
+            ->join('users', 'users.id = surat_keluar.penandatangan_id', 'left')
+            ->where('MONTH(tanggal_surat)', $bulan)
+            ->where('YEAR(tanggal_surat)', $tahun);
+
+        if (!empty($perusahaanId)) {
+            $builder->where('surat_keluar.perusahaan_id', $perusahaanId);
+        }
+
         $data = [
             'title' => 'Surat Keluar',
-            'user' => session()->get(),
-            'suratKeluar' => $this->suratKeluarModel->getSuratKeluarWithRelations(),
-            'validation' => \Config\Services::validation()
+            'suratKeluar' => $builder->orderBy('tanggal_surat', 'DESC')->findAll(),
+            'perusahaanList' => $this->perusahaanModel->findAll(),
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'perusahaan_id' => $perusahaanId,
+            'user' => session()->get('user')
         ];
 
         return view('operator/surat_keluar/index', $data);
+    }
+
+    public function resetFilter()
+    {
+        return redirect()->to('/operator/surat-keluar');
     }
 
     public function create()
@@ -51,9 +74,8 @@ class SuratKeluar extends BaseController
 
     private function generateNomorSurat($jenisSuratSingkatan, $perusahaanSingkatan, $tanggalSurat)
     {
-        $date = date_create($tanggalSurat);
-        $bulan = (int)date_format($date, 'm');
-        $tahun = (int)date_format($date, 'Y');
+        $bulan = (int)date('m', strtotime($tanggalSurat));
+        $tahun = (int)date('Y', strtotime($tanggalSurat));
 
         $jumlah = $this->suratKeluarModel
             ->where('MONTH(tanggal_surat)', $bulan)
@@ -61,7 +83,7 @@ class SuratKeluar extends BaseController
             ->countAllResults();
 
         $nomorUrut = str_pad($jumlah + 1, 3, '0', STR_PAD_LEFT);
-        $bulanRomawi = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
+        $bulanRomawi = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
 
         return "{$nomorUrut}/{$perusahaanSingkatan}-{$jenisSuratSingkatan}/{$bulanRomawi[$bulan - 1]}/{$tahun}";
     }
@@ -69,10 +91,6 @@ class SuratKeluar extends BaseController
     public function store()
     {
         $createdBy = session()->get('user')['id'];
-        if (!$createdBy) {
-            return redirect()->back()->with('error', 'User belum login.');
-        }
-
 
         $rules = [
             'jenis_surat' => 'required',
@@ -92,14 +110,10 @@ class SuratKeluar extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $perusahaan = $this->perusahaanModel->asArray()->find($this->request->getPost('perusahaan_id'));
-        $jenisSurat = $this->jenisSuratModel->asArray()->find($this->request->getPost('jenis_surat'));
-
-        $nomorSurat = $this->generateNomorSurat(
-            $jenisSurat['singkatan'],
-            $perusahaan['singkatan'],
-            $this->request->getPost('tanggal_surat')
-        );
+        $perusahaan = $this->perusahaanModel->find($this->request->getPost('perusahaan_id'));
+        $jenisSurat = $this->jenisSuratModel->find($this->request->getPost('jenis_surat'));
+        $tanggalSurat = $this->request->getPost('tanggal_surat');
+        $nomorSurat = $this->generateNomorSurat($jenisSurat['singkatan'], $perusahaan['singkatan'], $tanggalSurat);
 
         $file = $this->request->getFile('file_surat');
         $fileName = $file->getRandomName();
@@ -110,10 +124,9 @@ class SuratKeluar extends BaseController
             'nomor_surat' => $nomorSurat,
             'untuk' => $this->request->getPost('untuk'),
             'perusahaan_id' => $this->request->getPost('perusahaan_id'),
-            'tanggal_surat' => $this->request->getPost('tanggal_surat'),
+            'tanggal_surat' => $tanggalSurat,
             'perihal' => $this->request->getPost('perihal'),
             'penandatangan_id' => $this->request->getPost('penandatangan_id'),
-            'isi_surat' => $this->request->getPost('isi_surat'),
             'file_surat' => $fileName,
             'created_by' => $createdBy
         ]);
@@ -139,14 +152,14 @@ class SuratKeluar extends BaseController
     public function update($id)
     {
         $rules = [
-            'nomor_surat' => 'required',
+            'jenis_surat' => 'required',
             'untuk' => 'required',
             'perusahaan_id' => 'required',
             'tanggal_surat' => 'required',
             'perihal' => 'required',
             'penandatangan_id' => 'required',
-            'isi_surat' => 'required',
             'file_surat' => [
+                'permit_empty',
                 'mime_in[file_surat,application/pdf,image/jpeg,image/png,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]',
                 'max_size[file_surat,5120]'
             ]
@@ -156,24 +169,29 @@ class SuratKeluar extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
+        $jenisSurat = $this->jenisSuratModel->find($this->request->getPost('jenis_surat'));
+        $perusahaan = $this->perusahaanModel->find($this->request->getPost('perusahaan_id'));
+        $tanggalSurat = $this->request->getPost('tanggal_surat');
+        $nomorSurat = $this->generateNomorSurat($jenisSurat['singkatan'], $perusahaan['singkatan'], $tanggalSurat);
+
         $surat = $this->suratKeluarModel->find($id);
         $file = $this->request->getFile('file_surat');
 
         $data = [
-            'nomor_surat' => $this->request->getPost('nomor_surat'),
+            'kode_surat' => $jenisSurat['singkatan'],
+            'nomor_surat' => $nomorSurat,
             'untuk' => $this->request->getPost('untuk'),
             'perusahaan_id' => $this->request->getPost('perusahaan_id'),
-            'tanggal_surat' => $this->request->getPost('tanggal_surat'),
+            'tanggal_surat' => $tanggalSurat,
             'perihal' => $this->request->getPost('perihal'),
             'penandatangan_id' => $this->request->getPost('penandatangan_id'),
-            'isi_surat' => $this->request->getPost('isi_surat')
         ];
 
         if ($file && $file->isValid() && !$file->hasMoved()) {
             $fileName = $file->getRandomName();
             $file->move('uploads/surat_keluar', $fileName);
 
-            if ($surat['file_surat'] && file_exists('uploads/surat_keluar/' . $surat['file_surat'])) {
+            if (is_file('uploads/surat_keluar/' . $surat['file_surat'])) {
                 unlink('uploads/surat_keluar/' . $surat['file_surat']);
             }
 
@@ -189,7 +207,7 @@ class SuratKeluar extends BaseController
     {
         $surat = $this->suratKeluarModel->find($id);
 
-        if ($surat['file_surat'] && file_exists('uploads/surat_keluar/' . $surat['file_surat'])) {
+        if (!empty($surat['file_surat']) && file_exists('uploads/surat_keluar/' . $surat['file_surat'])) {
             unlink('uploads/surat_keluar/' . $surat['file_surat']);
         }
 

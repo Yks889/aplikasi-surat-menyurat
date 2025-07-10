@@ -19,13 +19,38 @@ class SuratMasuk extends BaseController
 
     public function index()
     {
+        $bulan = $this->request->getGet('bulan') ?? date('n'); // Default bulan sekarang
+        $tahun = $this->request->getGet('tahun') ?? date('Y');  // Default tahun sekarang
+        $perusahaanId = $this->request->getGet('perusahaan_id');
+
+        // Builder surat masuk dengan join ke perusahaan dan user
+        $builder = $this->suratMasukModel
+            ->select('surat_masuk.*, perusahaan.nama AS perusahaan, users.full_name AS pengirim')
+            ->join('perusahaan', 'perusahaan.id = surat_masuk.perusahaan_id', 'left')
+            ->join('users', 'users.id = surat_masuk.created_by', 'left')
+            ->where('MONTH(tgl_surat)', $bulan)
+            ->where('YEAR(tgl_surat)', $tahun);
+
+        if (!empty($perusahaanId)) {
+            $builder->where('surat_masuk.perusahaan_id', $perusahaanId);
+        }
+
         $data = [
             'title' => 'Surat Masuk',
-            'suratMasuk' => $this->suratMasukModel->getSuratMasukWithRelations(),
+            'suratMasuk' => $builder->orderBy('tgl_surat', 'DESC')->findAll(),
+            'perusahaanList' => $this->perusahaanModel->findAll(),
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'perusahaan_id' => $perusahaanId,
             'user' => session()->get('user')
         ];
 
         return view('operator/surat_masuk/index', $data);
+    }
+
+    public function resetFilter()
+    {
+        return redirect()->to('/operator/surat-masuk');
     }
 
     public function create()
@@ -74,13 +99,12 @@ class SuratMasuk extends BaseController
             'created_by'      => $createdBy
         ]);
 
-        return redirect()->to('/operator/surat-masuk')->with('message', 'Surat masuk berhasil ditambahkan');
+        return redirect()->to('/operator/surat-masuk')->with('message', 'Surat masuk berhasil ditambahkan.');
     }
 
     public function edit($id)
     {
         $surat = $this->suratMasukModel->find($id);
-
         if (!$surat) {
             return redirect()->to('/operator/surat-masuk')->with('error', 'Data surat tidak ditemukan.');
         }

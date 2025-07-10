@@ -113,14 +113,14 @@ class SuratKeluar extends BaseController
         $perusahaan = $this->perusahaanModel->find($this->request->getPost('perusahaan_id'));
         $jenisSurat = $this->jenisSuratModel->find($this->request->getPost('jenis_surat'));
         $tanggalSurat = $this->request->getPost('tanggal_surat');
-        $nomorSurat = $this->generateNomorSurat($jenisSurat->singkatan, $perusahaan->singkatan, $tanggalSurat);
+        $nomorSurat = $this->generateNomorSurat($jenisSurat['singkatan'], $perusahaan['singkatan'], $tanggalSurat);
 
         $file = $this->request->getFile('file_surat');
         $fileName = $file->getRandomName();
         $file->move('uploads/surat_keluar', $fileName);
 
         $this->suratKeluarModel->save([
-            'kode_surat' => $jenisSurat->singkatan,
+            'kode_surat' => $jenisSurat['singkatan'],
             'nomor_surat' => $nomorSurat,
             'untuk' => $this->request->getPost('untuk'),
             'perusahaan_id' => $this->request->getPost('perusahaan_id'),

@@ -43,6 +43,8 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('surat-keluar/edit/(:num)', 'Admin\SuratKeluar::edit/$1');
     $routes->post('surat-keluar/update/(:num)', 'Admin\SuratKeluar::update/$1');
     $routes->get('surat-keluar/delete/(:num)', 'Admin\SuratKeluar::delete/$1');
+    $routes->get('surat-keluar/reset-filter', 'Admin\SuratKeluar::resetFilter');
+
 
     // Manajemen User
     $routes->get('users', 'Admin\UserManagement::index');
@@ -86,6 +88,7 @@ $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
     $routes->get('surat-masuk/edit/(:num)', 'Operator\SuratMasuk::edit/$1');
     $routes->post('surat-masuk/update/(:num)', 'Operator\SuratMasuk::update/$1');
     $routes->get('surat-masuk/delete/(:num)', 'Operator\SuratMasuk::delete/$1');
+    $routes->get('surat-masuk/reset-filter', 'Operator\SuratMasuk::resetFilter');
 
     // Surat Keluar
     $routes->get('surat-keluar', 'Operator\SuratKeluar::index');
@@ -94,6 +97,7 @@ $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
     $routes->get('surat-keluar/edit/(:num)', 'Operator\SuratKeluar::edit/$1');
     $routes->post('surat-keluar/update/(:num)', 'Operator\SuratKeluar::update/$1');
     $routes->get('surat-keluar/delete/(:num)', 'Operator\SuratKeluar::delete/$1');
+    $routes->get('surat-keluar/reset-filter', 'Operator\SuratKeluar::resetFilter');
 
     // Manajemen User
     $routes->get('users', 'Operator\UserManagement::index');
