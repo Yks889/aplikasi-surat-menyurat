@@ -79,13 +79,16 @@ class UserManagement extends BaseController
             return redirect()->back()->withInput()->with('validation', $this->validator);
         }
 
-        $this->userModel->save([
+        $dataUser = [
             'username'   => $this->request->getPost('username'),
-            'password'   => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            'password'   => $this->request->getPost('password'),
+            // 'password'   => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'full_name'  => $this->request->getPost('full_name'),
             'role'       => $this->request->getPost('role'),
             'email'      => $this->request->getPost('email')
-        ]);
+        ];
+
+        $this->userModel->save($dataUser);
 
         return redirect()->to('/admin/users')->with('message', 'User berhasil ditambahkan');
     }
@@ -136,7 +139,7 @@ class UserManagement extends BaseController
         ];
 
         if ($this->request->getPost('password')) {
-            $data['password'] = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
+            $data['password'] = $this->request->getPost('password');
         }
 
         $this->userModel->update($id, $data);
