@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Tanda Tangan Digital</h3>
+        <h3 class="card-title fs-5 mb-0">Tanda Tangan Digital</h3>
     </div>
     <div class="card-body">
         <?= view('components/alert') ?>
@@ -13,7 +13,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title"><?= $ttd['full_name'] ?></h5>
+                        <h5 class="card-title fs-5 mb-0"><?= $ttd['full_name'] ?></h5>
                     </div>
                     <div class="card-body text-center">
                         <img src="/uploads/tanda_tangan/<?= $ttd['file'] ?>" alt="Tanda Tangan <?= $ttd['full_name'] ?>" class="img-fluid" style="max-height: 150px;">
@@ -33,7 +33,7 @@
         
         <div class="card mt-4">
             <div class="card-header">
-                <h4 class="card-title">Upload Tanda Tangan Baru</h4>
+                <h4 class="card-title fs-5 mb-0">Upload Tanda Tangan Baru</h4>
             </div>
             <div class="card-body">
                 <form action="/admin/tanda-tangan/upload" method="post" enctype="multipart/form-data">

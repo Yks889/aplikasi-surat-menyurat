@@ -13,7 +13,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Edit Surat Keluar</h3>
+        <h3 class="card-title fs-5 mb-0">Edit Surat Keluar</h3>
     </div>
     <div class="card-body">
         <form action="/admin/surat-keluar/update/<?= $surat['id'] ?>" method="post" enctype="multipart/form-data">
