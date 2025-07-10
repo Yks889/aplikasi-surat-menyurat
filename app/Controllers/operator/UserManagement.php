@@ -52,7 +52,8 @@ class UserManagement extends BaseController
 
     $this->userModel->save([
         'username' => $this->request->getPost('username'),
-        'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+        'password' => $this->request->getPost('password'),
+        // 'password' => password_hash($this->request->getPost('password')),
         'full_name' => $this->request->getPost('full_name'),
         'email' => $this->request->getPost('email'),
         'role' => 'user' // dipaksa sebagai user biasa
