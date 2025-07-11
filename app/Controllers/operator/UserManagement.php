@@ -14,23 +14,43 @@ class UserManagement extends BaseController
         $this->userModel = new UserModel();
     }
 
+    // Menampilkan daftar user dengan filter bulan & tahun
     public function index()
     {
+        $bulan = $this->request->getGet('bulan') ?? date('n');
+        $tahun = $this->request->getGet('tahun') ?? date('Y');
+
+        $builder = $this->userModel->where('role', 'user');
+
+        if ($bulan) {
+            $builder->where('MONTH(created_at)', $bulan);
+        }
+        if ($tahun) {
+            $builder->where('YEAR(created_at)', $tahun);
+        }
+
         $data = [
-            'title' => 'Kelola User Biasa',
-            'user' => session()->get(),
-            'users' => $this->userModel->where('role', 'user')->findAll(),
-            'validation' => \Config\Services::validation()
+            'title'      => 'Kelola User Biasa',
+            'user'       => session()->get(),
+            'users'      => $builder->findAll(),
+            'validation' => \Config\Services::validation(),
+            'bulan'      => $bulan,
+            'tahun'      => $tahun,
         ];
 
         return view('operator/users/index', $data);
     }
 
+    public function resetFilter()
+    {
+        return redirect()->to('/operator/users');
+    }
+
     public function create()
     {
         $data = [
-            'title' => 'Tambah User Biasa',
-            'user' => session()->get(),
+            'title'      => 'Tambah User Biasa',
+            'user'       => session()->get(),
             'validation' => \Config\Services::validation()
         ];
 
@@ -38,44 +58,43 @@ class UserManagement extends BaseController
     }
 
     public function store()
-{
-    $rules = [
-        'username' => 'required|is_unique[users.username]|min_length[5]',
-        'password' => 'required|min_length[6]',
-        'full_name' => 'required',
-        'email' => 'permit_empty|valid_email'
-    ];
+    {
+        $rules = [
+            'username'   => 'required|min_length[5]|is_unique[users.username]',
+            'password'   => 'required|min_length[6]',
+            'full_name'  => 'required',
+            'email'      => 'permit_empty|valid_email',
+        ];
 
-    if (!$this->validate($rules)) {
-        return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('validation', $this->validator);
+        }
+
+        $dataUser = [
+            'username'   => $this->request->getPost('username'),
+            'password'   => $this->request->getPost('password'), // hash jika perlu
+            'full_name'  => $this->request->getPost('full_name'),
+            'role'       => 'user',
+            'email'      => $this->request->getPost('email'),
+        ];
+
+        $this->userModel->save($dataUser);
+
+        return redirect()->to('/operator/users')->with('message', 'User berhasil ditambahkan');
     }
-
-    $this->userModel->save([
-        'username' => $this->request->getPost('username'),
-        'password' => $this->request->getPost('password'),
-        // 'password' => password_hash($this->request->getPost('password')),
-        'full_name' => $this->request->getPost('full_name'),
-        'email' => $this->request->getPost('email'),
-        'role' => 'user' // dipaksa sebagai user biasa
-    ]);
-
-    return redirect()->to('/operator/users')->with('message', 'User berhasil ditambahkan');
-}
-
 
     public function edit($id)
     {
         $userData = $this->userModel->find($id);
 
-        // hanya bisa edit user dengan role user
-        if (!$userData || $userData['role'] != 'user') {
+        if (!$userData || $userData['role'] !== 'user') {
             return redirect()->to('/operator/users')->with('error', 'User tidak ditemukan atau tidak diizinkan.');
         }
 
         $data = [
-            'title' => 'Edit User Biasa',
-            'user' => session()->get(),
-            'userData' => $userData,
+            'title'      => 'Edit User Biasa',
+            'user'       => session()->get(),
+            'userData'   => $userData,
             'validation' => \Config\Services::validation()
         ];
 
@@ -86,19 +105,19 @@ class UserManagement extends BaseController
     {
         $user = $this->userModel->find($id);
 
-        if (!$user || $user['role'] != 'user') {
+        if (!$user || $user['role'] !== 'user') {
             return redirect()->to('/operator/users')->with('error', 'User tidak ditemukan atau tidak diizinkan.');
         }
 
         $usernameRules = 'required|min_length[5]';
-        if ($user['username'] != $this->request->getPost('username')) {
+        if ($user['username'] !== $this->request->getPost('username')) {
             $usernameRules .= '|is_unique[users.username]';
         }
 
         $rules = [
-            'username' => $usernameRules,
-            'full_name' => 'required',
-            'email' => 'permit_empty|valid_email'
+            'username'   => $usernameRules,
+            'full_name'  => 'required',
+            'email'      => 'permit_empty|valid_email'
         ];
 
         if ($this->request->getPost('password')) {
@@ -106,13 +125,13 @@ class UserManagement extends BaseController
         }
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return redirect()->back()->withInput()->with('validation', $this->validator);
         }
 
         $data = [
-            'username' => $this->request->getPost('username'),
-            'full_name' => $this->request->getPost('full_name'),
-            'email' => $this->request->getPost('email')
+            'username'   => $this->request->getPost('username'),
+            'full_name'  => $this->request->getPost('full_name'),
+            'email'      => $this->request->getPost('email'),
         ];
 
         if ($this->request->getPost('password')) {
@@ -128,7 +147,7 @@ class UserManagement extends BaseController
     {
         $user = $this->userModel->find($id);
 
-        if (!$user || $user['role'] != 'user') {
+        if (!$user || $user['role'] !== 'user') {
             return redirect()->to('/operator/users')->with('error', 'Tidak dapat menghapus user ini.');
         }
 
