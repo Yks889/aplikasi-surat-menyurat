@@ -6,21 +6,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title><?= $title ?? 'Dashboard' ?> | Sistem Arsip Surat</title>
 
-  <!-- Bootstrap & Icons -->
+  <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Custom CSS -->
   <style>
     :root {
-      --primary: #0073b7;
-      --sidebar-width: 240px;
-      --navbar-height: 56px;
+      --primary: #4361ee;
+      --primary-dark: #3a0ca3;
+      --primary-light: #f0f5ff;
+      --secondary: #6c757d;
+      --sidebar-width: 280px;
+      --navbar-height: 70px;
+      --sidebar-bg: #1e293b;
+      --sidebar-text: #e2e8f0;
+      --sidebar-active: rgba(67, 97, 238, 0.2);
+      --content-bg: #f8fafc;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     body {
-      margin: 0;
-      background-color: #f4f6f9;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: var(--content-bg);
+      color: #334155;
+      min-height: 100vh;
+      padding-left: var(--sidebar-width);
     }
 
     .wrapper {
@@ -29,113 +44,257 @@
       min-height: 100vh;
     }
 
+    /* Navbar */
     .main-header {
       height: var(--navbar-height);
-      background-color: var(--primary);
+      background: white;
+      box-shadow: var(--card-shadow);
+      z-index: 1040;
+      border-bottom: 1px solid #e2e8f0;
+      position: fixed;
+      top: 0;
+      left: var(--sidebar-width);
+      right: 0;
     }
 
     .navbar-brand {
-      font-weight: 600;
-      color: #fff !important;
-    }
-
-    .main-sidebar {
-      position: fixed;
-      top: var(--navbar-height);
-      left: 0;
-      bottom: 0;
-      width: var(--sidebar-width);
-      background-color: #2d3238;
-      padding-top: 1rem;
-      overflow-y: auto;
-      z-index: 1030;
-    }
-
-    .sidebar .nav-link {
-      color: #c2c7d0;
-      padding: 10px 20px;
+      font-weight: 700;
+      color: var(--primary) !important;
+      font-size: 1.25rem;
       display: flex;
       align-items: center;
-      border-radius: 4px;
-      margin: 4px 10px;
-      transition: background-color 0.2s;
+      gap: 10px;
     }
 
-    .sidebar .nav-link:hover {
-      background-color: #3c4148;
-      color: #fff;
+    .navbar-brand i {
+      color: var(--primary);
+      font-size: 1.5rem;
     }
 
-    .sidebar .nav-link.active {
-      background-color: var(--primary);
-      color: #fff;
+    /* Sidebar */
+    .main-sidebar {
+      width: var(--sidebar-width);
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      color: var(--sidebar-text);
+      overflow-y: auto;
+      padding: 1.5rem 0;
+      z-index: 1050;
+      transition: var(--transition);
+      border-right: none;
     }
 
-    .sidebar .nav-link i {
-      margin-right: 12px;
+    .main-sidebar .nav-link {
+      color: var(--sidebar-text);
+      padding: 0.75rem 1.5rem;
+      margin: 0.25rem 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .main-sidebar .nav-link:hover {
+      background: rgba(67, 97, 238, 0.15);
+      color: white;
+    }
+
+    .main-sidebar .nav-link.active {
+      background: linear-gradient(90deg, rgba(67, 97, 238, 0.3) 0%, rgba(67, 97, 238, 0.1) 100%);
+      color: white;
+      border-left: 3px solid var(--primary);
+    }
+
+    .main-sidebar .nav-link i {
       font-size: 1.1rem;
+      width: 24px;
+      display: inline-flex;
+      justify-content: center;
     }
 
+    /* User Panel */
     .user-panel {
-      color: #fff;
-      padding: 0 20px 1rem 20px;
+      padding: 1.5rem;
       margin-bottom: 1rem;
-      border-bottom: 1px solid #444;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
+    .user-panel > div {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-panel i {
+      font-size: 2rem;
+      color: var(--primary-light);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-panel small {
+      color: #94a3b8;
+      font-size: 0.8rem;
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* Content */
     .content-wrapper {
+      flex: 1;
       margin-top: var(--navbar-height);
-      margin-left: var(--sidebar-width);
-      padding: 20px;
+      padding: 2rem;
+      transition: var(--transition);
     }
 
-    @media (max-width: 992px) {
-      .main-sidebar {
-        display: none;
-      }
-
-      .content-wrapper {
-        margin-left: 0;
-      }
-    }
-
+    /* Footer */
     .main-footer {
-      margin-left: var(--sidebar-width);
-      padding: 1rem;
+      background-color: white;
+      border-top: 1px solid #e2e8f0;
+      padding: 1.25rem 0;
       font-size: 0.875rem;
-      background-color: #fff;
-      border-top: 1px solid #dee2e6;
-    }
-
-    @media (max-width: 992px) {
-      .main-footer {
-        margin-left: 0;
-      }
+      transition: var(--transition);
     }
 
     .footer-links a {
-      color: #6c757d;
-      margin-left: 15px;
+      color: var(--secondary);
       text-decoration: none;
+      transition: color 0.2s ease;
+      font-weight: 500;
     }
 
     .footer-links a:hover {
       color: var(--primary);
+    }
+
+    /* Sidebar Toggle Button */
+    #sidebarToggle {
+      border: none;
+      background-color: var(--primary-light);
+      color: var(--primary);
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    #sidebarToggle:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    /* Dropdown Menu */
+    .dropdown-menu {
+      border: none;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+      padding: 0.5rem;
+    }
+
+    .dropdown-item {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .dropdown-item i {
+      width: 20px;
+      display: inline-flex;
+      justify-content: center;
+      margin-right: 8px;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      body {
+        padding-left: 0;
+      }
+      
+      .main-sidebar {
+        transform: translateX(-100%);
+      }
+
+      .main-sidebar.show {
+        transform: translateX(0);
+      }
+
+      .main-header {
+        left: 0;
+      }
+    }
+
+    @media (min-width: 993px) {
+      .main-sidebar:hover {
+        width: var(--sidebar-width);
+      }
     }
   </style>
 </head>
 <body>
 <div class="wrapper">
 
+  <!-- Sidebar -->
+  <aside class="main-sidebar" id="sidebarMenu">
+    <div class="user-panel">
+      <div>
+        <i class="bi bi-person-circle"></i>
+        <div>
+          <?= esc($user['full_name'] ?? 'Guest') ?>
+          <small><?= esc(ucfirst($user['role'] ?? '')) ?></small>
+        </div>
+      </div>
+    </div>
+    <nav class="nav flex-column">
+      <a href="/user/dashboard" class="nav-link <?= current_url() == site_url('/user/dashboard') ? 'active' : '' ?>">
+        <i class="bi bi-speedometer2"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="/user/kirim-surat" class="nav-link <?= strpos(current_url(), 'kirim-surat') !== false ? 'active' : '' ?>">
+        <i class="bi bi-send"></i>
+        <span>Form Surat Masuk</span>
+      </a>
+      <a href="/user/history-surat-masuk" class="nav-link <?= strpos(current_url(), 'history-surat-masuk') !== false ? 'active' : '' ?>">
+        <i class="bi bi-clock-history"></i>
+        <span>History Surat Masuk</span>
+      </a>
+    </nav>
+  </aside>
+
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand-lg navbar-dark fixed-top">
+  <nav class="main-header navbar navbar-expand-lg navbar-light">
     <div class="container-fluid px-4">
-      <a href="/user/dashboard" class="navbar-brand">Sistem Arsip Surat</a>
+      <button class="btn d-lg-none me-2" id="sidebarToggle">
+        <i class="bi bi-list"></i>
+      </button>
+      <a href="/user/dashboard" class="navbar-brand">
+        <i class="bi bi-archive"></i>
+        <span>Sistem Arsip Surat</span>
+      </a>
+
       <ul class="navbar-nav ms-auto d-flex align-items-center">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-person-circle me-2"></i>
-            <span><?= esc($user['full_name'] ?? 'Guest') ?></span>
+            <div class="d-flex align-items-center">
+              <i class="bi bi-person-circle me-2" style="font-size: 1.5rem;"></i>
+              <div class="d-none d-md-block">
+                <div><?= esc($user['full_name'] ?? 'Guest') ?></div>
+                <small class="text-muted" style="font-size: 0.75rem;"><?= esc(ucfirst($user['role'] ?? '')) ?></small>
+              </div>
+            </div>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Profil</a></li>
@@ -146,38 +305,6 @@
       </ul>
     </div>
   </nav>
-
-  <!-- Sidebar -->
-  <aside class="main-sidebar">
-    <div class="sidebar">
-      <div class="user-panel d-flex align-items-center">
-        <i class="bi bi-person-circle me-2" style="font-size: 2rem;"></i>
-        <div>
-          <div><?= esc($user['full_name'] ?? 'Guest') ?></div>
-          <small><?= esc(ucfirst($user['role'] ?? '')) ?></small>
-        </div>
-      </div>
-      <nav>
-        <ul class="nav flex-column">
-          <li>
-            <a href="/user/dashboard" class="nav-link <?= current_url() == site_url('/user/dashboard') ? 'active' : '' ?>">
-              <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="/user/kirim-surat" class="nav-link <?= strpos(current_url(), 'kirim-surat') !== false ? 'active' : '' ?>">
-              <i class="bi bi-send"></i> Form Surat Masuk
-            </a>
-          </li>
-          <li>
-            <a href="/user/history-surat-masuk" class="nav-link <?= strpos(current_url(), 'history-surat-masuk') !== false ? 'active' : '' ?>">
-              <i class="bi bi-clock-history"></i> History Surat Masuk
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </aside>
 
   <!-- Content -->
   <div class="content-wrapper">
@@ -193,11 +320,13 @@
         <div class="col-md-6 text-md-start text-center mb-2 mb-md-0">
           <strong>&copy; <?= date('Y') ?> Sistem Arsip Surat</strong>
         </div>
-        <div class="col-md-6 text-md-end text-center footer-links">
-          <a href="/about">Tentang</a>
-          <a href="/privacy">Privasi</a>
-          <a href="/terms">Syarat</a>
-          <a href="/contact">Kontak</a>
+        <div class="col-md-6 text-md-end text-center">
+          <div class="footer-links d-inline-flex gap-3">
+            <a href="/about">Tentang</a>
+            <a href="/privacy">Privasi</a>
+            <a href="/terms">Syarat</a>
+            <a href="/contact">Kontak</a>
+          </div>
         </div>
       </div>
     </div>
@@ -205,9 +334,15 @@
 
 </div>
 
-<!-- JS -->
+<!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Toggle sidebar on small screen
+  document.getElementById('sidebarToggle').addEventListener('click', function () {
+    document.getElementById('sidebarMenu').classList.toggle('show');
+  });
+</script>
 <?= $this->renderSection('scripts') ?>
 </body>
 </html>
