@@ -12,7 +12,7 @@
         <?= view('components/alert') ?>
 
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover nowrap table-primary" id="suratMasukTable">
+            <table class="table table-bordered table-striped table-hover nowrap table-primary w-100" id="suratMasukTable">
                 <thead>
                     <tr>
                         <th>No</th>
