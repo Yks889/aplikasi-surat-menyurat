@@ -272,7 +272,7 @@
                         </div>
                         <div class="password-hints">
                             <ul>
-                                <li id="length-requirement">Minimal 6 karakter</li>
+                                <li id="length-requirement">Minimal 6 karakter atau lebih</li>
                             </ul>
                         </div>
                     </div>
