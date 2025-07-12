@@ -329,24 +329,7 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="main-footer mt-auto">
-    <div class="container-fluid">
-      <div class="row align-items-center">
-        <div class="col-md-6 text-md-start text-center mb-2 mb-md-0">
-          <strong>&copy; <?= date('Y') ?> Sistem Arsip Surat</strong>
-        </div>
-        <div class="col-md-6 text-md-end text-center">
-          <div class="footer-links d-inline-flex gap-3">
-            <a href="/about">Tentang</a>
-            <a href="/privacy">Privasi</a>
-            <a href="/terms">Syarat</a>
-            <a href="/contact">Kontak</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
+
 
 </div>
 <!-- Tambahkan ini jika belum -->
