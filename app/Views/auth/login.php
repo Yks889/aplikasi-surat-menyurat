@@ -289,11 +289,8 @@
                     <label class="form-check-label" for="rememberMe">
                         Ingat saya
                     </label>
-                    <a href="#" class="float-end">Lupa password?</a>
+                    <a href="/register" class ="btn btn-link float-end"><i class="bi bi-person-plus-fill"></i>Daftar Sekarang</a>
                 </div>
-            <div class="footer-links">
-                <a href="/register"><i class="bi bi-person-plus me-1"></i> Daftar Sekarang</a>
-            </div>
         </div>
     </div>
     
