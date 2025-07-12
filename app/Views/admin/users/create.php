@@ -1,80 +1,91 @@
 <?= $this->extend('layouts/admin') ?>
-
 <?= $this->section('content') ?>
 <?php $validation = session('validation') ?? \Config\Services::validation(); ?>
 
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title fs-5 mb-0">Tambah User</h3>
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <div class="mb-3 mb-md-0">
+            <h2 class="h4 mb-1"><i class="bi bi-person-plus me-2 text-primary"></i>Tambah User</h2>
+        </div>
+        <div>
+            <a href="/admin/users" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar
+            </a>
+        </div>
     </div>
-    <div class="card-body">
-        <form action="/admin/users/simpan" method="post">
-            <?= csrf_field() ?>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control <?= $validation->hasError('username') ? 'is-invalid' : '' ?>"
-                            id="username" name="username" value="<?= old('username') ?>">
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('username') ?>
+    <!-- Form Card -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <form action="/admin/users/simpan" method="post">
+                <?= csrf_field() ?>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control <?= $validation->hasError('username') ? 'is-invalid' : '' ?>"
+                                id="username" name="username" value="<?= old('username') ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('username') ?>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control <?= $validation->hasError('password') ? 'is-invalid' : '' ?>"
+                                id="password" name="password">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('password') ?>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control <?= $validation->hasError('password') ? 'is-invalid' : '' ?>"
-                            id="password" name="password">
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('password') ?>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="full_name" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control <?= $validation->hasError('full_name') ? 'is-invalid' : '' ?>"
+                                id="full_name" name="full_name" value="<?= old('full_name') ?>">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('full_name') ?>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <select class="form-select <?= $validation->hasError('role') ? 'is-invalid' : '' ?>" id="role" name="role">
+                                <option value="">-- Pilih Role --</option>
+                                <option value="admin" <?= old('role') == 'admin' ? 'selected' : '' ?>>Admin</option>
+                                <option value="operator" <?= old('role') == 'operator' ? 'selected' : '' ?>>Operator</option>
+                                <option value="user" <?= old('role') == 'user' ? 'selected' : '' ?>>User Biasa</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('role') ?>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="full_name">Nama Lengkap</label>
-                        <input type="text" class="form-control <?= $validation->hasError('full_name') ? 'is-invalid' : '' ?>"
-                            id="full_name" name="full_name" value="<?= old('full_name') ?>">
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('full_name') ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="role">Role</label>
-                        <select class="form-control <?= $validation->hasError('role') ? 'is-invalid' : '' ?>" id="role" name="role">
-                            <option value="">-- Pilih Role --</option>
-                            <option value="admin" <?= old('role') == 'admin' ? 'selected' : '' ?>>Admin</option>
-                            <option value="operator" <?= old('role') == 'operator' ? 'selected' : '' ?>>Operator</option>
-                            <option value="user" <?= old('role') == 'user' ? 'selected' : '' ?>>User Biasa</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('role') ?>
-                        </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email (opsional)</label>
+                    <input type="email" class="form-control <?= $validation->hasError('email') ? 'is-invalid' : '' ?>"
+                        id="email" name="email" value="<?= old('email') ?>">
+                    <div class="invalid-feedback">
+                        <?= $validation->getError('email') ?>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group mt-3">
-                <label for="email">Email (opsional)</label>
-                <input type="email" class="form-control <?= $validation->hasError('email') ? 'is-invalid' : '' ?>"
-                    id="email" name="email" value="<?= old('email') ?>">
-                <div class="invalid-feedback">
-                    <?= $validation->getError('email') ?>
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-1"></i> Simpan
+                    </button>
+                    <a href="/admin/users" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-1"></i> Batal
+                    </a>
                 </div>
-            </div>
-
-            <div class="form-group mt-4">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-save"></i> Simpan
-                </button>
-                <a href="/admin/users" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> Kembali
-                </a>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 <?= $this->endSection() ?>
