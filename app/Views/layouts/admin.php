@@ -263,6 +263,10 @@
         <i class="bi bi-speedometer2"></i>
         <span>Dashboard</span>
       </a>
+      <a href="/admin/users" class="nav-link <?= strpos(current_url(), 'users') !== false ? 'active' : '' ?>">
+        <i class="bi bi-people"></i>
+        <span>Kelola User</span>
+      </a>
       <a href="/admin/surat-masuk" class="nav-link <?= strpos(current_url(), 'surat-masuk') !== false ? 'active' : '' ?>">
         <i class="bi bi-envelope"></i>
         <span>Surat Masuk</span>
@@ -270,10 +274,6 @@
       <a href="/admin/surat-keluar" class="nav-link <?= strpos(current_url(), 'surat-keluar') !== false ? 'active' : '' ?>">
         <i class="bi bi-envelope-open"></i>
         <span>Surat Keluar</span>
-      </a>
-      <a href="/admin/users" class="nav-link <?= strpos(current_url(), 'users') !== false ? 'active' : '' ?>">
-        <i class="bi bi-people"></i>
-        <span>Kelola User</span>
       </a>
       <a href="/admin/tanda-tangan" class="nav-link <?= strpos(current_url(), 'tanda-tangan') !== false ? 'active' : '' ?>">
         <i class="bi bi-pen"></i>
