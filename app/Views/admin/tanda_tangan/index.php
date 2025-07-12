@@ -105,7 +105,7 @@
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '/admin/tanda-tangan/hapus/' + id;
+                window.location.href = '/admin/tanda-tangan/delete/' + id;
             }
         });
     }

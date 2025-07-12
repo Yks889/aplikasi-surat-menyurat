@@ -349,6 +349,8 @@
   </footer>
 
 </div>
+<!-- Tambahkan ini jika belum -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
