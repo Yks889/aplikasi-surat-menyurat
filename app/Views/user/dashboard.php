@@ -1,81 +1,78 @@
 <?= $this->extend('layouts/user') ?>
-
 <?= $this->section('content') ?>
-
-<?php if (session()->getFlashdata('message')): ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <?= session()->getFlashdata('message') ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+<div class="container-fluid py-4">
+    <!-- Notification Alert -->
+    <?php if (session()->getFlashdata('message')) : ?>
+    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <div><?= session()->getFlashdata('message') ?></div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-<?php endif; ?>
+    <?php endif; ?>
 
-<div class="row g-3 mb-4">
-    <div class="col-lg-4 col-md-6">
-        <div class="card bg-primary text-white shadow-sm border-0 h-100">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="card-title mb-0"><?= $totalSuratMasuk ?></h3>
-                    <div class="icon-circle bg-white bg-opacity-25">
-                        <i class="bi bi-envelope fs-4"></i>
+    <!-- Dashboard Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <div class="mb-3 mb-md-0">
+            <h2 class="h4 mb-1"><i class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard Overview</h2>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h3 class="mb-2"><?= $totalSuratMasuk ?></h3>
+                            <p class="text-muted mb-3">Surat Masuk</p>
+                            <a href="/user/history-surat-masuk" class="btn btn-sm btn-outline-primary">
+                                Lihat Semua <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 p-3 rounded">
+                            <i class="bi bi-envelope fs-3 text-primary"></i>
+                        </div>
                     </div>
                 </div>
-                <p class="card-text mb-3">Surat Masuk</p>
-                <a href="/user/history-surat-masuk" class="mt-auto btn btn-sm btn-light align-self-start">
-                    Lihat Semua <i class="bi bi-arrow-right ms-1"></i>
-                </a>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Aktivitas -->
-<div class="row g-4">
-    <div class="col-md-12">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">Aktivitas Terakhir</h5>
-            </div>
-            <div class="card-body">
-                <?php if (empty($recentActivities)): ?>
-                    <p class="text-muted">Belum ada aktivitas.</p>
-                <?php else: ?>
-                    <div class="list-group">
-                        <?php foreach ($recentActivities as $activity): ?>
-                        <div class="list-group-item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1"><?= esc($activity['title']) ?></h6>
-                                <small><?= date('d/m/Y H:i', strtotime($activity['created_at'])) ?></small>
-                            </div>
-                            <p class="mb-1"><?= esc($activity['description']) ?></p>
-                            <small class="text-muted"><?= esc($activity['type']) ?></small>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
+    <!-- Recent Activities Section -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom">
+            <h5 class="card-title mb-0"><i class="bi bi-activity me-2"></i>Aktivitas Terakhir</h5>
+        </div>
+        <div class="card-body">
+            <?php if (empty($recentActivities)): ?>
+                <p class="text-muted">Belum ada aktivitas.</p>
+            <?php else: ?>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Aktivitas</th>
+                                <th>Deskripsi</th>
+                                <th>Jenis</th>
+                                <th>Waktu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($recentActivities as $activity): ?>
+                            <tr>
+                                <td><?= esc($activity['title']) ?></td>
+                                <td><?= esc($activity['description']) ?></td>
+                                <td><?= esc($activity['type']) ?></td>
+                                <td><?= date('d/m/Y H:i', strtotime($activity['created_at'])) ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
-
-<style>
-.icon-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-}
-.list-group-item:hover {
-    background-color: #f8f9fa;
-}
-</style>
 
 <?= $this->endSection() ?>
