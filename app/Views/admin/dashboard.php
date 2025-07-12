@@ -113,7 +113,6 @@
                                     <th>Nomor Surat</th>
                                     <th>Pengirim</th>
                                     <th>Tanggal</th>
-                                    <th class="text-end">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
