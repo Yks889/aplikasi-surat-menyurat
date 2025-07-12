@@ -39,9 +39,14 @@
         }
         
         .login-header img {
-            height: 80px;
+            height: auto;
+            max-height: 150px;
+            max-width: 100%;
+            width: auto;
             margin-bottom: 1rem;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .login-header h1 {
@@ -216,13 +221,22 @@
                 font-size: 1.5rem;
             }
         }
+
+        .brand-name {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee, #3f37c9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            font-weight: 800;
+        }
     </style>
 </head>
 <body>
 <div class="login-container animate__animated animate__fadeIn">
     <div class="login-header">
-        <img src="https://cdn-icons-png.flaticon.com/512/3713/3713996.png" alt="Document Archive Icon">
-        <h1>Sistem Arsip Surat</h1>
+        <img src="/uploads/logo.png" alt="Logo Sistem Arsip Surat" class="logo-img">
+        <h1>Arsip Surat <span class="brand-name">Gonet</span></h1>
         <p>Masuk untuk mengakses sistem arsip surat digital</p>
     </div>
 
@@ -289,8 +303,9 @@
                     <label class="form-check-label" for="rememberMe">
                         Ingat saya
                     </label>
-                    <a href="/register" class ="btn btn-link float-end"><i class="bi bi-person-plus-fill"></i>Daftar Sekarang</a>
+                    <a href="/register" class="btn btn-link float-end"><i class="bi bi-person-plus-fill"></i>Daftar Sekarang</a>
                 </div>
+            </form>
         </div>
     </div>
     
