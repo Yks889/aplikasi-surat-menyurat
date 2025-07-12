@@ -6,12 +6,31 @@
         <h3 class="card-title">Tambah User Biasa</h3>
     </div>
     <div class="card-body">
+
+        <!-- FLASH MESSAGE -->
+        <?php if (session()->getFlashdata('message')) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= session()->getFlashdata('message') ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
+        <?php if (session()->getFlashdata('error')) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= session()->getFlashdata('error') ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
+        <!-- VALIDASI -->
+        <?php $validation = session('validation') ?? \Config\Services::validation(); ?>
+
+
         <form action="/operator/users/simpan" method="post">
             <?= csrf_field() ?>
-            
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="username">Username</label>
                         <input type="text" class="form-control <?= ($validation->hasError('username')) ? 'is-invalid' : '' ?>" 
                             id="username" name="username" value="<?= old('username') ?>">
@@ -19,8 +38,7 @@
                             <?= $validation->getError('username') ?>
                         </div>
                     </div>
-                    
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="password">Password</label>
                         <input type="password" class="form-control <?= ($validation->hasError('password')) ? 'is-invalid' : '' ?>" 
                             id="password" name="password">
@@ -29,9 +47,9 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-6">
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="full_name">Nama Lengkap</label>
                         <input type="text" class="form-control <?= ($validation->hasError('full_name')) ? 'is-invalid' : '' ?>" 
                             id="full_name" name="full_name" value="<?= old('full_name') ?>">
@@ -39,8 +57,7 @@
                             <?= $validation->getError('full_name') ?>
                         </div>
                     </div>
-                    
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="email">Email</label>
                         <input type="email" class="form-control <?= ($validation->hasError('email')) ? 'is-invalid' : '' ?>" 
                             id="email" name="email" value="<?= old('email') ?>">
@@ -50,9 +67,9 @@
                     </div>
                 </div>
             </div>
-            
+
             <input type="hidden" name="role" value="user">
-            
+
             <div class="form-group mt-3">
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-save"></i> Simpan
