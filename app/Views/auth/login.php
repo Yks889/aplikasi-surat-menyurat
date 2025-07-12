@@ -237,7 +237,7 @@
     <div class="login-header">
         <img src="/uploads/logo.png" alt="Logo Sistem Arsip Surat" class="logo-img">
         <h1>Arsip Surat <span class="brand-name">Gonet</span></h1>
-        <p>Masuk untuk mengakses sistem arsip surat digital</p>
+
     </div>
 
     <div class="card login-card">
