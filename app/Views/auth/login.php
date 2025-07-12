@@ -223,7 +223,6 @@
     <div class="login-header">
         <img src="https://cdn-icons-png.flaticon.com/512/3713/3713996.png" alt="Document Archive Icon">
         <h1>Sistem Arsip Surat</h1>
-        <p>Masuk untuk mengakses sistem arsip surat digital</p>
     </div>
 
     <div class="card login-card">

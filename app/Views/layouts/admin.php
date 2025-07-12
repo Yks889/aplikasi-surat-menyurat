@@ -298,7 +298,7 @@
       </button>
       <a href="/admin/dashboard" class="navbar-brand">
         <i class="bi bi-archive"></i>
-        <span>Sistem Arsip Surat</span>
+        <span>Arsip Surat Gonet</span>
       </a>
 
       <ul class="navbar-nav ms-auto d-flex align-items-center">
