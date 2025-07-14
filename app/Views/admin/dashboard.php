@@ -142,7 +142,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>No</th>
-                                    <th>Kode Surat</th>
+                                    <th>Nomor Surat</th>
                                     <th>Tujuan</th>
                                     <th>Tanggal</th>
                                 </tr>
@@ -151,7 +151,7 @@
                                 <?php foreach ($recentSuratKeluar as $index => $surat): ?>
                                 <tr>
                                     <td><?= $index + 1 ?></td>
-                                    <td><?= esc($surat['kode_surat']) ?></td>
+                                    <td><?= esc($surat['nomor_surat']) ?></td>
                                     <td><?= esc($surat['untuk']) ?></td>
                                     <td><?= date('d/m/Y', strtotime($surat['tanggal_surat'])) ?></td>
                                    
