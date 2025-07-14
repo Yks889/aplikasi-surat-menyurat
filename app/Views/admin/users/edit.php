@@ -37,7 +37,7 @@
                             <div class="invalid-feedback">
                                 <?= $validation->getError('password') ?>
                             </div>
-                            <small class="text-muted">Minimal 8 karakter</small>
+                            <small class="text-muted">Minimal 6 karakter</small>
                         </div>
                     </div>
                     

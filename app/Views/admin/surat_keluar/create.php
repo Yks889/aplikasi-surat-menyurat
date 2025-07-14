@@ -2,21 +2,6 @@
 <?= $this->section('content') ?>
 
 <div class="container-fluid py-4">
-    <!-- Notification Alert -->
-    <?php if (session('errors') && is_array(session('errors'))): ?>
-    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-4">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        <div>
-            <ul class="mb-0">
-                <?php foreach (session('errors') as $error): ?>
-                    <li><?= esc($error) ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <?php endif; ?>
-
     <!-- Page Header -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
         <div class="mb-3 mb-md-0">
@@ -41,7 +26,7 @@
                         <div class="mb-3">
                             <label for="perusahaan_id" class="form-label">Perusahaan</label>
                             <select class="form-select <?= $validation->hasError('perusahaan_id') ? 'is-invalid' : '' ?>"
-                                    id="perusahaan_id" name="perusahaan_id" onchange="generateNomorSurat()">
+                                    id="perusahaan_id" name="perusahaan_id" onchange="generateNomorSurat()" required>
                                 <option value="">-- Pilih Perusahaan --</option>
                                 <?php foreach ($perusahaan as $pt): ?>
                                     <option 
@@ -60,7 +45,7 @@
                             <label for="tanggal_surat" class="form-label">Tanggal Surat</label>
                             <input type="date" class="form-control <?= $validation->hasError('tanggal_surat') ? 'is-invalid' : '' ?>"
                                    id="tanggal_surat" name="tanggal_surat"
-                                   value="<?= old('tanggal_surat', date('Y-m-d')) ?>" onchange="generateNomorSurat()">
+                                   value="<?= old('tanggal_surat', date('Y-m-d')) ?>" onchange="generateNomorSurat()" required>
                             <div class="invalid-feedback"><?= $validation->getError('tanggal_surat') ?></div>
                         </div>
                     </div>
@@ -70,7 +55,7 @@
                         <div class="mb-3">
                             <label for="jenis_surat" class="form-label">Jenis Surat</label>
                             <select class="form-select <?= $validation->hasError('jenis_surat') ? 'is-invalid' : '' ?>"
-                                    id="jenis_surat" name="jenis_surat" onchange="generateNomorSurat()">
+                                    id="jenis_surat" name="jenis_surat" onchange="generateNomorSurat()" required>
                                 <option value="">-- Pilih Jenis Surat --</option>
                                 <?php foreach ($jenis_surat as $pt): ?>
                                     <option 
@@ -101,7 +86,7 @@
                         <div class="mb-3">
                             <label for="untuk" class="form-label">Kepada Siapa</label>
                             <input type="text" class="form-control <?= $validation->hasError('untuk') ? 'is-invalid' : '' ?>"
-                                   id="untuk" name="untuk" value="<?= old('untuk') ?>">
+                                   id="untuk" name="untuk" value="<?= old('untuk') ?>" required>
                             <div class="invalid-feedback"><?= $validation->getError('untuk') ?></div>
                         </div>
                     </div>
@@ -111,7 +96,7 @@
                         <div class="mb-3">
                             <label for="penandatangan_id" class="form-label">Penandatangan</label>
                             <select class="form-select <?= $validation->hasError('penandatangan_id') ? 'is-invalid' : '' ?>"
-                                    id="penandatangan_id" name="penandatangan_id">
+                                    id="penandatangan_id" name="penandatangan_id" required>
                                 <option value="">-- Pilih Penandatangan --</option>
                                 <?php foreach ($penandatangan as $admin): ?>
                                     <option value="<?= $admin['id'] ?>" <?= old('penandatangan_id') == $admin['id'] ? 'selected' : '' ?>>
@@ -128,7 +113,7 @@
                 <div class="mb-3">
                     <label for="perihal" class="form-label">Perihal</label>
                     <input type="text" class="form-control <?= $validation->hasError('perihal') ? 'is-invalid' : '' ?>"
-                           id="perihal" name="perihal" value="<?= old('perihal') ?>">
+                           id="perihal" name="perihal" value="<?= old('perihal') ?>" required>
                     <div class="invalid-feedback"><?= $validation->getError('perihal') ?></div>
                 </div>
 
@@ -136,7 +121,7 @@
                 <div class="mb-4">
                     <label for="file_surat" class="form-label">File Surat</label>
                     <input type="file" class="form-control <?= $validation->hasError('file_surat') ? 'is-invalid' : '' ?>"
-                           id="file_surat" name="file_surat">
+                           id="file_surat" name="file_surat" required="">
                     <div class="invalid-feedback"><?= $validation->getError('file_surat') ?></div>
                     <small class="text-muted">Format: PDF, DOC, JPG, PNG. Maksimal 5MB.</small>
                 </div>
