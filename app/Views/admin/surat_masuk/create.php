@@ -26,7 +26,7 @@
                         <div class="mb-3">
                             <label for="nomor_surat" class="form-label">Nomor Surat</label>
                             <input type="text" class="form-control <?= $validation->hasError('nomor_surat') ? 'is-invalid' : '' ?>"
-                                id="nomor_surat" name="nomor_surat" value="<?= old('nomor_surat') ?>">
+                                id="nomor_surat" name="nomor_surat" value="<?= old('nomor_surat') ?>" required>
                             <div class="invalid-feedback"><?= $validation->getError('nomor_surat') ?></div>
                         </div>
 
@@ -34,7 +34,7 @@
                         <div class="mb-3">
                             <label for="perusahaan_id" class="form-label">Perusahaan</label>
                             <select class="form-select <?= $validation->hasError('perusahaan_id') ? 'is-invalid' : '' ?>"
-                                id="perusahaan_id" name="perusahaan_id">
+                                id="perusahaan_id" name="perusahaan_id" required>
                                 <option value="">-- Pilih Perusahaan --</option>
                                 <?php foreach ($perusahaan as $pt): ?>
                                     <option value="<?= $pt['id'] ?>" <?= old('perusahaan_id') == $pt['id'] ? 'selected' : '' ?>>
@@ -49,7 +49,7 @@
                         <div class="mb-3">
                             <label for="dari" class="form-label">Dari</label>
                             <input type="text" class="form-control <?= $validation->hasError('dari') ? 'is-invalid' : '' ?>"
-                                id="dari" name="dari" value="<?= old('dari') ?>">
+                                id="dari" name="dari" value="<?= old('dari') ?>"required>
                             <div class="invalid-feedback"><?= $validation->getError('dari') ?></div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                         <div class="mb-3">
                             <label for="tgl_surat" class="form-label">Tanggal Surat</label>
                             <input type="date" class="form-control <?= $validation->hasError('tgl_surat') ? 'is-invalid' : '' ?>"
-                                id="tgl_surat" name="tgl_surat" value="<?= old('tgl_surat') ?>">
+                                id="tgl_surat" name="tgl_surat" value="<?= old('tgl_surat') ?>"required>
                             <div class="invalid-feedback"><?= $validation->getError('tgl_surat') ?></div>
                         </div>
 
@@ -67,7 +67,7 @@
                         <div class="mb-3">
                             <label for="perihal" class="form-label">Perihal</label>
                             <textarea class="form-control <?= $validation->hasError('perihal') ? 'is-invalid' : '' ?>"
-                                id="perihal" name="perihal" rows="2"><?= old('perihal') ?></textarea>
+                                id="perihal" name="perihal" rows="2" required><?= old('perihal') ?></textarea>
                             <div class="invalid-feedback"><?= $validation->getError('perihal') ?></div>
                         </div>
 
@@ -75,7 +75,7 @@
                         <div class="mb-3">
                             <label for="file_surat" class="form-label">File Surat</label>
                             <input type="file" class="form-control <?= $validation->hasError('file_surat') ? 'is-invalid' : '' ?>"
-                                id="file_surat" name="file_surat">
+                                id="file_surat" name="file_surat" required>
                             <div class="invalid-feedback"><?= $validation->getError('file_surat') ?></div>
                             <small class="text-muted">Format: PDF, DOC, JPG, PNG. Maksimal 5MB.</small>
                         </div>
