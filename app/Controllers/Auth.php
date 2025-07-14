@@ -51,7 +51,8 @@ class Auth extends Controller
                     'username' => $user['username'],
                     'full_name' => $user['full_name'],
                     'role' => $user['role'],
-                    'email' => $user['email']
+                    'email' => $user['email'],
+                    'photo' => $user['photo']
                 ]
             ]);
 

@@ -26,6 +26,13 @@ $routes->match(['GET', 'POST'], '/register', 'Auth::register');
 // ============ ADMIN ROUTES ============
 $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('dashboard', 'Admin\Dashboard::index');
+// profile
+    $routes->get('profile', 'admin\ProfileController::index');
+    $routes->post('profile/update', 'admin\ProfileController::update');
+    $routes->post('profile/update-password', 'admin\ProfileController::updatePassword');
+    $routes->post('profile/update-photo', 'admin\ProfileController::updatePhoto');
+    $routes->post('profile/remove-photo', 'admin\ProfileController::removePhoto');
+    
 
     // Surat Masuk
     $routes->get('surat-masuk', 'Admin\SuratMasuk::index');

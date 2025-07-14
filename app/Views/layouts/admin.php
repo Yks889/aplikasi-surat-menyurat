@@ -268,15 +268,20 @@
 
   <!-- Sidebar -->
   <aside class="main-sidebar" id="sidebarMenu">
-    <div class="user-panel">
-      <div>
-        <i class="bi bi-person-circle"></i>
+    <!-- Ganti bagian user panel di sidebar dengan ini -->
+<div class="user-panel">
+    <div>
+        <?php if ($user['photo'] ?? false) : ?>
+            <img src="/uploads/profiles/<?= $user['photo'] ?>" class="rounded-circle" width="48" height="48" alt="Foto Profil">
+        <?php else : ?>
+            <i class="bi bi-person-circle"></i>
+        <?php endif; ?>
         <div>
-          <?= esc($user['full_name'] ?? 'Guest') ?>
-          <small><?= esc(ucfirst($user['role'] ?? '')) ?></small>
+            <?= esc($user['full_name'] ?? 'Guest') ?>
+            <small><?= esc(ucfirst($user['role'] ?? '')) ?></small>
         </div>
-      </div>
     </div>
+</div>
     <nav class="nav flex-column">
       <a href="/admin/dashboard" class="nav-link <?= current_url() == site_url('/admin/dashboard') ? 'active' : '' ?>">
         <i class="bi bi-speedometer2"></i>
@@ -332,7 +337,7 @@
             </div>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Profil</a></li>
+            <li><a class="dropdown-item" href="profile"><i class="bi bi-person me-2"></i> Profil</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
           </ul>
