@@ -242,6 +242,21 @@
         width: var(--sidebar-width);
       }
     }
+
+    /* Gonet Branding */
+    .brand-logo {
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .brand-name {
+      background: linear-gradient(135deg, #4cc9f0, #4361ee, #3f37c9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      font-weight: 800;
+    }
   </style>
 </head>
 <body>
@@ -263,17 +278,17 @@
         <i class="bi bi-speedometer2"></i>
         <span>Dashboard</span>
       </a>
-      <a href="/operator/surat-masuk" class="nav-link <?= strpos(current_url(), 'surat-masuk') !== false ? 'active' : '' ?>">
-        <i class="bi bi-envelope"></i>
-        <span>Surat Masuk</span>
+        <a href="/operator/users" class="nav-link <?= strpos(current_url(), 'users') !== false ? 'active' : '' ?>">
+        <i class="bi bi-people"></i>
+        <span>Kelola User Biasa</span>
       </a>
       <a href="/operator/surat-keluar" class="nav-link <?= strpos(current_url(), 'surat-keluar') !== false ? 'active' : '' ?>">
         <i class="bi bi-envelope-open"></i>
         <span>Surat Keluar</span>
       </a>
-      <a href="/operator/users" class="nav-link <?= strpos(current_url(), 'users') !== false ? 'active' : '' ?>">
-        <i class="bi bi-people"></i>
-        <span>Kelola User Biasa</span>
+      <a href="/operator/surat-masuk" class="nav-link <?= strpos(current_url(), 'surat-masuk') !== false ? 'active' : '' ?>">
+        <i class="bi bi-envelope"></i>
+        <span>Surat Masuk</span>
       </a>
     </nav>
   </aside>
@@ -281,12 +296,12 @@
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand-lg navbar-light">
     <div class="container-fluid px-4">
-      <button class="btn d-lg-none me-2" id="toggleSidebar">
+      <button class="btn d-lg-none me-2" id="sidebarToggle">
         <i class="bi bi-list"></i>
       </button>
-      <a href="/operator/dashboard" class="navbar-brand">
-        <i class="bi bi-archive"></i>
-        <span>Sistem Arsip Surat</span>
+      <a href="/admin/dashboard" class="navbar-brand">
+        <img src="/uploads/logo.png" alt="Logo Gonet" class="brand-logo">
+        <span>Arsip Surat <span class="brand-name">Gonet</span></span>
       </a>
 
       <ul class="navbar-nav ms-auto d-flex align-items-center">

@@ -242,6 +242,21 @@
         width: var(--sidebar-width);
       }
     }
+
+    /* Gonet Branding */
+    .brand-logo {
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .brand-name {
+      background: linear-gradient(135deg, #4cc9f0, #4361ee, #3f37c9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      font-weight: 800;
+    }
   </style>
 </head>
 <body>
@@ -297,8 +312,8 @@
         <i class="bi bi-list"></i>
       </button>
       <a href="/admin/dashboard" class="navbar-brand">
-        <i class="bi bi-archive"></i>
-        <span>Arsip Surat Gonet</span>
+        <img src="/uploads/logo.png" alt="Logo Gonet" class="brand-logo">
+        <span>Arsip Surat <span class="brand-name">Gonet</span></span>
       </a>
 
       <ul class="navbar-nav ms-auto d-flex align-items-center">
@@ -328,8 +343,6 @@
       <?= $this->renderSection('content') ?>
     </div>
   </div>
-
-
 
 </div>
 <!-- Tambahkan ini jika belum -->
