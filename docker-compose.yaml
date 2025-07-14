@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: ci4_app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: host.docker.internal
+      PMA_PORT: 3306
+
