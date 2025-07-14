@@ -8,7 +8,7 @@ class UserModel extends Model
 {
     protected $table = 'users';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['username', 'password', 'role', 'full_name', 'email'];
+    protected $allowedFields = ['username', 'password', 'role', 'full_name', 'email', 'photo'];
     protected $returnType = 'array';
 
     // Otomatis timestamp
@@ -16,10 +16,11 @@ class UserModel extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 
-    // Hash password sebelum insert/update
+    // Aktifkan event untuk hashing password
     protected $beforeInsert = ['hashPassword'];
     protected $beforeUpdate = ['hashPassword'];
 
+    // Hash password sebelum insert/update
     protected function hashPassword(array $data)
     {
         if (!empty($data['data']['password'])) {

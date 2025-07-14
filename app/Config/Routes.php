@@ -26,6 +26,13 @@ $routes->match(['GET', 'POST'], '/register', 'Auth::register');
 // ============ ADMIN ROUTES ============
 $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('dashboard', 'Admin\Dashboard::index');
+    // profile
+    $routes->get('profile', 'admin\ProfileController::index');
+    $routes->post('profile/update', 'admin\ProfileController::update');
+    $routes->post('profile/update-password', 'admin\ProfileController::updatePassword');
+    $routes->post('profile/update-photo', 'admin\ProfileController::updatePhoto');
+    $routes->post('profile/remove-photo', 'admin\ProfileController::removePhoto');
+    
 
     // Surat Masuk
     $routes->get('surat-masuk', 'Admin\SuratMasuk::index');
@@ -80,6 +87,13 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
 // ============ OPERATOR ROUTES ============
 $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
     $routes->get('dashboard', 'Operator\Dashboard::index');
+    $routes->get('dashboard', 'Admin\Dashboard::index');
+    // profile
+    $routes->get('profile', 'operator\ProfileController::index');
+    $routes->post('profile/update', 'operator\ProfileController::update');
+    $routes->post('profile/update-password', 'operator\ProfileController::updatePassword');
+    $routes->post('profile/update-photo', 'operator\ProfileController::updatePhoto');
+    $routes->post('profile/remove-photo', 'operator\ProfileController::removePhoto');
 
     // Surat Masuk
     $routes->get('surat-masuk', 'Operator\SuratMasuk::index');
@@ -111,6 +125,12 @@ $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
 // ============ USER ROUTES ============
 $routes->group('user', ['filter' => 'role:user'], function ($routes) {
     $routes->get('dashboard', 'User\Dashboard::index');
+        // profile
+    $routes->get('profile', 'User\ProfileController::index');
+    $routes->post('profile/update', 'User\ProfileController::update');
+    $routes->post('profile/update-password', 'User\ProfileController::updatePassword');
+    $routes->post('profile/update-photo', 'User\ProfileController::updatePhoto');
+    $routes->post('profile/remove-photo', 'User\ProfileController::removePhoto');
 
     // Kirim Surat Masuk
     $routes->get('kirim-surat', 'User\SuratMasuk::create');
