@@ -22,12 +22,13 @@
       --secondary: #6c757d;
       --sidebar-width: 280px;
       --navbar-height: 70px;
-      --sidebar-bg: #1e293b;
+      --sidebar-bg: #0f172a;
       --sidebar-text: #e2e8f0;
       --sidebar-active: rgba(67, 97, 238, 0.2);
       --content-bg: #f8fafc;
       --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --sidebar-hover: rgba(100, 116, 139, 0.2);
     }
 
     body {
@@ -36,6 +37,7 @@
       color: #334155;
       min-height: 100vh;
       padding-left: var(--sidebar-width);
+      transition: var(--transition);
     }
 
     .wrapper {
@@ -48,13 +50,15 @@
     .main-header {
       height: var(--navbar-height);
       background: white;
-      box-shadow: var(--card-shadow);
+      box-shadow: 0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04);
       z-index: 1040;
-      border-bottom: 1px solid #e2e8f0;
       position: fixed;
       top: 0;
       left: var(--sidebar-width);
       right: 0;
+      transition: var(--transition);
+      backdrop-filter: blur(8px);
+      background-color: rgba(255, 255, 255, 0.8);
     }
 
     .navbar-brand {
@@ -78,13 +82,24 @@
       top: 0;
       left: 0;
       bottom: 0;
-      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
       color: var(--sidebar-text);
       overflow-y: auto;
       padding: 1.5rem 0;
       z-index: 1050;
       transition: var(--transition);
-      border-right: none;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .main-sidebar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(180deg, rgba(67, 97, 238, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+      pointer-events: none;
     }
 
     .main-sidebar .nav-link {
@@ -97,17 +112,23 @@
       gap: 12px;
       font-weight: 500;
       transition: var(--transition);
+      position: relative;
+      opacity: 0.9;
     }
 
     .main-sidebar .nav-link:hover {
-      background: rgba(67, 97, 238, 0.15);
+      background: var(--sidebar-hover);
       color: white;
+      opacity: 1;
+      transform: translateX(5px);
     }
 
     .main-sidebar .nav-link.active {
       background: linear-gradient(90deg, rgba(67, 97, 238, 0.3) 0%, rgba(67, 97, 238, 0.1) 100%);
       color: white;
       border-left: 3px solid var(--primary);
+      opacity: 1;
+      font-weight: 600;
     }
 
     .main-sidebar .nav-link i {
@@ -115,13 +136,19 @@
       width: 24px;
       display: inline-flex;
       justify-content: center;
+      transition: var(--transition);
+    }
+
+    .main-sidebar .nav-link.active i {
+      color: var(--primary-light);
     }
 
     /* User Panel */
     .user-panel {
       padding: 1.5rem;
       margin-bottom: 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      z-index: 1;
     }
 
     .user-panel > div {
@@ -131,15 +158,16 @@
     }
 
     .user-panel i {
-      font-size: 2rem;
+      font-size: 1.5rem;
       color: var(--primary-light);
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       width: 48px;
       height: 48px;
-      border-radius: 50%;
+      border-radius: 12px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 4px 6px rgba(67, 97, 238, 0.3);
     }
 
     .user-panel small {
@@ -147,6 +175,18 @@
       font-size: 0.8rem;
       display: block;
       margin-top: 4px;
+    }
+
+    .user-info {
+      overflow: hidden;
+    }
+
+    .user-name {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-weight: 600;
+      color: white;
     }
 
     /* Content */
@@ -194,6 +234,7 @@
     #sidebarToggle:hover {
       background-color: var(--primary);
       color: white;
+      transform: rotate(90deg);
     }
 
     /* Dropdown Menu */
@@ -202,6 +243,8 @@
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       border-radius: 8px;
       padding: 0.5rem;
+      margin-top: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .dropdown-item {
@@ -218,6 +261,25 @@
       margin-right: 8px;
     }
 
+    .dropdown-item:hover {
+      background-color: var(--primary-light);
+      color: var(--primary);
+    }
+
+    /* Navbar avatar */
+    .nav-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
     /* Responsive */
     @media (max-width: 992px) {
       body {
@@ -230,16 +292,11 @@
 
       .main-sidebar.show {
         transform: translateX(0);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
       }
 
       .main-header {
         left: 0;
-      }
-    }
-
-    @media (min-width: 993px) {
-      .main-sidebar:hover {
-        width: var(--sidebar-width);
       }
     }
 
@@ -259,8 +316,16 @@
     }
 
     .arsip-surat {
-  color: black;
-}
+      color: #1e293b;
+      font-weight: 600;
+    }
+
+    /* Sidebar divider */
+    .sidebar-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 1rem 1.5rem;
+    }
   </style>
 </head>
 <body>
@@ -270,13 +335,20 @@
   <aside class="main-sidebar" id="sidebarMenu">
     <div class="user-panel">
       <div>
-        <i class="bi bi-person-circle"></i>
-        <div>
-          <?= esc($user['full_name'] ?? 'Guest') ?>
+        <?php if ($user['photo'] ?? false) : ?>
+          <img src="/uploads/profiles/<?= $user['photo'] ?>" class="rounded-circle" width="48" height="48" alt="Foto Profil">
+        <?php else : ?>
+          <i class="bi bi-person-circle"></i>
+        <?php endif; ?>
+        <div class="user-info">
+          <div class="user-name"><?= esc($user['full_name'] ?? 'Guest') ?></div>
           <small><?= esc(ucfirst($user['role'] ?? '')) ?></small>
         </div>
       </div>
     </div>
+
+    <div class="sidebar-divider"></div>
+
     <nav class="nav flex-column">
       <a href="/user/dashboard" class="nav-link <?= current_url() == site_url('/user/dashboard') ? 'active' : '' ?>">
         <i class="bi bi-speedometer2"></i>
@@ -299,29 +371,39 @@
       <button class="btn d-lg-none me-2" id="sidebarToggle">
         <i class="bi bi-list"></i>
       </button>
-      <a href="/admin/dashboard" class="navbar-brand">
+      <a href="/user/dashboard" class="navbar-brand">
         <img src="/uploads/logo.png" alt="Logo Gonet" class="brand-logo">
         <span class="arsip-surat">Arsip Surat <span class="brand-name">Gonet</span></span>
       </a>
 
-      <ul class="navbar-nav ms-auto d-flex align-items-center">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-            <div class="d-flex align-items-center">
-              <i class="bi bi-person-circle me-2" style="font-size: 1.5rem;"></i>
-              <div class="d-none d-md-block">
-                <div><?= esc($user['full_name'] ?? 'Guest') ?></div>
-                <small class="text-muted" style="font-size: 0.75rem;"><?= esc(ucfirst($user['role'] ?? '')) ?></small>
-              </div>
+      <div class="d-flex align-items-center ms-auto">
+        <div class="dropdown">
+          <a class="dropdown-toggle d-flex align-items-center text-decoration-none" href="#" data-bs-toggle="dropdown">
+            <div class="nav-avatar me-2">
+              <?= substr(esc($user['full_name'] ?? 'G'), 0, 1) ?>
+            </div>
+            <div class="d-none d-md-block">
+              <div class="fw-semibold"><?= esc($user['full_name'] ?? 'Guest') ?></div>
+              <small class="text-muted" style="font-size: 0.75rem;"><?= esc(ucfirst($user['role'] ?? '')) ?></small>
             </div>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Profil</a></li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="profile">
+                <i class="bi bi-person me-2"></i> 
+                <span>Profil Saya</span>
+              </a>
+            </li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/logout">
+                <i class="bi bi-box-arrow-right me-2"></i> 
+                <span>Logout</span>
+              </a>
+            </li>
           </ul>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -332,12 +414,12 @@
     </div>
   </div>
 
-
 </div>
 
 <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   // Toggle sidebar on small screen
   document.getElementById('sidebarToggle').addEventListener('click', function () {
