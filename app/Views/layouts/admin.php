@@ -257,6 +257,10 @@
       text-fill-color: transparent;
       font-weight: 800;
     }
+
+    .arsip-surat {
+  color: black;
+}
   </style>
 </head>
 <body>
@@ -313,7 +317,7 @@
       </button>
       <a href="/admin/dashboard" class="navbar-brand">
         <img src="/uploads/logo.png" alt="Logo Gonet" class="brand-logo">
-        <span>Arsip Surat <span class="brand-name">Gonet</span></span>
+        <span class="arsip-surat">Arsip Surat <span class="brand-name">Gonet</span></span>
       </a>
 
       <ul class="navbar-nav ms-auto d-flex align-items-center">
