@@ -7,7 +7,7 @@
             <h2 class="h4 mb-1"><i class="bi bi-envelope-plus me-2 text-primary"></i>Tambah Surat Keluar</h2>
         </div>
         <div>
-            <a href="/admin/surat-masuk" class="btn btn-outline-secondary">
+            <a href="/operator/surat-masuk" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar
             </a>
         </div>
