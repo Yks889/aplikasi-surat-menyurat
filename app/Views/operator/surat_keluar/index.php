@@ -19,7 +19,7 @@
             <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
                 <i class="bi bi-funnel me-1"></i> Filter
             </button>
-            <a href="/admin/surat-keluar/tambah" class="btn btn-primary">
+            <a href="/operator/surat-keluar/tambah" class="btn btn-primary">
                 <i class="bi bi-plus-circle me-1"></i> Tambah
             </a>
         </div>

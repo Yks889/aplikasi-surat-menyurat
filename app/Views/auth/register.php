@@ -202,10 +202,11 @@
     </style>
 </head>
 <body>
+ 
 <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
     <div class="register-container w-100">
         <div class="register-header">
-            <img src="https://cdn-icons-png.flaticon.com/512/3713/3713996.png" alt="Document Archive Icon">
+        <img src="/uploads/logo.png" alt="Logo Sistem Arsip Surat" class="logo-img">
             <h2>Buat Akun Baru</h2>
             <p>Daftarkan diri Anda untuk mengakses Sistem Arsip Surat</p>
         </div>
