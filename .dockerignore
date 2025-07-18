@@ -1,0 +1,8 @@
+writable/cache/*
+writable/logs/*
+writable/session/*
+node_modules
+vendor
+.env
+.git
+.gitignore
