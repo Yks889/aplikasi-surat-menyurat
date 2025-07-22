@@ -13,7 +13,7 @@
     <!-- Page Header -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
         <div class="mb-3 mb-md-0">
-            <h2 class="h4 mb-1"><i class="bi bi-clock-history me-2 text-primary"></i>History Surat Masuk</h2>
+            <h2 class="h4 mb-1"><i class="bi bi-envelope me-2 text-primary"></i>History Surat Masuk</h2>
         </div>
         <div>
             <a href="/user/kirim-surat" class="btn btn-primary">
