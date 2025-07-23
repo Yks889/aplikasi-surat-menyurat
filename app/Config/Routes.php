@@ -27,11 +27,11 @@ $routes->match(['GET', 'POST'], '/register', 'Auth::register');
 $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('dashboard', 'Admin\Dashboard::index');
     // profile
-    $routes->get('profile', 'admin\ProfileController::index');
-    $routes->post('profile/update', 'admin\ProfileController::update');
-    $routes->post('profile/update-password', 'admin\ProfileController::updatePassword');
-    $routes->post('profile/update-photo', 'admin\ProfileController::updatePhoto');
-    $routes->post('profile/remove-photo', 'admin\ProfileController::removePhoto');
+    $routes->get('profile', 'Admin\ProfileController::index');
+    $routes->post('profile/update', 'Admin\ProfileController::update');
+    $routes->post('profile/update-password', 'Admin\ProfileController::updatePassword');
+    $routes->post('profile/update-photo', 'Admin\ProfileController::updatePhoto');
+    $routes->post('profile/remove-photo', 'Admin\ProfileController::removePhoto');
     
 
     // Surat Masuk
@@ -93,11 +93,11 @@ $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
     $routes->get('dashboard', 'Operator\Dashboard::index');
     $routes->get('dashboard', 'Admin\Dashboard::index');
     // profile
-    $routes->get('profile', 'operator\ProfileController::index');
-    $routes->post('profile/update', 'operator\ProfileController::update');
-    $routes->post('profile/update-password', 'operator\ProfileController::updatePassword');
-    $routes->post('profile/update-photo', 'operator\ProfileController::updatePhoto');
-    $routes->post('profile/remove-photo', 'operator\ProfileController::removePhoto');
+    $routes->get('profile', 'Operator\ProfileController::index');
+    $routes->post('profile/update', 'Operator\ProfileController::update');
+    $routes->post('profile/update-password', 'Operator\ProfileController::updatePassword');
+    $routes->post('profile/update-photo', 'Oerator\ProfileController::updatePhoto');
+    $routes->post('profile/remove-photo', 'Operator\ProfileController::removePhoto');
 
     // Surat Masuk
     $routes->get('surat-masuk', 'Operator\SuratMasuk::index');
@@ -107,8 +107,8 @@ $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
     $routes->post('surat-masuk/update/(:num)', 'Operator\SuratMasuk::update/$1');
     $routes->get('surat-masuk/delete/(:num)', 'Operator\SuratMasuk::delete/$1');
     $routes->get('surat-masuk/reset-filter', 'Operator\SuratMasuk::resetFilter');
-
-    $routes->get('disposisi', 'User\Disposisi::index');
+    
+    $routes->get('disposisi', 'Operator\Disposisi::index');
 
     // Surat Keluar
     $routes->get('surat-keluar', 'Operator\SuratKeluar::index');

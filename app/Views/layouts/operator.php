@@ -1,4 +1,5 @@
 <?php $user = session()->get('user'); ?>
+<?php if ($user && $user['role'] === 'operator') : ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -437,3 +438,7 @@
 <?= $this->renderSection('scripts') ?>
 </body>
 </html>
+<?php else : ?>
+  <h1 style="text-align: center; margin-top: 50px;">Akses Ditolak</h1>
+  <p style="text-align: center;">Anda tidak memiliki izin untuk mengakses halaman ini.</p>
+<?php endif; ?>

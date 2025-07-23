@@ -24,20 +24,20 @@
                 <table class="table table-hover mb-0" id="disposisiTable">
                     <thead class="table-light">
                         <tr>
-                            <th style="width: 50px;">No</th>
+                            <th class="text-center">No</th>
                             <th>Nomor Surat</th>
                             <th>Dari</th>
                             <th>Kepada</th>
                             <th>Catatan</th>
                             <th>Status</th>
                             <th>Tanggal</th>
-                            <th>Aksi</th>
+                            <th class="text-end">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($disposisi as $index => $d): ?>
                         <tr>
-                            <td><?= $index + 1 ?></td>
+                            <td class="text-center"><?= $index + 1 ?></td>
                             <td><?= esc($d['nomor_surat']) ?></td>
                             <td><?= esc($d['dari_nama']) ?></td>
                             <td><?= esc($d['ke_nama']) ?></td>
@@ -48,16 +48,15 @@
                                 </span>
                             </td>
                             <td><?= date('d/m/Y H:i', strtotime($d['created_at'])) ?></td>
-                            <td>
-                                <a href="<?= base_url('suratmasuk/edit_disposisi/' . $d['id']) ?>" class="btn btn-sm btn-warning">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <form action="<?= base_url('suratmasuk/delete_disposisi/' . $d['id']) ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
-                                    <?= csrf_field() ?>
-                                    <button type="submit" class="btn btn-sm btn-danger">
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="<?= base_url('suratmasuk/edit_disposisi/' . $d['id']) ?>" class="btn btn-sm btn-outline-warning" title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <button onclick="confirmDelete(<?= $d['id'] ?>)" class="btn btn-sm btn-outline-danger" title="Hapus">
                                         <i class="bi bi-trash"></i>
                                     </button>
-                                </form>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach ?>
@@ -92,5 +91,22 @@
             }
         });
     });
+
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Hapus Disposisi?',
+            text: "Data disposisi akan dihapus secara permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/suratmasuk/delete_disposisi/' + id;
+            }
+        });
+    }
 </script>
 <?= $this->endSection() ?>
