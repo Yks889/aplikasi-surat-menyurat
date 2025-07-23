@@ -42,6 +42,8 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->post('surat-masuk/update/(:num)', 'Admin\SuratMasuk::update/$1');
     $routes->get('surat-masuk/delete/(:num)', 'Admin\SuratMasuk::delete/$1');
     $routes->get('surat-masuk/reset-filter', 'Admin\SuratMasuk::resetFilter');
+    $routes->post('surat-masuk/(:num)/disposisi', 'Admin\SuratMasuk::kirimDisposisi/$1');
+
 
     // Surat Keluar
     $routes->get('surat-keluar', 'Admin\SuratKeluar::index');
@@ -61,6 +63,8 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->post('users/update/(:num)', 'Admin\UserManagement::update/$1');
     $routes->get('users/hapus/(:num)', 'Admin\UserManagement::delete/$1');
     $routes->get('users/reset-filter', 'Admin\UserManagement::resetFilter');
+
+    $routes->get('disposisi', 'Admin\Disposisi::index');
 
     // Tanda Tangan
     $routes->get('tanda-tangan', 'Admin\TandaTangan::index');
@@ -104,6 +108,8 @@ $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
     $routes->get('surat-masuk/delete/(:num)', 'Operator\SuratMasuk::delete/$1');
     $routes->get('surat-masuk/reset-filter', 'Operator\SuratMasuk::resetFilter');
 
+    $routes->get('disposisi', 'User\Disposisi::index');
+
     // Surat Keluar
     $routes->get('surat-keluar', 'Operator\SuratKeluar::index');
     $routes->get('surat-keluar/tambah', 'Operator\SuratKeluar::create');
@@ -131,6 +137,9 @@ $routes->group('user', ['filter' => 'role:user'], function ($routes) {
     $routes->post('profile/update-password', 'User\ProfileController::updatePassword');
     $routes->post('profile/update-photo', 'User\ProfileController::updatePhoto');
     $routes->post('profile/remove-photo', 'User\ProfileController::removePhoto');
+
+    $routes->get('disposisi', 'User\Disposisi::index');
+
 
     // Kirim Surat Masuk
     $routes->get('kirim-surat', 'User\SuratMasuk::create');
