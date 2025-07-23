@@ -362,6 +362,10 @@
         <i class="bi bi-envelope"></i>
         <span>Surat Masuk</span>
       </a>
+      <a href="/operator/disposisi" class="nav-link <?= strpos(current_url(), 'disposisi') !== false ? 'active' : '' ?>">
+        <i class="bi bi-share"></i>
+        <span>Histori Disposisi</span>
+      </a>
       <a href="/operator/surat-keluar" class="nav-link <?= strpos(current_url(), 'surat-keluar') !== false ? 'active' : '' ?>">
         <i class="bi bi-envelope-open"></i>
         <span>Surat Keluar</span>

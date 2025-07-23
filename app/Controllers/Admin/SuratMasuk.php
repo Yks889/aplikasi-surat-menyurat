@@ -5,21 +5,30 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use App\Models\SuratMasukModel;
 use App\Models\PerusahaanModel;
+use App\Models\DisposisiModel;
+use App\Models\DisposisiUserModel;
+use App\Models\UserModel;
+use CodeIgniter\I18n\Time;
+
 
 class SuratMasuk extends BaseController
 {
     protected $suratMasukModel;
     protected $perusahaanModel;
+    protected $disposisiModel;
+    protected $userModel;
 
     public function __construct()
     {
         $this->suratMasukModel = new SuratMasukModel();
         $this->perusahaanModel = new PerusahaanModel();
+        $this->disposisiModel = new DisposisiModel();
+        $this->userModel = new UserModel();
     }
 
     public function index()
     {
-        $bulan = $this->request->getGet('bulan') ?? date('n'); // 1-12
+        $bulan = $this->request->getGet('bulan') ?? date('n');
         $tahun = $this->request->getGet('tahun') ?? date('Y');
         $perusahaanId = $this->request->getGet('perusahaan_id');
 
@@ -41,7 +50,8 @@ class SuratMasuk extends BaseController
             'bulan' => $bulan,
             'tahun' => $tahun,
             'perusahaan_id' => $perusahaanId,
-            'user' => session()->get('user')
+            'user' => session()->get('user'),
+            'users' => $this->userModel->findAll(), // Untuk dropdown disposisi
         ];
 
         return view('admin/surat_masuk/index', $data);
@@ -179,4 +189,37 @@ class SuratMasuk extends BaseController
 
         return redirect()->to('/admin/surat-masuk')->with('message', 'Surat berhasil dihapus.');
     }
+
+public function kirimDisposisi($id)
+{
+    $disposisiModel = new DisposisiModel();
+    $disposisiUserModel = new DisposisiUserModel();
+
+    $dariUserId = session()->get('user')['id'];
+    $keUserIds = $this->request->getPost('ke_user_ids'); // array checkbox
+    $catatan = $this->request->getPost('catatan');
+
+    if (empty($keUserIds)) {
+        return redirect()->back()->with('error', 'Pilih minimal satu pengguna tujuan.');
+    }
+
+    // Simpan ke tabel disposisi utama
+    $disposisiId = $disposisiModel->insert([
+        'surat_id'     => $id,
+        'dari_user_id' => $dariUserId,
+        'catatan'      => $catatan,
+        'created_at'   => Time::now()
+    ]);
+
+    // Simpan ke tabel disposisi_user (multi)
+    foreach ($keUserIds as $keUserId) {
+        $disposisiUserModel->insert([
+            'disposisi_id' => $disposisiId,
+            'ke_user_id'   => $keUserId,
+            'status'       => 'belum dibaca'
+        ]);
+    }
+
+    return redirect()->back()->with('message', 'Disposisi berhasil dikirim.');
+}
 }

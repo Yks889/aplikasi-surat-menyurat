@@ -362,6 +362,11 @@
         <i class="bi bi-clock-history"></i>
         <span>History Surat Masuk</span>
       </a>
+      <a href="/user/disposisi" class="nav-link <?= strpos(current_url(), 'disposisi') !== false ? 'active' : '' ?>">
+        <i class="bi bi-inbox"></i>
+        <span>Disposisi Masuk</span>
+      </a>
+
     </nav>
   </aside>
 

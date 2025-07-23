@@ -22,7 +22,7 @@ class ProfileController extends BaseController
             'user' => $this->userModel->find($user['id'])
         ];
 
-        return view('User/profile', $data);
+        return view('user/profile', $data);
     }
 
     public function update()
@@ -80,7 +80,7 @@ class ProfileController extends BaseController
         // Update session
         session()->set('user', $this->userModel->find($userId));
 
-        return redirect()->to('/User/profile')->with('message', 'Profil berhasil diperbarui');
+        return redirect()->to('/user/profile')->with('message', 'Profil berhasil diperbarui');
     }
 
     public function updatePassword()
@@ -112,7 +112,7 @@ class ProfileController extends BaseController
     // Perbarui session
     session()->set('user', $this->userModel->find($userId));
 
-    return redirect()->to('/User/profile')->with('message', 'Password berhasil diperbarui');
+    return redirect()->to('/user/profile')->with('message', 'Password berhasil diperbarui');
 }
 
     public function updatePhoto()
