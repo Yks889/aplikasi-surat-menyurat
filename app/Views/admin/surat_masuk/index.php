@@ -60,13 +60,54 @@
                                     <a href="/uploads/surat_masuk/<?= esc($surat['file_surat']) ?>" target="_blank" class="btn btn-sm btn-outline-primary" title="Lihat File">
                                         <i class="bi bi-file-earmark-text"></i>
                                     </a>
-                                    <a href="/admin/surat-masuk/edit/<?= $surat['id'] ?>" class="btn btn-sm btn-outline-warning" title="Edit">
+                                    <a href="/Admin/surat-masuk/edit/<?= $surat['id'] ?>" class="btn btn-sm btn-outline-warning" title="Edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                     <button onclick="confirmDelete(<?= $surat['id'] ?>)" class="btn btn-sm btn-outline-danger" title="Hapus">
                                         <i class="bi bi-trash"></i>
                                     </button>
-                                </div>
+                                    <!-- Tombol trigger modal -->
+<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalDisposisi<?= $surat['id'] ?>">
+    Disposisi
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modalDisposisi<?= $surat['id'] ?>" tabindex="-1" aria-labelledby="modalDisposisiLabel<?= $surat['id'] ?>" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="<?= base_url('admin/surat-masuk/' . $surat['id'] . '/disposisi') ?>" method="post">
+      <?= csrf_field() ?>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDisposisiLabel<?= $surat['id'] ?>">Disposisi Surat</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="catatan" class="form-label">Catatan</label>
+            <textarea name="catatan" class="form-control" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="ke_user_ids" class="form-label">Kirim ke</label>
+            <div class="form-check">
+              <?php foreach ($users as $user): ?>
+              <div>
+                <input class="form-check-input" type="checkbox" name="ke_user_ids[]" value="<?= $user['id'] ?>" id="user<?= $user['id'] ?>">
+                <label class="form-check-label" for="user<?= $user['id'] ?>">
+                  <?= esc($user['full_name']) ?>
+                </label>
+              </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Kirim Disposisi</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
                             </td>
                         </tr>
                         <?php endforeach; ?>

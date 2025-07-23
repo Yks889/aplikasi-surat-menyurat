@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/User'); ?>
+<?= $this->extend('layouts/user'); ?>
 
 <?= $this->section('content'); ?>
 <?php $validation = session('validation') ?? \Config\Services::validation(); ?>
