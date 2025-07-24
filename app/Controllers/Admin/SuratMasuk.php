@@ -208,7 +208,7 @@ public function kirimDisposisi($id)
         'surat_id'     => $id,
         'dari_user_id' => $dariUserId,
         'catatan'      => $catatan,
-        'created_at'   => Time::now()
+        'dibaca_pada' => Time::now('Asia/Jakarta')
     ]);
 
     // Simpan ke tabel disposisi_user (multi)
