@@ -1,3 +1,4 @@
+<?php $user = session()->get('user'); ?>
 <?php if ($user && $user['role'] === 'admin') : ?>
 <!DOCTYPE html>
 <html lang="id">
