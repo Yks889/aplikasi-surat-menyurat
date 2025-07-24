@@ -30,6 +30,7 @@
                             <th>Kepada</th>
                             <th>Catatan</th>
                             <th>Status</th>
+                            <th>Dibaca Pada</th> <!-- ✅ Tambahan -->
                             <th>Tanggal</th>
                             <th class="text-end">Aksi</th>
                         </tr>
@@ -47,6 +48,10 @@
                                     <?= ucfirst($d['status']) ?>
                                 </span>
                             </td>
+                            <td>
+                                <?= isset($d['dibaca_pada']) && $d['dibaca_pada'] ? date('d/m/Y H:i', strtotime($d['dibaca_pada'])) : '-' ?>
+                            </td>
+                            <!-- ✅ Tambahan -->
                             <td><?= date('d/m/Y H:i', strtotime($d['created_at'])) ?></td>
                             <td class="text-end">
                                 <div class="d-flex justify-content-end gap-2">
