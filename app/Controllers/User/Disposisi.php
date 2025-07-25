@@ -28,6 +28,7 @@ class Disposisi extends BaseController
             disposisi_user.status,
             disposisi_user.dibaca_pada,
             surat_masuk.nomor_surat,
+            surat_masuk.file_surat,
             disposisi.catatan,
             disposisi.created_at,
             dari_user.full_name AS dari
