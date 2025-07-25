@@ -41,31 +41,70 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($disposisi as $index => $d): ?>
+                        <?php
+                        $grouped = [];
+                        foreach ($disposisi as $d) {
+                            $key = $d['nomor_surat'] . '|' . $d['dari_nama'];
+                            if (!isset($grouped[$key])) {
+                                $grouped[$key] = [
+                                    'nomor_surat' => $d['nomor_surat'],
+                                    'dari_nama' => $d['dari_nama'],
+                                    'file_surat' => $d['file_surat'],
+                                    'created_at' => $d['created_at'],
+                                    'catatan' => $d['catatan'], // ambil dari disposisi pertama
+                                    'id' => $d['id'], // ID untuk tombol aksi
+                                    'details' => []
+                                ];
+                            }
+                            $grouped[$key]['details'][] = [
+                                'ke_nama' => $d['ke_nama'],
+                                'status' => $d['status'],
+                                'dibaca_pada' => $d['dibaca_pada']
+                            ];
+                        }
+                        $index = 1;
+                        ?>
+                        <?php foreach ($grouped as $group): ?>
                         <tr>
-                            <td class="text-center"><?= $index + 1 ?></td>
-                            <td><?= esc($d['nomor_surat']) ?></td>
-                            <td><?= esc($d['dari_nama']) ?></td>
-                            <td><?= esc($d['ke_nama']) ?></td>
-                            <td><?= esc($d['catatan']) ?></td>
+                            <td class="text-center"><?= $index++ ?></td>
+                            <td><?= esc($group['nomor_surat']) ?></td>
+                            <td><?= esc($group['dari_nama']) ?></td>
                             <td>
-                                <span class="badge bg-<?= $d['status'] == 'belum dibaca' ? 'secondary' : 'success' ?>">
-                                    <?= ucfirst($d['status']) ?>
-                                </span>
+                                <ul class="mb-0 ps-3">
+                                    <?php foreach ($group['details'] as $det): ?>
+                                        <li><?= esc($det['ke_nama']) ?></li>
+                                    <?php endforeach ?>
+                                </ul>
+                            </td>
+                            <td><?= esc($group['catatan']) ?></td>
+                            <td>
+                                <ul class="mb-0 ps-3">
+                                    <?php foreach ($group['details'] as $det): ?>
+                                        <li>
+                                            <span class="badge bg-<?= $det['status'] == 'belum dibaca' ? 'secondary' : 'success' ?>">
+                                                <?= ucfirst($det['status']) ?>
+                                            </span>
+                                        </li>
+                                    <?php endforeach ?>
+                                </ul>
                             </td>
                             <td>
-                                <?= isset($d['dibaca_pada']) && $d['dibaca_pada'] ? date('d/m/Y H:i', strtotime($d['dibaca_pada'])) : '-' ?>
+                                <ul class="mb-0 ps-3">
+                                    <?php foreach ($group['details'] as $det): ?>
+                                        <li><?= $det['dibaca_pada'] ? date('d/m/Y H:i', strtotime($det['dibaca_pada'])) : '-' ?></li>
+                                    <?php endforeach ?>
+                                </ul>
                             </td>
-                            <td><?= date('d/m/Y H:i', strtotime($d['created_at'])) ?></td>
+                            <td><?= date('d/m/Y H:i', strtotime($group['created_at'])) ?></td>
                             <td class="text-end">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <a href="/uploads/surat_masuk/<?= esc($d['file_surat']) ?>" target="_blank" class="btn btn-sm btn-outline-primary" title="Lihat File">
+                                    <a href="/uploads/surat_masuk/<?= esc($group['file_surat']) ?>" target="_blank" class="btn btn-sm btn-outline-primary" title="Lihat File">
                                         <i class="bi bi-file-earmark-text"></i>
                                     </a>
-                                    <a href="<?= base_url('admin/disposisi/edit/' . $d['id']) ?>" class="btn btn-sm btn-outline-warning" title="Edit">
+                                    <a href="<?= base_url('admin/disposisi/edit/' . $group['id']) ?>" class="btn btn-sm btn-outline-warning" title="Edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <button onclick="confirmDelete(<?= $d['id'] ?>)" class="btn btn-sm btn-outline-danger" title="Hapus">
+                                    <button onclick="confirmDelete(<?= $group['id'] ?>)" class="btn btn-sm btn-outline-danger" title="Hapus">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
