@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: ci4_db:3306
--- Generation Time: Jul 23, 2025 at 07:08 AM
+-- Generation Time: Jul 24, 2025 at 06:11 AM
 -- Server version: 5.7.44
 -- PHP Version: 8.2.27
 
@@ -74,7 +74,9 @@ INSERT INTO `disposisi` (`id`, `surat_id`, `dari_user_id`, `catatan`, `created_a
 (4, 42, NULL, 'asd', '2025-07-23 05:47:43'),
 (5, 42, NULL, 'yfugh', '2025-07-23 05:48:22'),
 (6, 42, 1, 'asdasdsa', '2025-07-23 05:55:51'),
-(7, 44, 1, 'pee', '2025-07-23 06:24:22');
+(7, 44, 1, 'pee', '2025-07-23 06:24:22'),
+(8, 41, 1, 'pp\r\n', '2025-07-24 03:36:37'),
+(9, 45, 1, 'asdsad', '2025-07-24 03:42:33');
 
 -- --------------------------------------------------------
 
@@ -86,27 +88,31 @@ CREATE TABLE `disposisi_user` (
   `id` int(11) NOT NULL,
   `disposisi_id` int(11) DEFAULT NULL,
   `ke_user_id` int(11) DEFAULT NULL,
-  `status` varchar(20) DEFAULT 'belum dibaca'
+  `status` varchar(20) DEFAULT 'belum dibaca',
+  `dibaca_pada` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `disposisi_user`
 --
 
-INSERT INTO `disposisi_user` (`id`, `disposisi_id`, `ke_user_id`, `status`) VALUES
-(1, 1, 1, 'belum dibaca'),
-(2, 1, 2, 'belum dibaca'),
-(3, 1, 3, 'belum dibaca'),
-(4, 2, 1, 'belum dibaca'),
-(5, 2, 2, 'belum dibaca'),
-(6, 3, 5, 'belum dibaca'),
-(7, 4, 1, 'belum dibaca'),
-(8, 4, 2, 'belum dibaca'),
-(9, 5, 2, 'belum dibaca'),
-(10, 5, 3, 'belum dibaca'),
-(11, 6, 1, 'belum dibaca'),
-(12, 6, 2, 'belum dibaca'),
-(13, 7, 16, 'belum dibaca');
+INSERT INTO `disposisi_user` (`id`, `disposisi_id`, `ke_user_id`, `status`, `dibaca_pada`) VALUES
+(1, 1, 1, 'belum dibaca', NULL),
+(2, 1, 2, 'belum dibaca', NULL),
+(3, 1, 3, 'belum dibaca', NULL),
+(4, 2, 1, 'belum dibaca', NULL),
+(5, 2, 2, 'belum dibaca', NULL),
+(6, 3, 5, 'belum dibaca', NULL),
+(7, 4, 1, 'belum dibaca', NULL),
+(8, 4, 2, 'belum dibaca', NULL),
+(9, 5, 2, 'belum dibaca', NULL),
+(10, 5, 3, 'belum dibaca', NULL),
+(11, 6, 1, 'belum dibaca', NULL),
+(12, 6, 2, 'belum dibaca', NULL),
+(13, 7, 16, 'dibaca', '2025-07-24 10:42:47'),
+(14, 8, 16, 'dibaca', '2025-07-24 10:42:47'),
+(15, 9, 2, 'belum dibaca', NULL),
+(16, 9, 3, 'belum dibaca', NULL);
 
 -- --------------------------------------------------------
 
@@ -227,7 +233,8 @@ INSERT INTO `surat_masuk` (`id`, `nomor_surat`, `perusahaan_id`, `dari`, `periha
 (41, '123456', 1, 'qwerty', 'qwertyuio', '2025-07-10', '2025-07-12 05:12:29', '1752297149_6c8ed96c3428adb1aa9c.png', 3, '2025-07-12 05:12:29', '2025-07-12 05:12:29'),
 (42, '12345678', 1, 'qwerty', 'qwertyui', '2025-07-17', '2025-07-12 05:50:55', '1752299455_0cfaa4bb9e4ccdb256b2.png', 2, '2025-07-12 05:50:55', '2025-07-12 05:50:55'),
 (43, '1234567', 1, 'syahdan', 'pkl', '2025-07-12', '2025-07-12 06:46:18', '1752302778_11e2ce601afdb61ba46f.png', 5, '2025-07-12 06:46:18', '2025-07-12 06:46:18'),
-(44, '132213', 2, 'saya', 'dsasad', '2025-07-23', '2025-07-23 06:02:47', '1753250567_91a2f726b1c2192c93cd.jpeg', 16, '2025-07-23 06:02:47', '2025-07-23 06:02:47');
+(44, '132213', 2, 'saya', 'dsasad', '2025-07-23', '2025-07-23 06:02:47', '1753250567_91a2f726b1c2192c93cd.jpeg', 16, '2025-07-23 06:02:47', '2025-07-23 06:02:47'),
+(48, '343', 2, 'ctd', 'yutyg', '2025-07-24', '2025-07-24 10:58:58', '1753329538_89636806b202313c6cce.docx', 1, '2025-07-24 03:58:58', '2025-07-24 03:58:58');
 
 -- --------------------------------------------------------
 
@@ -358,13 +365,13 @@ ALTER TABLE `activities`
 -- AUTO_INCREMENT for table `disposisi`
 --
 ALTER TABLE `disposisi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `disposisi_user`
 --
 ALTER TABLE `disposisi_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `jenis_surat`
@@ -388,7 +395,7 @@ ALTER TABLE `surat_keluar`
 -- AUTO_INCREMENT for table `surat_masuk`
 --
 ALTER TABLE `surat_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `tanda_tangan`
