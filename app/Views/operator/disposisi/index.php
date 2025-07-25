@@ -15,6 +15,11 @@
         <div class="mb-3 mb-md-0">
             <h2 class="h4 mb-1"><i class="bi bi-send me-2 text-primary"></i>History Disposisi Surat</h2>
         </div>
+        <div class="d-flex flex-column flex-md-row gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                <i class="bi bi-funnel me-1"></i> Filter
+            </button>
+        </div>
     </div>
 
     <!-- Table -->
@@ -24,20 +29,21 @@
                 <table class="table table-hover mb-0" id="disposisiTable">
                     <thead class="table-light">
                         <tr>
-                            <th style="width: 50px;">No</th>
+                            <th class="text-center">No</th>
                             <th>Nomor Surat</th>
                             <th>Dari</th>
                             <th>Kepada</th>
                             <th>Catatan</th>
                             <th>Status</th>
+                            <th>Dibaca Pada</th>
                             <th>Tanggal</th>
-                            <th>Aksi</th>
+                            <th class="text-end">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($disposisi as $index => $d): ?>
                         <tr>
-                            <td><?= $index + 1 ?></td>
+                            <td class="text-center"><?= $index + 1 ?></td>
                             <td><?= esc($d['nomor_surat']) ?></td>
                             <td><?= esc($d['dari_nama']) ?></td>
                             <td><?= esc($d['ke_nama']) ?></td>
@@ -47,17 +53,19 @@
                                     <?= ucfirst($d['status']) ?>
                                 </span>
                             </td>
-                            <td><?= date('d/m/Y H:i', strtotime($d['created_at'])) ?></td>
                             <td>
-                                <a href="<?= base_url('suratmasuk/edit_disposisi/' . $d['id']) ?>" class="btn btn-sm btn-warning">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <form action="<?= base_url('suratmasuk/delete_disposisi/' . $d['id']) ?>" method="post" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
-                                    <?= csrf_field() ?>
-                                    <button type="submit" class="btn btn-sm btn-danger">
+                                <?= isset($d['dibaca_pada']) && $d['dibaca_pada'] ? date('d/m/Y H:i', strtotime($d['dibaca_pada'])) : '-' ?>
+                            </td>
+                            <td><?= date('d/m/Y H:i', strtotime($d['created_at'])) ?></td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="<?= base_url('suratmasuk/edit_disposisi/' . $d['id']) ?>" class="btn btn-sm btn-outline-warning" title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <button onclick="confirmDelete(<?= $d['id'] ?>)" class="btn btn-sm btn-outline-danger" title="Hapus">
                                         <i class="bi bi-trash"></i>
                                     </button>
-                                </form>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach ?>
@@ -65,6 +73,65 @@
                 </table>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal Filter -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="get" action="<?= base_url('suratmasuk/history_disposisi') ?>" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel"><i class="bi bi-funnel me-2"></i>Filter Disposisi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body row g-3">
+                <div class="col-md-6">
+                    <label for="bulan" class="form-label">Bulan</label>
+                    <select name="bulan" id="bulan" class="form-select">
+                        <option value="">Semua Bulan</option>
+                        <?php for ($i = 1; $i <= 12; $i++): ?>
+                        <option value="<?= $i ?>" <?= isset($filter_bulan) && $i == $filter_bulan ? 'selected' : '' ?>>
+                            <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
+                        </option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="tahun" class="form-label">Tahun</label>
+                    <select name="tahun" id="tahun" class="form-select">
+                        <option value="">Semua Tahun</option>
+                        <?php for ($y = date('Y'); $y >= 2020; $y--): ?>
+                        <option value="<?= $y ?>" <?= isset($filter_tahun) && $y == $filter_tahun ? 'selected' : '' ?>><?= $y ?></option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="status" class="form-label">Status</label>
+                    <select name="status" id="status" class="form-select">
+                        <option value="">Semua Status</option>
+                        <option value="belum dibaca" <?= isset($filter_status) && $filter_status == 'belum dibaca' ? 'selected' : '' ?>>Belum Dibaca</option>
+                        <option value="sudah dibaca" <?= isset($filter_status) && $filter_status == 'sudah dibaca' ? 'selected' : '' ?>>Sudah Dibaca</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="pengirim" class="form-label">Dari</label>
+                    <select name="pengirim" id="pengirim" class="form-select">
+                        <option value="">Semua Pengirim</option>
+                        <?php foreach ($pengirimList ?? [] as $p): ?>
+                        <option value="<?= $p['id'] ?>" <?= isset($filter_pengirim) && $filter_pengirim == $p['id'] ? 'selected' : '' ?>>
+                            <?= esc($p['nama']) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-funnel-fill me-1"></i> Terapkan
+                </button>
+                <a href="<?= base_url('suratmasuk/history_disposisi') ?>" class="btn btn-outline-secondary">Reset</a>
+            </div>
+        </form>
     </div>
 </div>
 <?= $this->endSection() ?>
@@ -92,5 +159,22 @@
             }
         });
     });
+
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Hapus Disposisi?',
+            text: "Data disposisi akan dihapus secara permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/suratmasuk/delete_disposisi/' + id;
+            }
+        });
+    }
 </script>
 <?= $this->endSection() ?>

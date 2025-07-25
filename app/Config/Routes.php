@@ -64,7 +64,12 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('users/hapus/(:num)', 'Admin\UserManagement::delete/$1');
     $routes->get('users/reset-filter', 'Admin\UserManagement::resetFilter');
 
+    // Disposisi User
     $routes->get('disposisi', 'Admin\Disposisi::index');
+    $routes->get('disposisi/edit/(:num)', 'Admin\Disposisi::edit/$1');
+    $routes->post('disposisi/update/(:num)', 'Admin\Disposisi::update/$1');
+    $routes->get('disposisi/delete/(:num)', 'Admin\Disposisi::delete/$1');
+    
 
     // Tanda Tangan
     $routes->get('tanda-tangan', 'Admin\TandaTangan::index');

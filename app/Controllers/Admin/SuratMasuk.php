@@ -51,7 +51,7 @@ class SuratMasuk extends BaseController
             'tahun' => $tahun,
             'perusahaan_id' => $perusahaanId,
             'user' => session()->get('user'),
-            'users' => $this->userModel->findAll(), // Untuk dropdown disposisi
+            'users' => $this->userModel->where('role', 'user')->findAll(), // ✅ hanya user bisa Untuk dropdown disposisi
         ];
 
         return view('admin/surat_masuk/index', $data);
