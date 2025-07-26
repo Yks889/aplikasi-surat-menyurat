@@ -64,12 +64,11 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('users/hapus/(:num)', 'Admin\UserManagement::delete/$1');
     $routes->get('users/reset-filter', 'Admin\UserManagement::resetFilter');
 
-    // Disposisi
+    // Disposisi User
     $routes->get('disposisi', 'Admin\Disposisi::index');
     $routes->get('disposisi/edit/(:num)', 'Admin\Disposisi::edit/$1');
     $routes->post('disposisi/update/(:num)', 'Admin\Disposisi::update/$1');
     $routes->get('disposisi/delete/(:num)', 'Admin\Disposisi::delete/$1');
-    $routes->get('disposisi/detail/(:num)', 'Admin\Disposisi::detail/$1');
 
     // Tanda Tangan
     $routes->get('tanda-tangan', 'Admin\TandaTangan::index');
@@ -111,14 +110,11 @@ $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
     $routes->post('surat-masuk/update/(:num)', 'Operator\SuratMasuk::update/$1');
     $routes->get('surat-masuk/delete/(:num)', 'Operator\SuratMasuk::delete/$1');
     $routes->get('surat-masuk/reset-filter', 'Operator\SuratMasuk::resetFilter');
-    $routes->post('surat-masuk/(:num)/disposisi', 'Operator\SuratMasuk::kirimDisposisi/$1');
     
-    // Disposisi
     $routes->get('disposisi', 'Operator\Disposisi::index');
     $routes->get('disposisi/edit/(:num)', 'Operator\Disposisi::edit/$1');
     $routes->post('disposisi/update/(:num)', 'Operator\Disposisi::update/$1');
     $routes->get('disposisi/delete/(:num)', 'Operator\Disposisi::delete/$1');
-    $routes->get('disposisi/detail/(:num)', 'Operator\Disposisi::detail/$1');
 
     // Surat Keluar
     $routes->get('surat-keluar', 'Operator\SuratKeluar::index');
