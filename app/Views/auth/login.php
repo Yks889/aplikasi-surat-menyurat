@@ -284,7 +284,7 @@
                             Ingat saya
                         </label>
                     </div>
-                    <a href="/forgot-password" class="forgot-link">Lupa password?</a>
+             
                 </div>
 
                 <div class="d-grid mb-3">
