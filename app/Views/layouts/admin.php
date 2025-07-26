@@ -414,7 +414,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="profile">
+              <a class="dropdown-item d-flex align-items-center" href="/admin/profile">
                 <i class="bi bi-person me-2"></i> 
                 <span>Profil Saya</span>
               </a>

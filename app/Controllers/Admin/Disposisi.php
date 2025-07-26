@@ -4,6 +4,11 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use Config\Database;
 use CodeIgniter\I18n\Time;
+<<<<<<< HEAD
+=======
+use App\Models\DisposisiModel;
+use App\Models\UserModel;
+>>>>>>> a2b31bd635cdc5ebfe38673510c2d7bdbde1b4cf
 
 
 class Disposisi extends BaseController
@@ -95,6 +100,7 @@ public function delete($id)
 
 public function edit($id)
 {
+<<<<<<< HEAD
     $db = Database::connect();
     
     // Ambil data disposisi
@@ -104,6 +110,12 @@ public function edit($id)
         ->join('users as dari', 'dari.id = disposisi.dari_user_id', 'left')
         ->join('disposisi_user', 'disposisi_user.disposisi_id = disposisi.id', 'left')
         ->join('users as ke', 'ke.id = disposisi_user.ke_user_id', 'left')
+=======
+    $disposisi = $this->DisposisiModel
+        ->select('disposisi.*, surat_masuk.nomor_surat, surat_masuk.file_surat, surat_masuk.dari, dari.full_name AS dari_nama')
+        ->join('surat_masuk', 'surat_masuk.id = disposisi.surat_id')
+        ->join('users as dari', 'dari.id = disposisi.dari_user_id')
+>>>>>>> a2b31bd635cdc5ebfe38673510c2d7bdbde1b4cf
         ->where('disposisi.id', $id)
         ->get()
         ->getRowArray();
@@ -197,5 +209,49 @@ public function update($id)
         return redirect()->back()->withInput();
     }
 }
+<<<<<<< HEAD
+=======
+public function detail($surat_id)
+{
+    $db = \Config\Database::connect();
+    
+    // Ambil data surat
+    $surat = $db->table('surat_masuk')
+        ->select('surat_masuk.*, perusahaan.nama as perusahaan_nama, users.full_name as pengirim_nama')
+        ->join('perusahaan', 'perusahaan.id = surat_masuk.perusahaan_id', 'left')
+        ->join('users', 'users.id = surat_masuk.created_by', 'left')
+        ->where('surat_masuk.id', $surat_id)
+        ->get()
+        ->getRowArray();
+
+    if (!$surat) {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Surat tidak ditemukan.');
+    }
+
+    // Ambil data disposisi untuk surat ini
+    $disposisiList = $db->table('disposisi')
+        ->select('disposisi.*,
+                  dari.full_name as dari_nama,
+                  ke.full_name as ke_nama,
+                  disposisi_user.status,
+                  disposisi_user.dibaca_pada')
+        ->join('users as dari', 'dari.id = disposisi.dari_user_id', 'left')
+        ->join('disposisi_user', 'disposisi_user.disposisi_id = disposisi.id', 'left')
+        ->join('users as ke', 'ke.id = disposisi_user.ke_user_id', 'left')
+        ->where('disposisi.surat_id', $surat_id)
+        ->orderBy('disposisi.created_at', 'DESC')
+        ->get()
+        ->getResultArray();
+
+    return view('admin/disposisi/detail', [
+        'title' => 'Detail Disposisi Surat',
+        'surat' => $surat,
+        'disposisi' => $disposisiList,
+        'user' => session()->get('user')
+    ]);
+}
+
+
+>>>>>>> a2b31bd635cdc5ebfe38673510c2d7bdbde1b4cf
 
 }

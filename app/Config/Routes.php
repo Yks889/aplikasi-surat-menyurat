@@ -69,7 +69,6 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('disposisi/edit/(:num)', 'Admin\Disposisi::edit/$1');
     $routes->post('disposisi/update/(:num)', 'Admin\Disposisi::update/$1');
     $routes->get('disposisi/delete/(:num)', 'Admin\Disposisi::delete/$1');
-    
 
     // Tanda Tangan
     $routes->get('tanda-tangan', 'Admin\TandaTangan::index');
@@ -96,12 +95,11 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
 // ============ OPERATOR ROUTES ============
 $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
     $routes->get('dashboard', 'Operator\Dashboard::index');
-    $routes->get('dashboard', 'Admin\Dashboard::index');
     // profile
     $routes->get('profile', 'Operator\ProfileController::index');
     $routes->post('profile/update', 'Operator\ProfileController::update');
     $routes->post('profile/update-password', 'Operator\ProfileController::updatePassword');
-    $routes->post('profile/update-photo', 'Oerator\ProfileController::updatePhoto');
+    $routes->post('profile/update-photo', 'Operator\ProfileController::updatePhoto');
     $routes->post('profile/remove-photo', 'Operator\ProfileController::removePhoto');
 
     // Surat Masuk
@@ -114,6 +112,9 @@ $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
     $routes->get('surat-masuk/reset-filter', 'Operator\SuratMasuk::resetFilter');
     
     $routes->get('disposisi', 'Operator\Disposisi::index');
+    $routes->get('disposisi/edit/(:num)', 'Operator\Disposisi::edit/$1');
+    $routes->post('disposisi/update/(:num)', 'Operator\Disposisi::update/$1');
+    $routes->get('disposisi/delete/(:num)', 'Operator\Disposisi::delete/$1');
 
     // Surat Keluar
     $routes->get('surat-keluar', 'Operator\SuratKeluar::index');
@@ -144,7 +145,7 @@ $routes->group('user', ['filter' => 'role:user'], function ($routes) {
     $routes->post('profile/remove-photo', 'User\ProfileController::removePhoto');
 
     $routes->get('disposisi', 'User\Disposisi::index');
-
+    $routes->get('disposisi/detail/(:num)', 'User\Disposisi::detail/$1');
 
     // Kirim Surat Masuk
     $routes->get('kirim-surat', 'User\SuratMasuk::create');
