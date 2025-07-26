@@ -145,7 +145,7 @@ class ProfileController extends BaseController
         $this->userModel->update($userId, ['photo' => $newName]);
         session()->set('user', $this->userModel->find($userId));
 
-        return redirect()->to('/User/profile')->with('message', 'Foto profil berhasil diperbarui');
+        return redirect()->to('/user/profile')->with('message', 'Foto profil berhasil diperbarui');
     }
 
     public function removePhoto()
@@ -160,6 +160,6 @@ class ProfileController extends BaseController
         $this->userModel->update($userId, ['photo' => null]);
         session()->set('user', $this->userModel->find($userId));
 
-        return redirect()->to('/User/profile')->with('message', 'Foto profil berhasil dihapus');
+        return redirect()->to('/user/profile')->with('message', 'Foto profil berhasil dihapus');
     }
 }

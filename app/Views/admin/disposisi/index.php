@@ -70,30 +70,25 @@
                             <td><?= esc($group['nomor_surat']) ?></td>
                             <td><?= esc($group['dari_nama']) ?></td>
                             <td>
-                                <ul class="mb-0 ps-3">
-                                    <?php foreach ($group['details'] as $det): ?>
-                                        <li><?= esc($det['ke_nama']) ?></li>
-                                    <?php endforeach ?>
-                                </ul>
+                                <?php foreach ($group['details'] as $index => $det): ?>
+                                    <?= esc($det['ke_nama']) ?>
+                                    <?php if ($index < count($group['details']) - 1): ?><br><?php endif; ?>
+                                <?php endforeach ?>
                             </td>
                             <td><?= esc($group['catatan']) ?></td>
                             <td>
-                                <ul class="mb-0 ps-3">
-                                    <?php foreach ($group['details'] as $det): ?>
-                                        <li>
-                                            <span class="badge bg-<?= $det['status'] == 'belum dibaca' ? 'secondary' : 'success' ?>">
-                                                <?= ucfirst($det['status']) ?>
-                                            </span>
-                                        </li>
-                                    <?php endforeach ?>
-                                </ul>
+                                <?php foreach ($group['details'] as $index => $det): ?>
+                                    <span class="badge bg-<?= $det['status'] == 'belum dibaca' ? 'secondary' : 'success' ?>">
+                                        <?= ucfirst($det['status']) ?>
+                                    </span>
+                                    <?php if ($index < count($group['details']) - 1): ?><br><?php endif; ?>
+                                <?php endforeach ?>
                             </td>
                             <td>
-                                <ul class="mb-0 ps-3">
-                                    <?php foreach ($group['details'] as $det): ?>
-                                        <li><?= $det['dibaca_pada'] ? date('d/m/Y H:i', strtotime($det['dibaca_pada'])) : '-' ?></li>
-                                    <?php endforeach ?>
-                                </ul>
+                                <?php foreach ($group['details'] as $index => $det): ?>
+                                    <?= $det['dibaca_pada'] ? date('d/m/Y H:i', strtotime($det['dibaca_pada'])) : '-' ?>
+                                    <?php if ($index < count($group['details']) - 1): ?><br><?php endif; ?>
+                                <?php endforeach ?>
                             </td>
                             <td><?= date('d/m/Y H:i', strtotime($group['created_at'])) ?></td>
                             <td class="text-end">

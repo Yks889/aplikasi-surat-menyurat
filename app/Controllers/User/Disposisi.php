@@ -27,6 +27,7 @@ class Disposisi extends BaseController
             disposisi_user.id,
             disposisi_user.status,
             disposisi_user.dibaca_pada,
+            surat_masuk.id as surat_id,
             surat_masuk.nomor_surat,
             surat_masuk.file_surat,
             disposisi.catatan,
@@ -45,5 +46,47 @@ class Disposisi extends BaseController
         'disposisi' => $query
     ]);
 }
+
+    public function detail($surat_id)
+    {
+        $db = \Config\Database::connect();
+        
+        // Ambil data surat
+        $surat = $db->table('surat_masuk')
+            ->select('surat_masuk.*, perusahaan.nama as perusahaan_nama, users.full_name as pengirim_nama')
+            ->join('perusahaan', 'perusahaan.id = surat_masuk.perusahaan_id', 'left')
+            ->join('users', 'users.id = surat_masuk.created_by', 'left')
+            ->where('surat_masuk.id', $surat_id)
+            ->get()
+            ->getRowArray();
+
+        if (!$surat) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Surat tidak ditemukan.');
+        }
+
+        // Ambil data disposisi untuk surat ini, hanya untuk user yang sedang login
+        $currentUserId = session()->get('user')['id'];
+        $disposisiList = $db->table('disposisi')
+            ->select('disposisi.*,
+                      dari.full_name as dari_nama,
+                      ke.full_name as ke_nama,
+                      disposisi_user.status,
+                      disposisi_user.dibaca_pada')
+            ->join('users as dari', 'dari.id = disposisi.dari_user_id', 'left')
+            ->join('disposisi_user', 'disposisi_user.disposisi_id = disposisi.id', 'left')
+            ->join('users as ke', 'ke.id = disposisi_user.ke_user_id', 'left')
+            ->where('disposisi.surat_id', $surat_id)
+            ->where('disposisi_user.ke_user_id', $currentUserId)
+            ->orderBy('disposisi.created_at', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        return view('user/disposisi/detail', [
+            'title' => 'Detail Disposisi Surat',
+            'surat' => $surat,
+            'disposisi' => $disposisiList,
+            'user' => session()->get('user')
+        ]);
+    }
 
 }
