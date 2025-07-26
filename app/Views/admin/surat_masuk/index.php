@@ -60,6 +60,9 @@
                                     <a href="/uploads/surat_masuk/<?= esc($surat['file_surat']) ?>" target="_blank" class="btn btn-sm btn-outline-primary" title="Lihat File">
                                         <i class="bi bi-file-earmark-text"></i>
                                     </a>
+                                    <a href="/admin/disposisi/detail/<?= $surat['id'] ?>" class="btn btn-sm btn-outline-info" title="Detail Disposisi">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
                                     <a href="/admin/surat-masuk/edit/<?= $surat['id'] ?>" class="btn btn-sm btn-outline-warning" title="Edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>

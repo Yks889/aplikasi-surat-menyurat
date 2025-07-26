@@ -38,7 +38,7 @@
                                 <th>Catatan</th>
                                 <th>Status</th>
                                 <th>Tanggal</th>
-                                <th>File Surat</th>
+                                <th>Detail Surat</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,13 +55,9 @@
                                 </td>
                                 <td><?= date('d/m/Y H:i', strtotime($d['created_at'])) ?></td>
                                 <td>
-                                    <?php if (!empty($d['file_surat'])): ?>
-                                        <a href="<?= base_url('uploads/surat_masuk/' . $d['file_surat']) ?>" target="_blank" class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-file-earmark-text"></i> Lihat
-                                        </a>
-                                    <?php else: ?>
-                                        <span class="text-muted">-</span>
-                                    <?php endif; ?>
+                                    <a href="/user/disposisi/detail/<?= $d['surat_id'] ?>" class="btn btn-sm btn-outline-info">
+                                        <i class="bi bi-info-circle"></i> Detail
+                                    </a>
                                 </td>
                             </tr>
                             <?php endforeach ?>

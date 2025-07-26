@@ -21,7 +21,7 @@ class TandaTangan extends BaseController
     {
         $data = [
             'title' => 'Tanda Tangan Digital',
-            'user' => session()->get(),
+            'user' => session()->get('user'),
             'tandaTangan' => $this->tandaTanganModel->getAllTandaTangan(), // ambil semua ttd
             'admins' => $this->userModel->where('role', 'admin')->findAll(), // ⬅️ penting: untuk dropdown admin
             'validation' => \Config\Services::validation()
