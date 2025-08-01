@@ -431,6 +431,21 @@
   document.getElementById('sidebarToggle').addEventListener('click', function () {
     document.getElementById('sidebarMenu').classList.toggle('show');
   });
+
+    // Tutup sidebar jika klik di luar sidebar saat tampil di layar kecil
+document.addEventListener('click', function (event) {
+  const sidebar = document.getElementById('sidebarMenu');
+  const toggle = document.getElementById('sidebarToggle');
+
+  const isSidebarOpen = sidebar.classList.contains('show');
+  const clickedInsideSidebar = sidebar.contains(event.target);
+  const clickedToggle = toggle.contains(event.target);
+
+  // Jika sidebar terbuka dan klik di luar sidebar dan toggle, tutup sidebar
+  if (isSidebarOpen && !clickedInsideSidebar && !clickedToggle) {
+    sidebar.classList.remove('show');
+  }
+});
 </script>
 <?= $this->renderSection('scripts') ?>
 </body>
