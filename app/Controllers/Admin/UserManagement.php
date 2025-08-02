@@ -17,26 +17,31 @@ class UserManagement extends BaseController
     // Tampilkan daftar user dengan filter bulan, tahun, dan role
     public function index()
     {
-        $bulan = $this->request->getGet('bulan') ?? date('n');
+        $bulan = $this->request->getGet('bulan') ?? 'all';
         $tahun = $this->request->getGet('tahun') ?? date('Y');
         $role  = $this->request->getGet('role');
 
         $builder = $this->userModel;
 
-        if ($bulan) {
+        // Filter bulan jika bukan 'all'
+        if (!empty($bulan) && $bulan !== 'all') {
             $builder->where('MONTH(created_at)', $bulan);
         }
-        if ($tahun) {
+
+        // Filter tahun jika bukan 'all'
+        if (!empty($tahun) && $tahun !== 'all') {
             $builder->where('YEAR(created_at)', $tahun);
         }
-        if ($role) {
+
+        // Filter role jika dipilih
+        if (!empty($role)) {
             $builder->where('role', $role);
         }
 
         $data = [
             'title'      => 'Kelola User',
             'user'       => session()->get(),
-            'users'      => $builder->findAll(),
+            'users'      => $builder->orderBy('created_at', 'DESC')->findAll(),
             'validation' => \Config\Services::validation(),
             'bulan'      => $bulan,
             'tahun'      => $tahun,

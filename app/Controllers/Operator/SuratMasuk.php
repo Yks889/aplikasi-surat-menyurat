@@ -195,18 +195,56 @@ class SuratMasuk extends BaseController
         $disposisiUserModel = new DisposisiUserModel();
 
         $dariUserId = session()->get('user')['id'];
-        $keUserIds = $this->request->getPost('ke_user_ids');
+        $keUserIds = $this->request->getPost('ke_user_ids'); // array checkbox
         $catatan = $this->request->getPost('catatan');
 
         if (empty($keUserIds)) {
             return redirect()->back()->with('error', 'Pilih minimal satu pengguna tujuan.');
         }
 
+        // ✅ Cek apakah disposisi sudah pernah dibuat untuk surat dan user tujuan tertentu
+        $existingDisposisi = $disposisiModel
+            ->where('surat_id', $id)
+            ->where('dari_user_id', $dariUserId)
+            ->first();
+
+        if ($existingDisposisi) {
+            // Cek apakah salah satu user tujuan sudah pernah ditambahkan
+            $existingKeUser = $disposisiUserModel
+                ->where('disposisi_id', $existingDisposisi['id'])
+                ->whereIn('ke_user_id', $keUserIds)
+                ->findAll();
+
+            if (!empty($existingKeUser)) {
+                return redirect()->back()->with('error', 'Disposisi sudah pernah dikirim ke salah satu pengguna yang dipilih.');
+            }
+
+            // Tambahkan user tujuan baru jika belum pernah ada
+            foreach ($keUserIds as $keUserId) {
+                $alreadyExists = $disposisiUserModel
+                    ->where('disposisi_id', $existingDisposisi['id'])
+                    ->where('ke_user_id', $keUserId)
+                    ->first();
+
+                if (!$alreadyExists) {
+                    $disposisiUserModel->insert([
+                        'disposisi_id' => $existingDisposisi['id'],
+                        'ke_user_id'   => $keUserId,
+                        'status'       => 'belum dibaca'
+                    ]);
+                }
+            }
+
+            return redirect()->back()->with('message', 'Disposisi tambahan berhasil dikirim.');
+        }
+
+        // ✅ Jika belum ada disposisi sebelumnya, buat baru
         $disposisiId = $disposisiModel->insert([
             'surat_id'     => $id,
             'dari_user_id' => $dariUserId,
             'catatan'      => $catatan,
-            'dibaca_pada' => Time::now('Asia/Jakarta')
+            'dibaca_pada'  => Time::now('Asia/Jakarta'),
+            'created_at'   => Time::now('Asia/Jakarta')
         ]);
 
         foreach ($keUserIds as $keUserId) {
