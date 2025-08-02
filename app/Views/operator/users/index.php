@@ -3,11 +3,11 @@
 <div class="container-fluid py-4">
     <!-- Notification Alert -->
     <?php if (session()->getFlashdata('message')) : ?>
-    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        <div><?= session()->getFlashdata('message') ?></div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <div><?= session()->getFlashdata('message') ?></div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     <?php endif; ?>
 
     <!-- Page Header -->
@@ -42,23 +42,23 @@
                     </thead>
                     <tbody>
                         <?php foreach ($users as $index => $u): ?>
-                        <tr>
-                            <td class="text-center"><?= $index + 1 ?></td>
-                            <td><?= esc($u['username']) ?></td>
-                            <td><?= esc($u['full_name']) ?></td>
-                            <td><?= esc($u['email'] ?? '-') ?></td>
-                            <td><?= date('d/m/Y', strtotime($u['created_at'])) ?></td>
-                            <td class="text-end">
-                                <div class="d-flex justify-content-end gap-2">
-                                    <a href="/operator/users/edit/<?= $u['id'] ?>" class="btn btn-sm btn-outline-warning" title="Edit">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <button onclick="confirmDelete(<?= $u['id'] ?>)" class="btn btn-sm btn-outline-danger" title="Hapus">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="text-center"><?= $index + 1 ?></td>
+                                <td><?= esc($u['username']) ?></td>
+                                <td><?= esc($u['full_name']) ?></td>
+                                <td><?= esc($u['email'] ?? '-') ?></td>
+                                <td><?= date('d/m/Y', strtotime($u['created_at'])) ?></td>
+                                <td class="text-end">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="/operator/users/edit/<?= $u['id'] ?>" class="btn btn-sm btn-outline-warning" title="Edit">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <button onclick="confirmDelete(<?= $u['id'] ?>)" class="btn btn-sm btn-outline-danger" title="Hapus">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -79,10 +79,11 @@
                 <div class="col-md-6">
                     <label for="bulan" class="form-label">Bulan</label>
                     <select name="bulan" id="bulan" class="form-select">
+                        <option value="all" <?= ($bulan == 'all' || $bulan == '') ? 'selected' : '' ?>>Semua Bulan</option>
                         <?php for ($i = 1; $i <= 12; $i++): ?>
-                        <option value="<?= $i ?>" <?= $i == $bulan ? 'selected' : '' ?>>
-                            <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
-                        </option>
+                            <option value="<?= $i ?>" <?= $i == $bulan ? 'selected' : '' ?>>
+                                <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
+                            </option>
                         <?php endfor; ?>
                     </select>
                 </div>
@@ -90,7 +91,7 @@
                     <label for="tahun" class="form-label">Tahun</label>
                     <select name="tahun" id="tahun" class="form-select">
                         <?php for ($y = date('Y'); $y >= 2020; $y--): ?>
-                        <option value="<?= $y ?>" <?= $y == $tahun ? 'selected' : '' ?>><?= $y ?></option>
+                            <option value="<?= $y ?>" <?= $y == $tahun ? 'selected' : '' ?>><?= $y ?></option>
                         <?php endfor; ?>
                     </select>
                 </div>
@@ -106,13 +107,13 @@
 </div>
 
 <?= $this->section('scripts') ?>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('#usersTable').DataTable({
             responsive: true,
             language: {

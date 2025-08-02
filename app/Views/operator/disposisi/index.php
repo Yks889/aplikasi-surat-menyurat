@@ -51,8 +51,8 @@
                                     'dari_nama' => $d['dari_nama'],
                                     'file_surat' => $d['file_surat'],
                                     'created_at' => $d['created_at'],
-                                    'catatan' => $d['catatan'], // ambil dari disposisi pertama
-                                    'id' => $d['id'], // ID untuk tombol aksi
+                                    'catatan' => $d['catatan'],
+                                    'id' => $d['id'],
                                     'details' => []
                                 ];
                             }
@@ -70,30 +70,23 @@
                             <td><?= esc($group['nomor_surat']) ?></td>
                             <td><?= esc($group['dari_nama']) ?></td>
                             <td>
-                                <ul class="mb-0 ps-3">
-                                    <?php foreach ($group['details'] as $det): ?>
-                                        <li><?= esc($det['ke_nama']) ?></li>
-                                    <?php endforeach ?>
-                                </ul>
+                                <?php foreach ($group['details'] as $i => $det): ?>
+                                    <?= esc($det['ke_nama']) ?><?= $i < count($group['details']) - 1 ? '<br>' : '' ?>
+                                <?php endforeach ?>
                             </td>
                             <td><?= esc($group['catatan']) ?></td>
                             <td>
-                                <ul class="mb-0 ps-3">
-                                    <?php foreach ($group['details'] as $det): ?>
-                                        <li>
-                                            <span class="badge bg-<?= $det['status'] == 'belum dibaca' ? 'secondary' : 'success' ?>">
-                                                <?= ucfirst($det['status']) ?>
-                                            </span>
-                                        </li>
-                                    <?php endforeach ?>
-                                </ul>
+                                <?php foreach ($group['details'] as $i => $det): ?>
+                                    <span class="badge bg-<?= $det['status'] == 'belum dibaca' ? 'secondary' : 'success' ?>">
+                                        <?= ucfirst($det['status']) ?>
+                                    </span><?= $i < count($group['details']) - 1 ? '<br>' : '' ?>
+                                <?php endforeach ?>
                             </td>
                             <td>
-                                <ul class="mb-0 ps-3">
-                                    <?php foreach ($group['details'] as $det): ?>
-                                        <li><?= $det['dibaca_pada'] ? date('d/m/Y H:i', strtotime($det['dibaca_pada'])) : '-' ?></li>
-                                    <?php endforeach ?>
-                                </ul>
+                                <?php foreach ($group['details'] as $i => $det): ?>
+                                    <?= $det['dibaca_pada'] ? date('d/m/Y H:i', strtotime($det['dibaca_pada'])) : '-' ?>
+                                    <?= $i < count($group['details']) - 1 ? '<br>' : '' ?>
+                                <?php endforeach ?>
                             </td>
                             <td><?= date('d/m/Y H:i', strtotime($group['created_at'])) ?></td>
                             <td class="text-end">

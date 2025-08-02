@@ -64,15 +64,17 @@
                         }
                         $index = 1;
                         ?>
-                        <?php foreach ($grouped as $group): ?>
+                        <?php
+                        $no = 1;
+                        foreach ($grouped as $group): ?>
                         <tr>
-                            <td class="text-center"><?= $index++ ?></td>
+                            <td class="text-center"><?= $no++ ?></td>
                             <td><?= esc($group['nomor_surat']) ?></td>
                             <td><?= esc($group['dari_nama']) ?></td>
                             <td>
-                                <?php foreach ($group['details'] as $index => $det): ?>
+                                <?php foreach ($group['details'] as $detailIndex => $det): ?>
                                     <?= esc($det['ke_nama']) ?>
-                                    <?php if ($index < count($group['details']) - 1): ?><br><?php endif; ?>
+                                    <?php if ($detailIndex < count($group['details']) - 1): ?><br><?php endif; ?>
                                 <?php endforeach ?>
                             </td>
                             <td><?= esc($group['catatan']) ?></td>
