@@ -181,14 +181,35 @@ class SuratMasuk extends BaseController
             return redirect()->to('/admin/surat-masuk')->with('error', 'Data surat tidak ditemukan.');
         }
 
+        // Hapus file jika ada
         if (!empty($surat['file_surat']) && file_exists('uploads/surat_masuk/' . $surat['file_surat'])) {
             unlink('uploads/surat_masuk/' . $surat['file_surat']);
         }
 
+        // Hapus disposisi_user terkait
+        $disposisiModel = new \App\Models\DisposisiModel();
+        $disposisiUserModel = new \App\Models\DisposisiUserModel();
+
+        $disposisis = $disposisiModel->where('surat_id', $id)->findAll();
+        foreach ($disposisis as $disposisi) {
+            $disposisiUserModel->where('disposisi_id', $disposisi['id'])->delete();
+        }
+
+        // Hapus disposisi utama
+        $disposisiModel->where('surat_id', $id)->delete();
+
+        // Hapus activity terkait surat masuk ini
+        $activityModel = new \App\Models\ActivityModel();
+        $activityModel->where('type', 'surat-masuk')
+            ->like('description', $surat['nomor_surat'])
+            ->delete();
+
+        // Hapus data surat masuk
         $this->suratMasukModel->delete($id);
 
         return redirect()->to('/admin/surat-masuk')->with('message', 'Surat berhasil dihapus.');
     }
+
 
     public function kirimDisposisi($id)
     {
