@@ -198,26 +198,6 @@
       transition: var(--transition);
     }
 
-    /* Footer */
-    .main-footer {
-      background-color: white;
-      border-top: 1px solid #e2e8f0;
-      padding: 1.25rem 0;
-      font-size: 0.875rem;
-      transition: var(--transition);
-    }
-
-    .footer-links a {
-      color: var(--secondary);
-      text-decoration: none;
-      transition: color 0.2s ease;
-      font-weight: 500;
-    }
-
-    .footer-links a:hover {
-      color: var(--primary);
-    }
-
     /* Sidebar Toggle Button */
     #sidebarToggle {
       border: none;
