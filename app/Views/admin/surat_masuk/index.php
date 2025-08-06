@@ -69,7 +69,7 @@
                                         <button onclick="confirmDelete(<?= $surat['id'] ?>)" class="btn btn-sm btn-outline-danger" title="Hapus">
                                             <i class="bi bi-trash"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalDisposisi<?= $surat['id'] ?>">
+                                        <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalDisposisi<?= $surat['id'] ?>">
                                             <i class="bi bi-send"></i>
                                         </button>
                                     </div>
