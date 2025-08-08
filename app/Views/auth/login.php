@@ -147,14 +147,14 @@
         }
         
         .brand-name {
-            background: linear-gradient(135deg, #4cc9f0, #4361ee, #3f37c9);
+            background: linear-gradient(135deg, #3f37c9, #4361ee, #4cc9f0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-fill-color: transparent;
             font-weight: 800;
         }
-        
+       
         .footer-text {
             font-size: 0.8rem;
             color: #6c757d;

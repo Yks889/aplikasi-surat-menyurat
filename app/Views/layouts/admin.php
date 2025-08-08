@@ -309,7 +309,7 @@
       }
 
       .brand-name {
-        background: linear-gradient(135deg, #4cc9f0, #4361ee, #3f37c9);
+        background: linear-gradient(135deg, #3f37c9, #4361ee, #4cc9f0);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -467,3 +467,4 @@
   <h1 style="text-align: center; margin-top: 50px;">Akses Ditolak</h1>
   <p style="text-align: center;">Anda tidak memiliki izin untuk mengakses halaman ini.</p>
 <?php endif; ?>
+

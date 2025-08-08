@@ -63,7 +63,6 @@ class Disposisi extends BaseController
     public function detail($surat_id)
     {
         $db = \Config\Database::connect();
-
         
         // Ambil data surat
         $surat = $db->table('surat_masuk')
