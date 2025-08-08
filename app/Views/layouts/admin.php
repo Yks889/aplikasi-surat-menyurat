@@ -23,7 +23,7 @@
         --primary-light: #f0f5ff;
         --secondary: #6c757d;
         --sidebar-width: 280px;
-        --navbar-height: 70px;
+        --navbar-height: 75px;
         --sidebar-bg: #0f172a;
         --sidebar-text: #e2e8f0;
         --sidebar-active: rgba(67, 97, 238, 0.2);
