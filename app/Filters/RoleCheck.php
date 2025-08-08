@@ -16,7 +16,8 @@ class RoleCheck implements FilterInterface
             return redirect()->to('/login');
         }
         
-        $userRole = $session->get('role');
+        $user = $session->get('user');
+        $userRole = $user['role'] ?? null;
         
         if (!in_array($userRole, $arguments)) {
             if ($userRole == 'admin') {

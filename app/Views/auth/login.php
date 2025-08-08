@@ -29,90 +29,84 @@
         
         .login-container {
             width: 100%;
-            max-width: 420px;
+            max-width: 360px;
             animation: fadeInDown 0.6s;
+            padding: 0 15px;
         }
         
         .login-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
         
         .login-header img {
-            height: auto;
-            max-height: 150px;
-            max-width: 100%;
-            width: auto;
-            margin-bottom: 1rem;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
+            height: 60px;
+            margin-bottom: 0.75rem;
         }
         
         .login-header h1 {
             font-weight: 700;
             color: var(--dark-color);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
+            font-size: 1.5rem;
         }
         
         .login-header p {
             color: #6c757d;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         .login-card {
             border: none;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             transition: transform 0.3s ease;
             background: white;
         }
         
         .login-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
         
         .login-card-body {
-            padding: 2.5rem;
+            padding: 1.75rem;
         }
         
         .form-control {
-            height: 48px;
+            height: 44px;
             border-radius: 8px;
             border: 1px solid #e0e0e0;
             padding-left: 15px;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            font-size: 0.9rem;
         }
         
         .form-control:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
-        }
-        
-        .input-group-text {
-            background-color: white;
-            border-left: none;
-            color: #adb5bd;
-        }
-        
-        .input-group .form-control {
-            border-right: none;
-        }
-        
-        .input-group .form-control:focus + .input-group-text {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
         }
         
         .btn-login {
             background-color: var(--primary-color);
             border: none;
-            height: 48px;
+            height: 44px;
             border-radius: 8px;
             font-weight: 600;
             letter-spacing: 0.5px;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        
+        .btn-login {
+            background-color: var(--primary-color);
+            border: none;
+            height: 44px;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            font-size: 0.95rem;
         }
         
         .btn-login:hover {
@@ -120,69 +114,9 @@
             transform: translateY(-2px);
         }
         
-        .btn-login:active {
-            transform: translateY(0);
-        }
-        
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 1.5rem 0;
-            color: #adb5bd;
-            font-size: 0.8rem;
-        }
-        
-        .divider::before, .divider::after {
-            content: "";
-            flex: 1;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .divider::before {
-            margin-right: 1rem;
-        }
-        
-        .divider::after {
-            margin-left: 1rem;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .footer-links a {
-            color: #6c757d;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: var(--primary-color);
-            text-decoration: underline;
-        }
-        
-        /* Alert animations */
-        .alert {
-            border-radius: 8px;
-            border-left: 4px solid;
-            animation: fadeIn 0.5s;
-        }
-        
-        .alert-success {
-            border-left-color: var(--success-color);
-        }
-        
-        .alert-danger {
-            border-left-color: var(--error-color);
-        }
-        
-        /* Floating label effect */
         .form-floating-label {
             position: relative;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
         }
         
         .form-floating-label input {
@@ -190,25 +124,89 @@
             padding: 1rem 1rem 0.5rem 1rem;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            height: 48px;
-            font-size: 1rem;
+            height: 44px;
+            font-size: 0.9rem;
         }
         
         .form-floating-label label {
             position: absolute;
-            top: 15px;
+            top: 13px;
             left: 15px;
             color: #adb5bd;
             transition: all 0.2s;
             pointer-events: none;
+            font-size: 0.9rem;
         }
         
         .form-floating-label input:focus + label,
         .form-floating-label input:not(:placeholder-shown) + label {
             top: 5px;
             left: 15px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--primary-color);
+        }
+        
+        .brand-name {
+            background: linear-gradient(135deg, #3f37c9, #4361ee, #4cc9f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            font-weight: 800;
+        }
+       
+        .footer-text {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 1.5rem;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            font-size: 0.85rem;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .forgot-link {
+            color: #6c757d;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .forgot-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .register-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Alert styles */
+        .alert {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.85rem;
+            margin-bottom: 1.25rem;
         }
         
         /* Responsive adjustments */
@@ -216,19 +214,6 @@
             .login-card-body {
                 padding: 1.5rem;
             }
-            
-            .login-header h1 {
-                font-size: 1.5rem;
-            }
-        }
-
-        .brand-name {
-            background: linear-gradient(135deg, #4cc9f0, #4361ee, #3f37c9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            font-weight: 800;
         }
     </style>
 </head>
@@ -237,7 +222,7 @@
     <div class="login-header">
         <img src="/uploads/logo.png" alt="Logo Sistem Arsip Surat" class="logo-img">
         <h1>Arsip Surat <span class="brand-name">Gonet</span></h1>
-
+        <p>Masuk untuk mengakses sistem</p>
     </div>
 
     <div class="card login-card">
@@ -262,7 +247,7 @@
             <?php if (session()->getFlashdata('errors')) : ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    <ul class="mb-0">
+                    <ul class="mb-0" style="font-size: 0.85rem;">
                         <?php foreach (session()->getFlashdata('errors') as $err) : ?>
                             <li><?= esc($err) ?></li>
                         <?php endforeach ?>
@@ -274,22 +259,32 @@
             <form action="/login" method="post" class="needs-validation" novalidate>
                 <?= csrf_field() ?>
 
-                <div class="form-floating-label mb-4">
+                <div class="form-floating-label mb-3">
                     <input type="text" class="form-control <?= ($validation->hasError('username')) ? 'is-invalid' : '' ?>"
                            name="username" placeholder=" " value="<?= old('username') ?>" required>
                     <label for="username"><i class="bi bi-person me-2"></i>Username</label>
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="font-size: 0.8rem;">
                         <?= $validation->getError('username') ?: 'Harap masukkan username Anda' ?>
                     </div>
                 </div>
 
-                <div class="form-floating-label mb-4">
+                <div class="form-floating-label mb-3">
                     <input type="password" class="form-control <?= ($validation->hasError('password')) ? 'is-invalid' : '' ?>"
                            name="password" placeholder=" " required>
                     <label for="password"><i class="bi bi-lock me-2"></i>Password</label>
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="font-size: 0.8rem;">
                         <?= $validation->getError('password') ?: 'Harap masukkan password Anda' ?>
                     </div>
+                </div>
+
+                <div class="remember-forgot mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe" style="font-size: 0.85rem;">
+                            Ingat saya
+                        </label>
+                    </div>
+             
                 </div>
 
                 <div class="d-grid mb-3">
@@ -298,19 +293,15 @@
                     </button>
                 </div>
 
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="rememberMe">
-                    <label class="form-check-label" for="rememberMe">
-                        Ingat saya
-                    </label>
-                    <a href="/register" class="btn btn-link float-end"><i class="bi bi-person-plus-fill"></i>Daftar Sekarang</a>
+                <div class="register-link">
+                    Belum punya akun? <a href="/register">Daftar sekarang</a>
                 </div>
             </form>
         </div>
     </div>
     
-    <div class="text-center mt-4 text-muted">
-        <small>&copy; <?= date('Y') ?> Sistem Arsip Surat. All rights reserved.</small>
+    <div class="footer-text text-center">
+        &copy; <?= date('Y') ?> Sistem Arsip Surat. All rights reserved.
     </div>
 </div>
 
@@ -320,10 +311,8 @@
     (function () {
         'use strict'
         
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.querySelectorAll('.needs-validation')
         
-        // Loop over them and prevent submission
         Array.prototype.slice.call(forms)
             .forEach(function (form) {
                 form.addEventListener('submit', function (event) {
@@ -336,17 +325,6 @@
                 }, false)
             })
     })()
-    
-    // Add animation to input focus
-    document.querySelectorAll('.form-control').forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.classList.add('animate__animated', 'animate__pulse', 'animate__faster');
-        });
-        
-        input.addEventListener('blur', function() {
-            this.parentElement.classList.remove('animate__animated', 'animate__pulse', 'animate__faster');
-        });
-    });
 </script>
 </body>
 </html>

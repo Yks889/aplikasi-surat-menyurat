@@ -13,7 +13,7 @@ RUN a2enmod rewrite \
 COPY . /var/www/html
 
 # Atur document root ke folder public
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 # Update konfigurasi Apache agar root-nya ke /public
 RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
@@ -21,4 +21,3 @@ RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-avail
 # Beri hak akses ke folder writable (CI4)
 RUN chown -R www-data:www-data /var/www/html/writable
 
-EXPOSE 80

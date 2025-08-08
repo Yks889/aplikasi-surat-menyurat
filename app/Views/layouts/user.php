@@ -1,4 +1,5 @@
 <?php $user = session()->get('user'); ?>
+<?php if ($user && $user['role'] === 'user') : ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -197,26 +198,6 @@
       transition: var(--transition);
     }
 
-    /* Footer */
-    .main-footer {
-      background-color: white;
-      border-top: 1px solid #e2e8f0;
-      padding: 1.25rem 0;
-      font-size: 0.875rem;
-      transition: var(--transition);
-    }
-
-    .footer-links a {
-      color: var(--secondary);
-      text-decoration: none;
-      transition: color 0.2s ease;
-      font-weight: 500;
-    }
-
-    .footer-links a:hover {
-      color: var(--primary);
-    }
-
     /* Sidebar Toggle Button */
     #sidebarToggle {
       border: none;
@@ -307,7 +288,7 @@
     }
 
     .brand-name {
-      background: linear-gradient(135deg, #4cc9f0, #4361ee, #3f37c9);
+      background: linear-gradient;(135deg, #3f37c9, #4361ee, #4cc9f0)
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -362,6 +343,15 @@
         <i class="bi bi-clock-history"></i>
         <span>History Surat Masuk</span>
       </a>
+      <a href="/user/disposisi" class="nav-link <?= strpos(current_url(), 'disposisi') !== false ? 'active' : '' ?>">
+        <i class="bi bi-inbox"></i>
+        <span>Disposisi Masuk</span>
+      </a>
+      <a href="/user/history-pengajuan" class="nav-link <?= strpos(current_url(), 'history-pengajuan') !== false ? 'active' : '' ?>">
+        <i class="bi bi-info"></i>
+        <span>History Pengajuan</span>
+      </a>
+
     </nav>
   </aside>
 
@@ -389,7 +379,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="profile">
+              <a class="dropdown-item d-flex align-items-center" href="/user/profile">
                 <i class="bi bi-person me-2"></i> 
                 <span>Profil Saya</span>
               </a>
@@ -425,7 +415,26 @@
   document.getElementById('sidebarToggle').addEventListener('click', function () {
     document.getElementById('sidebarMenu').classList.toggle('show');
   });
+
+    // Tutup sidebar jika klik di luar sidebar saat tampil di layar kecil
+document.addEventListener('click', function (event) {
+  const sidebar = document.getElementById('sidebarMenu');
+  const toggle = document.getElementById('sidebarToggle');
+
+  const isSidebarOpen = sidebar.classList.contains('show');
+  const clickedInsideSidebar = sidebar.contains(event.target);
+  const clickedToggle = toggle.contains(event.target);
+
+  // Jika sidebar terbuka dan klik di luar sidebar dan toggle, tutup sidebar
+  if (isSidebarOpen && !clickedInsideSidebar && !clickedToggle) {
+    sidebar.classList.remove('show');
+  }
+});
 </script>
 <?= $this->renderSection('scripts') ?>
 </body>
 </html>
+<?php else : ?>
+  <h1 style="text-align: center; margin-top: 50px;">Akses Ditolak</h1>
+  <p style="text-align: center;">Anda tidak memiliki izin untuk mengakses halaman ini.</p>
+<?php endif; ?>

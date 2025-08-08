@@ -7,7 +7,7 @@
             <h2 class="h4 mb-1"><i class="bi bi-envelope-check me-2 text-primary"></i>Edit Surat Masuk</h2>
         </div>
         <div>
-            <a href="/admin/surat-masuk" class="btn btn-outline-secondary">
+            <a href="/operator/surat-masuk" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left me-1"></i> Kembali
             </a>
         </div>

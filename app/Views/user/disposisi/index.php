@@ -3,11 +3,19 @@
 <div class="container-fluid py-4">
     <!-- Notification Alert -->
     <?php if (session()->getFlashdata('success')) : ?>
+<<<<<<< HEAD
     <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
         <i class="bi bi-check-circle-fill me-2"></i>
         <div><?= session()->getFlashdata('success') ?></div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+=======
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <div><?= session()->getFlashdata('success') ?></div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+>>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
     <?php endif; ?>
 
     <!-- Page Header -->
@@ -43,6 +51,7 @@
                         </thead>
                         <tbody>
                             <?php foreach ($disposisi as $index => $d): ?>
+<<<<<<< HEAD
                             <tr>
                                 <td class="text-center"><?= $index + 1 ?></td>
                                 <td><?= esc($d['nomor_surat']) ?></td>
@@ -60,6 +69,28 @@
                                     </a>
                                 </td>
                             </tr>
+=======
+                                <tr>
+                                    <td class="text-center"><?= $index + 1 ?></td>
+                                    <td><?= esc($d['nomor_surat']) ?></td>
+                                    <td><?= esc($d['dari']) ?></td>
+                                    <td><?= esc($d['catatan']) ?></td>
+                                    <td>
+                                        <span class="badge bg-<?= ($d['status'] ?? 'belum dibaca') == 'belum dibaca' ? 'secondary' : 'success' ?>">
+                                            <?= ucfirst($d['status'] ?? 'belum dibaca') ?>
+                                        </span>
+                                    </td>
+                                    <td><?= date('d/m/Y H:i', strtotime($d['created_at'])) ?></td>
+                                    <td>
+                                        <a href="/user/disposisi/detail/<?= $d['surat_id'] ?>" class="btn btn-sm btn-outline-info">
+                                            <i class="bi bi-info-circle"></i> Detail
+                                        </a>
+                                        <a href="/user/disposisi/ajukan/<?= $d['surat_id'] ?>" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-send-check"></i> Ajukan
+                                        </a>
+                                    </td>
+                                </tr>
+>>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
                             <?php endforeach ?>
                         </tbody>
                     </table>
@@ -83,9 +114,15 @@
                     <select name="bulan" id="bulan" class="form-select">
                         <option value="">Semua Bulan</option>
                         <?php for ($i = 1; $i <= 12; $i++): ?>
+<<<<<<< HEAD
                         <option value="<?= $i ?>" <?= isset($filter_bulan) && $i == $filter_bulan ? 'selected' : '' ?>>
                             <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
                         </option>
+=======
+                            <option value="<?= $i ?>" <?= isset($filter_bulan) && $i == $filter_bulan ? 'selected' : '' ?>>
+                                <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
+                            </option>
+>>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
                         <?php endfor; ?>
                     </select>
                 </div>
@@ -94,7 +131,11 @@
                     <select name="tahun" id="tahun" class="form-select">
                         <option value="">Semua Tahun</option>
                         <?php for ($y = date('Y'); $y >= 2020; $y--): ?>
+<<<<<<< HEAD
                         <option value="<?= $y ?>" <?= isset($filter_tahun) && $y == $filter_tahun ? 'selected' : '' ?>><?= $y ?></option>
+=======
+                            <option value="<?= $y ?>" <?= isset($filter_tahun) && $y == $filter_tahun ? 'selected' : '' ?>><?= $y ?></option>
+>>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
                         <?php endfor; ?>
                     </select>
                 </div>
@@ -120,13 +161,21 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
+<<<<<<< HEAD
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"/>
+=======
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+>>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
+<<<<<<< HEAD
     $(document).ready(function () {
+=======
+    $(document).ready(function() {
+>>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
         $('#disposisiTable').DataTable({
             responsive: true,
             language: {
