@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Controllers\User;
+
+use App\Controllers\BaseController;
+use App\Models\PengajuanSuratKeluarModel;
+
+class HistoryPengajuan extends BaseController
+{
+    protected $pengajuanModel;
+
+    public function __construct()
+    {
+        $this->pengajuanModel = new PengajuanSuratKeluarModel();
+    }
+
+    public function index()
+    {
+        // Ambil user saat ini
+        $user = session()->get('user');
+
+        if (!$user) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
+        // Ambil data pengajuan langsung dari user yang login
+        $pengajuanLangsung = $this->pengajuanModel
+            ->where('dari', $user['full_name'])
+            ->where('surat_masuk_id', null) // Pengajuan langsung
+            ->orderBy('created_at', 'DESC')
+            ->findAll();
+
+        return view('user/pengajuan/index', [
+            'pengajuanSuratKeluar' => $pengajuanLangsung
+        ]);
+    }
+    public function create()
+    {
+        return view('user/pengajuan/create');
+    }
+
+    public function store()
+    {
+        $user = session()->get('user');
+
+        if (!$user) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
+        $judul = $this->request->getPost('judul');
+        $deskripsi= $this->request->getPost('deskripsi');
+
+        // Validasi sederhana
+        if (!$judul || !$deskripsi) {
+            return redirect()->back()->withInput()->with('error', 'Judul dan Deskripsi wajib diisi.');
+        }
+
+        $this->pengajuanModel->insert([
+            'judul' => $judul,
+            'deskripsi' => $deskripsi,
+            'dari' => $user['full_name'],
+            'kepada' => 'Admin', // Default
+            'status' => 'belum',  // Default
+            'surat_masuk_id' => null
+        ]);
+
+        return redirect()->to('/user/history-pengajuan')->with('message', 'Pengajuan surat keluar berhasil dikirim.');
+    }
+}

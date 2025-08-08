@@ -367,6 +367,10 @@
         <i class="bi bi-inbox"></i>
         <span>Disposisi Masuk</span>
       </a>
+      <a href="/user/history-pengajuan" class="nav-link <?= strpos(current_url(), 'history-pengajuan') !== false ? 'active' : '' ?>">
+        <i class="bi bi-info"></i>
+        <span>History Pengajuan</span>
+      </a>
 
     </nav>
   </aside>
