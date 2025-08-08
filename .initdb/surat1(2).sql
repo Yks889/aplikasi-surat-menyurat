@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: ci4_db:3306
--- Generation Time: Jul 26, 2025 at 07:29 AM
+-- Generation Time: Aug 08, 2025 at 04:22 AM
 -- Server version: 5.7.44
 -- PHP Version: 8.2.27
 
@@ -41,13 +41,7 @@ CREATE TABLE `activities` (
 --
 
 INSERT INTO `activities` (`id`, `user_id`, `title`, `description`, `type`, `created_at`) VALUES
-(1, 3, 'Mengirim Surat', 'Anda mengirim surat dengan nomor: 12.001/GMTNET/VII/2025', 'surat-masuk', '2025-07-05 14:27:59'),
-(2, 3, 'Mengirim Surat', 'Anda mengirim surat dengan nomor: 2344634', 'surat-masuk', '2025-07-05 14:29:48'),
-(3, 3, 'Mengirim Surat', 'Anda mengirim surat dengan nomor: 25252525', 'surat-masuk', '2025-07-07 11:59:51'),
-(6, 3, 'Mengirim Surat', 'Anda mengirim surat dengan nomor: 25252525', 'surat-masuk', '2025-07-11 11:11:28'),
-(7, 2, 'Mengirim Surat', 'Anda mengirim surat dengan nomor: 12345678', 'surat-masuk', '2025-07-12 12:50:55'),
-(8, 5, 'Mengirim Surat', 'Anda mengirim surat dengan nomor: 1234567', 'surat-masuk', '2025-07-12 13:46:18'),
-(9, 16, 'Mengirim Surat', 'Anda mengirim surat dengan nomor: 132213', 'surat-masuk', '2025-07-23 06:02:47');
+(11, 16, 'Mengirim Surat', 'Anda mengirim surat dengan nomor: 1253216398426', 'surat-masuk', '2025-08-04 02:55:32');
 
 -- --------------------------------------------------------
 
@@ -68,9 +62,10 @@ CREATE TABLE `disposisi` (
 --
 
 INSERT INTO `disposisi` (`id`, `surat_id`, `dari_user_id`, `catatan`, `created_at`) VALUES
-(8, 41, 1, 'ppdasdihasd\r\n', '2025-07-24 03:36:37'),
 (11, 43, 2, 'tester', '2025-07-25 07:59:53'),
-(13, 42, 2, 'mohon ditindak lanjuti tesss', '2025-07-25 08:10:57');
+(13, 42, 2, 'mohon ditindak lanjuti tesss', '2025-07-25 08:10:57'),
+(25, 46, 2, 'qwertyui', '2025-08-04 10:01:53'),
+(26, 46, 1, 'adhsajdaxan', '2025-08-04 14:13:41');
 
 -- --------------------------------------------------------
 
@@ -91,13 +86,16 @@ CREATE TABLE `disposisi_user` (
 --
 
 INSERT INTO `disposisi_user` (`id`, `disposisi_id`, `ke_user_id`, `status`, `dibaca_pada`) VALUES
-(34, 8, 5, 'belum dibaca', NULL),
-(35, 8, 16, 'dibaca', '2025-07-25 15:25:50'),
 (38, 11, 3, 'belum dibaca', NULL),
 (39, 11, 5, 'belum dibaca', NULL),
 (40, 11, 16, 'dibaca', '2025-07-25 15:25:50'),
 (53, 13, 3, 'belum dibaca', NULL),
-(54, 13, 5, 'belum dibaca', NULL);
+(54, 13, 5, 'belum dibaca', NULL),
+(88, 25, 3, 'belum dibaca', NULL),
+(89, 25, 5, 'belum dibaca', NULL),
+(90, 25, 16, 'dibaca', '2025-08-04 14:14:18'),
+(94, 26, 3, 'belum dibaca', NULL),
+(95, 26, 16, 'dibaca', '2025-08-04 14:14:18');
 
 -- --------------------------------------------------------
 
@@ -131,6 +129,39 @@ INSERT INTO `jenis_surat` (`id`, `nama`, `singkatan`) VALUES
 (14, 'Perjanjian Kerja', 'PK'),
 (15, 'Surat Pengantar', 'SPeng'),
 (16, 'sktester', 'SJAKSJAHDS');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pengajuan_surat_keluar`
+--
+
+CREATE TABLE `pengajuan_surat_keluar` (
+  `id` int(11) NOT NULL,
+  `judul` varchar(255) NOT NULL,
+  `deskripsi` text,
+  `dari` varchar(255) DEFAULT NULL,
+  `kepada` varchar(255) DEFAULT NULL,
+  `surat_masuk_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` enum('belum','diterima','ditolak') DEFAULT 'belum'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pengajuan_surat_keluar`
+--
+
+INSERT INTO `pengajuan_surat_keluar` (`id`, `judul`, `deskripsi`, `dari`, `kepada`, `surat_masuk_id`, `created_at`, `updated_at`, `status`) VALUES
+(1, 'halo', 'qwerty', 'Rafi Noer Salim', 'Admin', 46, '2025-08-05 02:51:50', '2025-08-05 11:10:09', 'diterima'),
+(2, 'qwerty', 'qwertyu', 'Rafi Noer Salim', 'Admin', 46, '2025-08-05 14:50:43', '2025-08-05 14:56:44', 'ditolak'),
+(3, 'qwerty', 'nshdygada', 'Rafi Noer Salim', 'Admin', 46, '2025-08-06 16:07:29', '2025-08-06 16:07:29', 'belum'),
+(4, 'wdfAA SCA', 'MCASDADA\r\n', 'Rafi Noer Salim', 'Admin', 46, '2025-08-06 16:09:17', '2025-08-06 16:09:17', 'belum'),
+(5, 'duwqduqw', 'anuasiasncisc', 'Rafi Noer Salim', 'Admin', NULL, '2025-08-07 11:52:24', '2025-08-07 11:52:24', 'belum'),
+(6, 'asdaysduasd', 'sbdusadasdiasd', 'Rafi Noer Salim', 'Admin', NULL, '2025-08-07 13:40:44', '2025-08-07 13:40:44', 'belum'),
+(7, 'gyasdau', 'ashudsahdiasd', 'Rafi Noer Salim', 'Admin', NULL, '2025-08-07 13:44:30', '2025-08-07 13:44:30', 'belum'),
+(8, 'sadsadsad', 'asdas', 'Rafi Noer Salim', 'Admin', NULL, '2025-08-07 13:45:59', '2025-08-07 14:18:33', 'diterima'),
+(9, 'fdsafsd', 'sdfsdfsdf', 'Rafi Noer Salim', 'Admin', NULL, '2025-08-07 13:46:42', '2025-08-07 14:08:28', 'ditolak');
 
 -- --------------------------------------------------------
 
@@ -186,7 +217,8 @@ INSERT INTO `surat_keluar` (`id`, `kode_surat`, `nomor_surat`, `untuk`, `perusah
 (13, 'SK', '001/GMTNE-SK/XI/2029', 'saya', 1, '2029-11-15', 'dzdsdhsd', 1, '1751695636_756c2b58bdbd7ac3cca3.jpg', 2, '2025-07-05 13:07:16', NULL),
 (17, 'SPm', '002/GMTNET-SPm/VII/2025', 'kamu', 1, '2025-07-12', 'vvkhb', 1, '1752292913_ebe946e8ab7e3d993dbc.png', 1, '2025-07-12 11:01:53', NULL),
 (18, 'SU', '003/GMTNET-SU/VII/2025', 'qwertyu', 1, '2025-07-12', 'qwertyuio', 1, '1752299527_da1dec84c57b02177e30.png', 3, '2025-07-12 12:52:07', NULL),
-(19, 'SPm', '004/GAIN-SPm/VII/2025', 'sayaasdasd', 2, '2025-07-24', 'asdasdsad', 1, '1753416057_69b800bce1fd7d03606a.docx', 1, '2025-07-25 04:00:57', NULL);
+(19, 'SPm', '004/GAIN-SPm/VII/2025', 'sayaasdasd', 2, '2025-07-24', 'asdasdsad', 1, '1753416057_69b800bce1fd7d03606a.docx', 1, '2025-07-25 04:00:57', NULL),
+(20, 'SPp', '002/GMTNET-SPp/VIII/2025', 'saya', 1, '2025-08-05', 'qwertyu', 1, '1754361868_8ea59bb91a1713bfe7e2.png', 1, '2025-08-05 02:44:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -213,10 +245,10 @@ CREATE TABLE `surat_masuk` (
 --
 
 INSERT INTO `surat_masuk` (`id`, `nomor_surat`, `perusahaan_id`, `dari`, `perihal`, `tgl_surat`, `waktu_diterima`, `file_surat`, `created_by`, `created_at`, `updated_at`) VALUES
-(35, '2345', 2, 'aumaum', 'knapa', '2025-08-07', '2025-07-08 08:01:24', '1751961684_5afa126a60dfe2154c36.jpg', 1, '2025-07-08 08:01:24', '2025-07-08 08:01:24'),
 (41, '123456', 1, 'qwerty', 'qwertyuio', '2025-07-10', '2025-07-12 05:12:29', '1752297149_6c8ed96c3428adb1aa9c.png', 3, '2025-07-12 05:12:29', '2025-07-12 05:12:29'),
 (42, '12345678', 1, 'qwerty', 'qwertyui', '2025-07-17', '2025-07-12 05:50:55', '1752299455_0cfaa4bb9e4ccdb256b2.png', 2, '2025-07-12 05:50:55', '2025-07-12 05:50:55'),
-(43, '1234567', 1, 'syahdan', 'pkl', '2025-07-12', '2025-07-12 06:46:18', '1752302778_11e2ce601afdb61ba46f.png', 5, '2025-07-12 06:46:18', '2025-07-12 06:46:18');
+(43, '1234567', 1, 'syahdan', 'pkl', '2025-07-12', '2025-07-12 06:46:18', '1752302778_11e2ce601afdb61ba46f.png', 5, '2025-07-12 06:46:18', '2025-07-12 06:46:18'),
+(46, '1253216398426', 1, 'saya', 'wqwertyghjk,', '2025-08-04', '2025-08-04 09:55:32', '1754276132_2a76f4b849bd98a63c7f.jpeg', 16, '2025-08-04 02:55:32', '2025-08-04 02:55:32');
 
 -- --------------------------------------------------------
 
@@ -297,6 +329,13 @@ ALTER TABLE `jenis_surat`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `pengajuan_surat_keluar`
+--
+ALTER TABLE `pengajuan_surat_keluar`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `surat_masuk_id` (`surat_masuk_id`);
+
+--
 -- Indexes for table `perusahaan`
 --
 ALTER TABLE `perusahaan`
@@ -341,25 +380,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activities`
 --
 ALTER TABLE `activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `disposisi`
 --
 ALTER TABLE `disposisi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `disposisi_user`
 --
 ALTER TABLE `disposisi_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT for table `jenis_surat`
 --
 ALTER TABLE `jenis_surat`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `pengajuan_surat_keluar`
+--
+ALTER TABLE `pengajuan_surat_keluar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `perusahaan`
@@ -371,13 +416,13 @@ ALTER TABLE `perusahaan`
 -- AUTO_INCREMENT for table `surat_keluar`
 --
 ALTER TABLE `surat_keluar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `surat_masuk`
 --
 ALTER TABLE `surat_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `tanda_tangan`
@@ -400,6 +445,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `activities`
   ADD CONSTRAINT `activities_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `pengajuan_surat_keluar`
+--
+ALTER TABLE `pengajuan_surat_keluar`
+  ADD CONSTRAINT `pengajuan_surat_keluar_ibfk_1` FOREIGN KEY (`surat_masuk_id`) REFERENCES `surat_masuk` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `surat_keluar`
