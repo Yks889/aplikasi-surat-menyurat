@@ -27,12 +27,12 @@ $routes->match(['GET', 'POST'], '/register', 'Auth::register');
 $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('dashboard', 'Admin\Dashboard::index');
     // profile
-    $routes->get('profile', 'admin\ProfileController::index');
-    $routes->post('profile/update', 'admin\ProfileController::update');
-    $routes->post('profile/update-password', 'admin\ProfileController::updatePassword');
-    $routes->post('profile/update-photo', 'admin\ProfileController::updatePhoto');
-    $routes->post('profile/remove-photo', 'admin\ProfileController::removePhoto');
-    
+    $routes->get('profile', 'Admin\ProfileController::index');
+    $routes->post('profile/update', 'Admin\ProfileController::update');
+    $routes->post('profile/update-password', 'Admin\ProfileController::updatePassword');
+    $routes->post('profile/update-photo', 'Admin\ProfileController::updatePhoto');
+    $routes->post('profile/remove-photo', 'Admin\ProfileController::removePhoto');
+
 
     // Surat Masuk
     $routes->get('surat-masuk', 'Admin\SuratMasuk::index');
@@ -42,6 +42,8 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->post('surat-masuk/update/(:num)', 'Admin\SuratMasuk::update/$1');
     $routes->get('surat-masuk/delete/(:num)', 'Admin\SuratMasuk::delete/$1');
     $routes->get('surat-masuk/reset-filter', 'Admin\SuratMasuk::resetFilter');
+    $routes->post('surat-masuk/(:num)/disposisi', 'Admin\SuratMasuk::kirimDisposisi/$1');
+
 
     // Surat Keluar
     $routes->get('surat-keluar', 'Admin\SuratKeluar::index');
@@ -52,6 +54,15 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('surat-keluar/delete/(:num)', 'Admin\SuratKeluar::delete/$1');
     $routes->get('surat-keluar/reset-filter', 'Admin\SuratKeluar::resetFilter');
 
+    // Pengajuan Surat Keluar 
+    $routes->get('ajukan', 'Admin\AjukanSurat::index');
+    $routes->get('ajukan/tolak/(:num)', 'Admin\AjukanSurat::tolak/$1');
+    $routes->get('ajukan/detail/(:num)', 'Admin\AjukanSurat::detail/$1');
+    $routes->get('ajukan/terima/(:num)', 'Admin\AjukanSurat::terima/$1');
+
+
+
+
 
     // Manajemen User
     $routes->get('users', 'Admin\UserManagement::index');
@@ -61,6 +72,13 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->post('users/update/(:num)', 'Admin\UserManagement::update/$1');
     $routes->get('users/hapus/(:num)', 'Admin\UserManagement::delete/$1');
     $routes->get('users/reset-filter', 'Admin\UserManagement::resetFilter');
+
+    // Disposisi
+    $routes->get('disposisi', 'Admin\Disposisi::index');
+    $routes->get('disposisi/edit/(:num)', 'Admin\Disposisi::edit/$1');
+    $routes->post('disposisi/update/(:num)', 'Admin\Disposisi::update/$1');
+    $routes->get('disposisi/delete/(:num)', 'Admin\Disposisi::delete/$1');
+    $routes->get('disposisi/detail/(:num)', 'Admin\Disposisi::detail/$1');
 
     // Tanda Tangan
     $routes->get('tanda-tangan', 'Admin\TandaTangan::index');
@@ -87,13 +105,12 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
 // ============ OPERATOR ROUTES ============
 $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
     $routes->get('dashboard', 'Operator\Dashboard::index');
-    $routes->get('dashboard', 'Admin\Dashboard::index');
     // profile
-    $routes->get('profile', 'operator\ProfileController::index');
-    $routes->post('profile/update', 'operator\ProfileController::update');
-    $routes->post('profile/update-password', 'operator\ProfileController::updatePassword');
-    $routes->post('profile/update-photo', 'operator\ProfileController::updatePhoto');
-    $routes->post('profile/remove-photo', 'operator\ProfileController::removePhoto');
+    $routes->get('profile', 'Operator\ProfileController::index');
+    $routes->post('profile/update', 'Operator\ProfileController::update');
+    $routes->post('profile/update-password', 'Operator\ProfileController::updatePassword');
+    $routes->post('profile/update-photo', 'Operator\ProfileController::updatePhoto');
+    $routes->post('profile/remove-photo', 'Operator\ProfileController::removePhoto');
 
     // Surat Masuk
     $routes->get('surat-masuk', 'Operator\SuratMasuk::index');
@@ -103,6 +120,14 @@ $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
     $routes->post('surat-masuk/update/(:num)', 'Operator\SuratMasuk::update/$1');
     $routes->get('surat-masuk/delete/(:num)', 'Operator\SuratMasuk::delete/$1');
     $routes->get('surat-masuk/reset-filter', 'Operator\SuratMasuk::resetFilter');
+    $routes->post('surat-masuk/(:num)/disposisi', 'Operator\SuratMasuk::kirimDisposisi/$1');
+
+    // Disposisi
+    $routes->get('disposisi', 'Operator\Disposisi::index');
+    $routes->get('disposisi/edit/(:num)', 'Operator\Disposisi::edit/$1');
+    $routes->post('disposisi/update/(:num)', 'Operator\Disposisi::update/$1');
+    $routes->get('disposisi/delete/(:num)', 'Operator\Disposisi::delete/$1');
+    $routes->get('disposisi/detail/(:num)', 'Operator\Disposisi::detail/$1');
 
     // Surat Keluar
     $routes->get('surat-keluar', 'Operator\SuratKeluar::index');
@@ -125,12 +150,25 @@ $routes->group('operator', ['filter' => 'role:operator'], function ($routes) {
 // ============ USER ROUTES ============
 $routes->group('user', ['filter' => 'role:user'], function ($routes) {
     $routes->get('dashboard', 'User\Dashboard::index');
-        // profile
+    // profile
     $routes->get('profile', 'User\ProfileController::index');
     $routes->post('profile/update', 'User\ProfileController::update');
     $routes->post('profile/update-password', 'User\ProfileController::updatePassword');
     $routes->post('profile/update-photo', 'User\ProfileController::updatePhoto');
     $routes->post('profile/remove-photo', 'User\ProfileController::removePhoto');
+
+    $routes->get('disposisi', 'User\Disposisi::index');
+    $routes->get('disposisi/detail/(:num)', 'User\Disposisi::detail/$1');
+    $routes->get('disposisi/ajukan/(:num)', 'User\Disposisi::ajukan/$1');
+    $routes->post('disposisi/kirimPengajuan/(:num)', 'User\Disposisi::kirimPengajuan/$1');
+
+    // history pengajuan 
+    $routes->get('history-pengajuan', 'User\HistoryPengajuan::index');
+    $routes->get('history-pengajuan', 'User\HistoryPengajuan::index');
+    $routes->get('history-pengajuan/create', 'User\HistoryPengajuan::create');
+    $routes->post('history-pengajuan/store', 'User\HistoryPengajuan::store');
+
+
 
     // Kirim Surat Masuk
     $routes->get('kirim-surat', 'User\SuratMasuk::create');

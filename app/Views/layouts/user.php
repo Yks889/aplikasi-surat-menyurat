@@ -1,4 +1,5 @@
 <?php $user = session()->get('user'); ?>
+<?php if ($user && $user['role'] === 'user') : ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -362,6 +363,15 @@
         <i class="bi bi-clock-history"></i>
         <span>History Surat Masuk</span>
       </a>
+      <a href="/user/disposisi" class="nav-link <?= strpos(current_url(), 'disposisi') !== false ? 'active' : '' ?>">
+        <i class="bi bi-inbox"></i>
+        <span>Disposisi Masuk</span>
+      </a>
+      <a href="/user/history-pengajuan" class="nav-link <?= strpos(current_url(), 'history-pengajuan') !== false ? 'active' : '' ?>">
+        <i class="bi bi-info"></i>
+        <span>History Pengajuan</span>
+      </a>
+
     </nav>
   </aside>
 
@@ -389,7 +399,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="profile">
+              <a class="dropdown-item d-flex align-items-center" href="/user/profile">
                 <i class="bi bi-person me-2"></i> 
                 <span>Profil Saya</span>
               </a>
@@ -429,3 +439,7 @@
 <?= $this->renderSection('scripts') ?>
 </body>
 </html>
+<?php else : ?>
+  <h1 style="text-align: center; margin-top: 50px;">Akses Ditolak</h1>
+  <p style="text-align: center;">Anda tidak memiliki izin untuk mengakses halaman ini.</p>
+<?php endif; ?>

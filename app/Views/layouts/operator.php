@@ -1,4 +1,5 @@
 <?php $user = session()->get('user'); ?>
+<?php if ($user && $user['role'] === 'operator') : ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -362,6 +363,10 @@
         <i class="bi bi-envelope"></i>
         <span>Surat Masuk</span>
       </a>
+      <a href="/operator/disposisi" class="nav-link <?= strpos(current_url(), 'disposisi') !== false ? 'active' : '' ?>">
+        <i class="bi bi-share"></i>
+        <span>Histori Disposisi</span>
+      </a>
       <a href="/operator/surat-keluar" class="nav-link <?= strpos(current_url(), 'surat-keluar') !== false ? 'active' : '' ?>">
         <i class="bi bi-envelope-open"></i>
         <span>Surat Keluar</span>
@@ -393,7 +398,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="profile">
+              <a class="dropdown-item d-flex align-items-center" href="/operator/profile">
                 <i class="bi bi-person me-2"></i> 
                 <span>Profil Saya</span>
               </a>
@@ -433,3 +438,7 @@
 <?= $this->renderSection('scripts') ?>
 </body>
 </html>
+<?php else : ?>
+  <h1 style="text-align: center; margin-top: 50px;">Akses Ditolak</h1>
+  <p style="text-align: center;">Anda tidak memiliki izin untuk mengakses halaman ini.</p>
+<?php endif; ?>
