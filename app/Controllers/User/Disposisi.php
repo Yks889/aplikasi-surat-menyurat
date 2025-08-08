@@ -3,10 +3,23 @@
 namespace App\Controllers\User;
 
 use App\Controllers\BaseController;
+use App\Models\SuratMasukModel;
 use Config\Database;
+use App\Models\UserModel;
+use App\Models\PengajuanSuratKeluarModel;
 
 class Disposisi extends BaseController
 {
+    protected $UserModel;
+    protected $suratMasukModel;
+    protected $pengajuanModel;
+
+    public function __construct()
+    {
+        $this->UserModel = new UserModel;
+        $this->suratMasukModel = new SuratMasukModel;
+        $this->pengajuanModel = new PengajuanSuratKeluarModel;
+    }
     public function index()
 {
     $db = Database::connect();
@@ -50,6 +63,7 @@ class Disposisi extends BaseController
     public function detail($surat_id)
     {
         $db = \Config\Database::connect();
+
         
         // Ambil data surat
         $surat = $db->table('surat_masuk')
@@ -89,4 +103,37 @@ class Disposisi extends BaseController
         ]);
     }
 
+    public function ajukan($id)
+    {
+        $surat = $this->suratMasukModel->find($id);
+
+        if (!$surat) {
+            return redirect()->back()->with('error', 'Surat tidak ditemukan.');
+        }
+
+        return view('user/disposisi/ajukan', ['surat' => $surat]);
+    }
+
+    public function kirimPengajuan($id)
+    {
+        $surat = $this->suratMasukModel->find($id);
+
+        if (!$surat) {
+            return redirect()->back()->with('error', 'Surat tidak ditemukan.');
+        }
+
+        $judul = $this->request->getPost('judul');
+        $catatan = $this->request->getPost('catatan');
+        $user = session('user');
+
+        $this->pengajuanModel->insert([
+            'judul' => $judul,
+            'deskripsi' => $catatan,
+            'dari' => $user['full_name'],
+            'kepada' => 'Admin',
+            'surat_masuk_id' => $id
+        ]);
+
+        return redirect()->to('/user/disposisi')->with('success', 'Pengajuan surat keluar berhasil dikirim.');
+    }
 }
