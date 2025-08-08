@@ -462,40 +462,7 @@
     <?= $this->renderSection('scripts') ?>
   </body>
 
-<<<<<<< HEAD
-</div>
-
-<!-- JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-  // Toggle sidebar on small screen
-  document.getElementById('sidebarToggle').addEventListener('click', function () {
-    document.getElementById('sidebarMenu').classList.toggle('show');
-  });
-  // Tutup sidebar jika klik di luar sidebar saat tampil di layar kecil
-document.addEventListener('click', function (event) {
-  const sidebar = document.getElementById('sidebarMenu');
-  const toggle = document.getElementById('sidebarToggle');
-
-  const isSidebarOpen = sidebar.classList.contains('show');
-  const clickedInsideSidebar = sidebar.contains(event.target);
-  const clickedToggle = toggle.contains(event.target);
-
-  // Jika sidebar terbuka dan klik di luar sidebar dan toggle, tutup sidebar
-  if (isSidebarOpen && !clickedInsideSidebar && !clickedToggle) {
-    sidebar.classList.remove('show');
-  }
-});
-
-</script>
-<?= $this->renderSection('scripts') ?>
-</body>
-</html>
-=======
   </html>
->>>>>>> 2c1105f7f4055586c9921636a4ceb4f05261082c
 <?php else : ?>
   <h1 style="text-align: center; margin-top: 50px;">Akses Ditolak</h1>
   <p style="text-align: center;">Anda tidak memiliki izin untuk mengakses halaman ini.</p>
