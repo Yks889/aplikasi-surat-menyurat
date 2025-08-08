@@ -16,24 +16,23 @@ class HistoryPengajuan extends BaseController
 
     public function index()
     {
-        // Ambil user saat ini
         $user = session()->get('user');
 
         if (!$user) {
             return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
         }
 
-        // Ambil data pengajuan langsung dari user yang login
-        $pengajuanLangsung = $this->pengajuanModel
+        // Ambil semua pengajuan milik user
+        $pengajuanAll = $this->pengajuanModel
             ->where('dari', $user['full_name'])
-            ->where('surat_masuk_id', null) // Pengajuan langsung
             ->orderBy('created_at', 'DESC')
             ->findAll();
 
         return view('user/pengajuan/index', [
-            'pengajuanSuratKeluar' => $pengajuanLangsung
+            'pengajuanSuratKeluar' => $pengajuanAll
         ]);
     }
+
     public function create()
     {
         return view('user/pengajuan/create');
