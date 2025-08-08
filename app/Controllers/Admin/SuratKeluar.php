@@ -202,7 +202,7 @@ public function update($id)
     $this->suratKeluarModel->update($id, $data);
 
     return redirect()->to('/admin/surat-keluar')->with('message', 'Surat keluar berhasil diperbarui');
-}
+    }
     public function delete($id)
     {
         $surat = $this->suratKeluarModel->find($id);
