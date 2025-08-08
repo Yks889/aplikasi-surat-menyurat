@@ -3,11 +3,19 @@
 <div class="container-fluid py-4">
     <!-- Notification Alert -->
     <?php if (session()->getFlashdata('success')) : ?>
+<<<<<<< HEAD
+    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <div><?= session()->getFlashdata('success') ?></div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+=======
         <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
             <i class="bi bi-check-circle-fill me-2"></i>
             <div><?= session()->getFlashdata('success') ?></div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+>>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
     <?php endif; ?>
 
     <!-- Page Header -->
@@ -123,6 +131,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>

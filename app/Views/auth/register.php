@@ -40,7 +40,7 @@
         }
         
         .register-header img {
-            height: 60px;
+            height: 90px;
             margin-bottom: 0.75rem;
         }
         

@@ -24,7 +24,7 @@
         --primary-light: #f0f5ff;
         --secondary: #6c757d;
         --sidebar-width: 280px;
-        --navbar-height: 70px;
+        --navbar-height: 75px;
         --sidebar-bg: #0f172a;
         --sidebar-text: #e2e8f0;
         --sidebar-active: rgba(67, 97, 238, 0.2);
@@ -310,7 +310,7 @@
       }
 
       .brand-name {
-        background: linear-gradient(135deg, #4cc9f0, #4361ee, #3f37c9);
+        background: linear-gradient(135deg, #3f37c9, #4361ee, #4cc9f0);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -468,3 +468,4 @@
   <h1 style="text-align: center; margin-top: 50px;">Akses Ditolak</h1>
   <p style="text-align: center;">Anda tidak memiliki izin untuk mengakses halaman ini.</p>
 <?php endif; ?>
+

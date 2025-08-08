@@ -22,7 +22,7 @@
       --primary-light: #f0f5ff;
       --secondary: #6c757d;
       --sidebar-width: 280px;
-      --navbar-height: 70px;
+      --navbar-height: 75px;
       --sidebar-bg: #0f172a;
       --sidebar-text: #e2e8f0;
       --sidebar-active: rgba(67, 97, 238, 0.2);
@@ -198,26 +198,6 @@
       transition: var(--transition);
     }
 
-    /* Footer */
-    .main-footer {
-      background-color: white;
-      border-top: 1px solid #e2e8f0;
-      padding: 1.25rem 0;
-      font-size: 0.875rem;
-      transition: var(--transition);
-    }
-
-    .footer-links a {
-      color: var(--secondary);
-      text-decoration: none;
-      transition: color 0.2s ease;
-      font-weight: 500;
-    }
-
-    .footer-links a:hover {
-      color: var(--primary);
-    }
-
     /* Sidebar Toggle Button */
     #sidebarToggle {
       border: none;
@@ -308,7 +288,7 @@
     }
 
     .brand-name {
-      background: linear-gradient(135deg, #4cc9f0, #4361ee, #3f37c9);
+      background: linear-gradient(135deg, #3f37c9, #4361ee, #4cc9f0);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -434,6 +414,21 @@
   document.getElementById('sidebarToggle').addEventListener('click', function () {
     document.getElementById('sidebarMenu').classList.toggle('show');
   });
+
+    // Tutup sidebar jika klik di luar sidebar saat tampil di layar kecil
+document.addEventListener('click', function (event) {
+  const sidebar = document.getElementById('sidebarMenu');
+  const toggle = document.getElementById('sidebarToggle');
+
+  const isSidebarOpen = sidebar.classList.contains('show');
+  const clickedInsideSidebar = sidebar.contains(event.target);
+  const clickedToggle = toggle.contains(event.target);
+
+  // Jika sidebar terbuka dan klik di luar sidebar dan toggle, tutup sidebar
+  if (isSidebarOpen && !clickedInsideSidebar && !clickedToggle) {
+    sidebar.classList.remove('show');
+  }
+});
 </script>
 <?= $this->renderSection('scripts') ?>
 </body>
