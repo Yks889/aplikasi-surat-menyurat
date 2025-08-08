@@ -3,6 +3,12 @@
 namespace App\Controllers\User;
 
 use App\Controllers\BaseController;
+<<<<<<< HEAD
+use Config\Database;
+
+class Disposisi extends BaseController
+{
+=======
 use App\Models\SuratMasukModel;
 use Config\Database;
 use App\Models\UserModel;
@@ -20,6 +26,7 @@ class Disposisi extends BaseController
         $this->suratMasukModel = new SuratMasukModel;
         $this->pengajuanModel = new PengajuanSuratKeluarModel;
     }
+>>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
     public function index()
 {
     $db = Database::connect();
@@ -63,7 +70,10 @@ class Disposisi extends BaseController
     public function detail($surat_id)
     {
         $db = \Config\Database::connect();
+<<<<<<< HEAD
+=======
 
+>>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
         
         // Ambil data surat
         $surat = $db->table('surat_masuk')
@@ -103,6 +113,8 @@ class Disposisi extends BaseController
         ]);
     }
 
+<<<<<<< HEAD
+=======
     public function ajukan($id)
     {
         $surat = $this->suratMasukModel->find($id);
@@ -136,4 +148,5 @@ class Disposisi extends BaseController
 
         return redirect()->to('/user/disposisi')->with('success', 'Pengajuan surat keluar berhasil dikirim.');
     }
+>>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
 }
