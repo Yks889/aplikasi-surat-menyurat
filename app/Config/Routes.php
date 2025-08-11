@@ -167,6 +167,7 @@ $routes->group('user', ['filter' => 'role:user'], function ($routes) {
     $routes->get('history-pengajuan', 'User\HistoryPengajuan::index');
     $routes->get('history-pengajuan/create', 'User\HistoryPengajuan::create');
     $routes->post('history-pengajuan/store', 'User\HistoryPengajuan::store');
+    $routes->get('history-pengajuan/detail/(:num)', 'User\HistoryPengajuan::detail/$1');
 
 
 
