@@ -1,21 +1,23 @@
 <?= $this->extend('layouts/user') ?>
 <?= $this->section('content') ?>
 <div class="container-fluid py-4">
+     <!-- Watermark Background - Adjusted for sidebar -->
+    <div class="position-fixed top-0 start-0 w-100 h-100" style="
+        background-image: url('/uploads/logo.png');
+        background-repeat: no-repeat;
+        background-position: calc(50% + 140px) calc(40% + 40px);
+        background-size: 55%;
+        opacity: 0.10;
+        pointer-events: none;
+        z-index: -1;
+    "></div>
     <!-- Notification Alert -->
     <?php if (session()->getFlashdata('success')) : ?>
-<<<<<<< HEAD
-    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        <div><?= session()->getFlashdata('success') ?></div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-=======
         <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
             <i class="bi bi-check-circle-fill me-2"></i>
             <div><?= session()->getFlashdata('success') ?></div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
->>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
     <?php endif; ?>
 
     <!-- Page Header -->

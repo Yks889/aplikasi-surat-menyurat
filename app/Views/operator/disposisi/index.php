@@ -1,6 +1,16 @@
 <?= $this->extend('layouts/operator') ?>
 <?= $this->section('content') ?>
 <div class="container-fluid py-4">
+     <!-- Watermark Background - Adjusted for sidebar -->
+    <div class="position-fixed top-0 start-0 w-100 h-100" style="
+        background-image: url('/uploads/logo.png');
+        background-repeat: no-repeat;
+        background-position: calc(50% + 140px) calc(40% + 40px);
+        background-size: 55%;
+        opacity: 0.10;
+        pointer-events: none;
+        z-index: -1;
+    "></div>
     <!-- Notification Alert -->
     <?php if (session()->getFlashdata('success')) : ?>
     <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
