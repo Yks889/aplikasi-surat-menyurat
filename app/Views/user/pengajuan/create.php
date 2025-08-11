@@ -18,7 +18,7 @@
             <h2 class="h4 mb-1"><i class="bi bi-pencil-square me-2 text-primary"></i>Form Pengajuan Surat Keluar</h2>
         </div>
         <div class="d-flex flex-column flex-md-row gap-2">
-            <a href="/user/pengajuan" class="btn btn-outline-secondary">
+            <a href="/user/history-pengajuan" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left me-1"></i> Kembali
             </a>
         </div>
