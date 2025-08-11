@@ -63,7 +63,7 @@
                                             <i class="bi bi-info-circle"></i>
                                         </a>
                                         <?php if ($row['status'] === 'belum'): ?>
-                                            <a href="/admin/ajukan/terima<?= $row['id'] ?>" class="btn btn-sm btn-success" title="Terima">
+                                            <a href="/admin/ajukan/terima/<?= $row['id'] ?>" class="btn btn-sm btn-success" title="Terima">
                                                 <i class="bi bi-check-circle"></i>
                                             </a>
                                             <button class="btn btn-sm btn-danger" onclick="tolakPengajuan(<?= $row['id'] ?>)" title="Tolak">

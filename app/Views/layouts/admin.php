@@ -362,6 +362,10 @@
             <i class="bi bi-people"></i>
             <span>Kelola User</span>
           </a>
+          <a href="/admin/activity" class="nav-link <?= strpos(current_url(), 'activity') !== false ? 'active' : '' ?>">
+            <i class="bi bi-people"></i>
+            <span>Activities User</span>
+          </a>
           <a href="/admin/surat-masuk" class="nav-link <?= strpos(current_url(), 'surat-masuk') !== false ? 'active' : '' ?>">
             <i class="bi bi-envelope"></i>
             <span>Surat Masuk</span>
@@ -468,4 +472,3 @@
   <h1 style="text-align: center; margin-top: 50px;">Akses Ditolak</h1>
   <p style="text-align: center;">Anda tidak memiliki izin untuk mengakses halaman ini.</p>
 <?php endif; ?>
-
