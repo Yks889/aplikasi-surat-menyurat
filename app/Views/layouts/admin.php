@@ -7,6 +7,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?= $title ?? 'Dashboard' ?> | Sistem Arsip Surat</title>
+    <link rel="icon" href="<?= base_url('/public/uploads/logo.png') ?>" type="image/png">
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
