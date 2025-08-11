@@ -4,6 +4,16 @@
 <?php $validation = session('validation') ?? \Config\Services::validation(); ?>
 
 <div class="container-fluid py-4">
+     <!-- Watermark Background - Adjusted for sidebar -->
+    <div class="position-fixed top-0 start-0 w-100 h-100" style="
+        background-image: url('/uploads/logo.png');
+        background-repeat: no-repeat;
+        background-position: calc(50% + 140px) calc(40% + 40px);
+        background-size: 55%;
+        opacity: 0.10;
+        pointer-events: none;
+        z-index: -1;
+    "></div>
     <!-- Page Header -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
         <div class="mb-3 mb-md-0">
