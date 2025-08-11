@@ -3,19 +3,11 @@
 <div class="container-fluid py-4">
     <!-- Notification Alert -->
     <?php if (session()->getFlashdata('success')) : ?>
-<<<<<<< HEAD
-    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        <div><?= session()->getFlashdata('success') ?></div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-=======
         <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
             <i class="bi bi-check-circle-fill me-2"></i>
             <div><?= session()->getFlashdata('success') ?></div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
->>>>>>> 0a6e355359e7e2b868f979b2a6d60e7bcaa6da75
     <?php endif; ?>
 
     <!-- Page Header -->
