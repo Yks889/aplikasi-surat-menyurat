@@ -65,4 +65,26 @@ class HistoryPengajuan extends BaseController
 
         return redirect()->to('/user/history-pengajuan')->with('message', 'Pengajuan surat keluar berhasil dikirim.');
     }
+
+    public function detail($id)
+    {
+        $user = session()->get('user');
+
+        if (!$user) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
+        $pengajuan = $this->pengajuanModel
+            ->where('id', $id)
+            ->where('dari', $user['full_name'])
+            ->first();
+
+        if (!$pengajuan) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Pengajuan tidak ditemukan.");
+        }
+
+        return view('user/pengajuan/detail', [
+            'pengajuan' => $pengajuan
+        ]);
+    }
 }

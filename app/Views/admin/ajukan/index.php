@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/admin') ?>
 <?= $this->section('content') ?>
+<link rel="icon" href="<?= base_url('uploads/logo.png') ?>" type="image/png" />
 <div class="container-fluid py-4">
      <!-- Watermark Background - Adjusted for sidebar -->
     <div class="position-fixed top-0 start-0 w-100 h-100" style="
@@ -73,7 +74,7 @@
                                             <i class="bi bi-info-circle"></i>
                                         </a>
                                         <?php if ($row['status'] === 'belum'): ?>
-                                            <a href="/admin/ajukan/terima<?= $row['id'] ?>" class="btn btn-sm btn-success" title="Terima">
+                                            <a href="/admin/ajukan/terima/<?= $row['id'] ?>" class="btn btn-sm btn-success" title="Terima">
                                                 <i class="bi bi-check-circle"></i>
                                             </a>
                                             <button class="btn btn-sm btn-danger" onclick="tolakPengajuan(<?= $row['id'] ?>)" title="Tolak">

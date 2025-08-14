@@ -202,26 +202,6 @@
         transition: var(--transition);
       }
 
-      /* Footer */
-      .main-footer {
-        background-color: white;
-        border-top: 1px solid #e2e8f0;
-        padding: 1.25rem 0;
-        font-size: 0.875rem;
-        transition: var(--transition);
-      }
-
-      .footer-links a {
-        color: var(--secondary);
-        text-decoration: none;
-        transition: color 0.2s ease;
-        font-weight: 500;
-      }
-
-      .footer-links a:hover {
-        color: var(--primary);
-      }
-
       /* Dropdown Menu */
       .dropdown-menu {
         border: none;
@@ -377,8 +357,22 @@
 
       /* Gonet Branding */
       .brand-logo {
-        height: 30px;
+        height: 35px;
         margin-right: 10px;
+        transition: transform 1s ease;
+        transform-origin: center center;
+      }
+
+      /* Animation for logo rotation */
+      @keyframes rotateLogo {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Animation for logo rotation back */
+      @keyframes rotateLogoBack {
+        0% { transform: rotate(360deg); }
+        100% { transform: rotate(0deg); }
       }
 
       .brand-name {
@@ -433,6 +427,10 @@
           <a href="/admin/users" class="nav-link <?= strpos(current_url(), 'users') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Kelola User">
             <i class="bi bi-people"></i>
             <span>Kelola User</span>
+          </a>
+          <a href="/admin/activity" class="nav-link <?= strpos(current_url(), 'activity') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Activities User">
+            <i class="bi bi-people"></i>
+            <span>Activities User</span>
           </a>
           <a href="/admin/surat-masuk" class="nav-link <?= strpos(current_url(), 'surat-masuk') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Surat Masuk">
             <i class="bi bi-envelope"></i>
@@ -526,11 +524,25 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+      // Add mouse events for logo animation
+      const logo = document.querySelector('.brand-logo');
+      const navbarBrand = document.querySelector('.navbar-brand');
+      
+      navbarBrand.addEventListener('mouseenter', function() {
+        logo.style.animation = 'rotateLogo 0.7s forwards';
+      });
+      
+      navbarBrand.addEventListener('mouseleave', function() {
+        logo.style.animation = 'rotateLogoBack 0.7s forwards';
+      });
+
       // Toggle sidebar when clicking the logo
       document.getElementById('sidebarToggle').addEventListener('click', function(e) {
         // On desktop (width > 992px), prevent default and toggle sidebar
         if (window.innerWidth > 992) {
           e.preventDefault();
+          
+          // Toggle sidebar
           document.body.classList.toggle('sidebar-collapsed');
           
           // Save state to localStorage
