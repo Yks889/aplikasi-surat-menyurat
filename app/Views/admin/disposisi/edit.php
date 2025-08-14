@@ -1,6 +1,6 @@
 <?= $this->extend('layouts/admin') ?>
 <?= $this->section('content') ?>
-
+<link rel="icon" href="<?= base_url('uploads/logo.png') ?>" type="image/png" />
 <div class="container-fluid py-4">
     <!-- Page Header -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
