@@ -8,17 +8,11 @@ class TandaTanganModel extends Model
 {
     protected $table = 'tanda_tangan';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'file', 'uploaded_at'];
+    protected $allowedFields = ['nama', 'file', 'uploaded_at']; // sudah ganti user_id jadi nama
 
-    public function getTandaTanganByUser($userId)
-    {
-        return $this->where('user_id', $userId)->first();
-    }
-
+    // Ambil semua tanda tangan
     public function getAllTandaTangan()
     {
-        return $this->select('tanda_tangan.*, users.full_name')
-            ->join('users', 'users.id = tanda_tangan.user_id')
-            ->findAll();
+        return $this->findAll(); // tidak perlu join ke tabel users
     }
 }
