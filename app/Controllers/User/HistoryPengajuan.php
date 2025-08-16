@@ -4,10 +4,12 @@ namespace App\Controllers\User;
 
 use App\Controllers\BaseController;
 use App\Models\PengajuanSuratKeluarModel;
+use Config\Services;
 
 class HistoryPengajuan extends BaseController
 {
     protected $pengajuanModel;
+    protected $helpers = ['activity']; // Add activity helper
 
     public function __construct()
     {
@@ -62,6 +64,14 @@ class HistoryPengajuan extends BaseController
             'status' => 'belum',
             'surat_masuk_id' => null
         ]);
+
+        // Log activity
+        activity_log(
+            $user['id'],
+            'Membuat Pengajuan Baru',
+            "Membuat pengajuan baru dengan judul: $judul",
+            'pengajuan'
+        );
 
         return redirect()->to('/user/history-pengajuan')->with('message', 'Pengajuan surat keluar berhasil dikirim.');
     }

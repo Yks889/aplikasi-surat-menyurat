@@ -48,7 +48,7 @@
                         </div>
                     <?php endif; ?>
                     
-                    <form action="/Operator/profile/update-photo" method="post" enctype="multipart/form-data">
+                    <form action="<?= base_url('operator/profile/update-photo') ?>" method="post" enctype="multipart/form-data">
                         <?= csrf_field() ?>
                         <div class="mb-3">
                             <label for="photo" class="form-label">Unggah Foto Baru</label>
@@ -74,7 +74,7 @@
                     </form>
                     
                     <?php if ($user['photo']) : ?>
-                        <form id="removePhotoForm" action="/Operator/profile/remove-photo" method="post" class="d-none">
+                        <form id="removePhotoForm" action="<?= base_url('operator/profile/remove-photo') ?>" method="post" class="d-none">
                             <?= csrf_field() ?>
                         </form>
                     <?php endif; ?>
@@ -82,7 +82,7 @@
                 
                 <!-- Kolom Kanan - Form Data -->
                 <div class="col-md-8">
-                    <form action="/Operator/profile/update" method="post">
+                    <form action="<?= base_url('operator/profile/update') ?>" method="post">
                         <?= csrf_field() ?>
                         
                         <h5 class="mb-4"><i class="bi bi-person-lines-fill me-2 text-primary"></i>Informasi Profil</h5>
@@ -124,8 +124,7 @@
                     
                     <hr class="my-4">
                     
-                    <form action="/Operator/profile/update-password" method="post">
-
+                    <form action="<?= base_url('operator/profile/update-password') ?>" method="post">
                         <?= csrf_field() ?>
                         
                         <h5 class="mb-4"><i class="bi bi-shield-lock me-2 text-primary"></i>Ubah Password</h5>
