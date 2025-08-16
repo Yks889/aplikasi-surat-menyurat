@@ -6,6 +6,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title><?= $title ?? 'Dashboard' ?> | Sistem Arsip Surat</title>
+  <link rel="icon" href="<?= base_url('/public/uploads/logo.png') ?>" type="image/png">
 
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -22,6 +23,7 @@
       --primary-light: #f0f5ff;
       --secondary: #6c757d;
       --sidebar-width: 280px;
+      --sidebar-collapsed-width: 80px;
       --navbar-height: 75px;
       --sidebar-bg: #0f172a;
       --sidebar-text: #e2e8f0;
@@ -69,6 +71,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      cursor: pointer;
     }
 
     .navbar-brand i {
@@ -198,24 +201,23 @@
       transition: var(--transition);
     }
 
-    /* Sidebar Toggle Button */
-    #sidebarToggle {
-      border: none;
-      background-color: var(--primary-light);
-      color: var(--primary);
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
+    /* Sidebar Overlay for Mobile */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1040;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
-    #sidebarToggle:hover {
-      background-color: var(--primary);
-      color: white;
-      transform: rotate(90deg);
+    .sidebar-overlay.show {
+      opacity: 1;
+      visibility: visible;
     }
 
     /* Dropdown Menu */
@@ -261,12 +263,65 @@
       font-size: 0.9rem;
     }
 
+    /* Collapsed Sidebar State */
+    body.sidebar-collapsed {
+      padding-left: var(--sidebar-collapsed-width);
+    }
+
+    .sidebar-collapsed .main-sidebar {
+      width: var(--sidebar-collapsed-width);
+      overflow: hidden;
+    }
+
+    .sidebar-collapsed .main-header {
+      left: var(--sidebar-collapsed-width);
+    }
+
+    .sidebar-collapsed .main-sidebar .nav-link {
+      padding: 0.75rem;
+      justify-content: center;
+      margin: 0.25rem 0.5rem;
+    }
+
+    .sidebar-collapsed .main-sidebar .nav-link span {
+      display: none;
+    }
+
+    .sidebar-collapsed .main-sidebar .nav-link i {
+      font-size: 1.3rem;
+    }
+
+    .sidebar-collapsed .main-sidebar .user-panel>div {
+      justify-content: center;
+    }
+
+    .sidebar-collapsed .main-sidebar .user-info,
+    .sidebar-collapsed .main-sidebar .sidebar-divider {
+      display: none;
+    }
+
+    .sidebar-collapsed .main-sidebar .nav-link:hover {
+      transform: none;
+    }
+
+    .sidebar-collapsed .main-sidebar .nav-link.active {
+      border-left: none;
+      border-radius: 8px;
+      background: rgba(67, 97, 238, 0.3);
+    }
+
+    @media (min-width: 993px) {
+      .sidebar-overlay {
+        display: none;
+      }
+    }
+
     /* Responsive */
     @media (max-width: 992px) {
       body {
         padding-left: 0;
       }
-      
+
       .main-sidebar {
         transform: translateX(-100%);
       }
@@ -279,12 +334,44 @@
       .main-header {
         left: 0;
       }
+
+      /* Collapsed state on mobile */
+      body.sidebar-collapsed {
+        padding-left: 0;
+      }
+      
+      .sidebar-collapsed .main-sidebar {
+        transform: translateX(-100%);
+        width: var(--sidebar-width);
+      }
+      
+      .sidebar-collapsed .main-sidebar.show {
+        transform: translateX(0);
+      }
+      
+      .sidebar-collapsed .main-header {
+        left: 0;
+      }
     }
 
     /* Gonet Branding */
     .brand-logo {
-      height: 30px;
+      height: 35px;
       margin-right: 10px;
+      transition: transform 0.3s ease;
+      transform-origin: center center;
+    }
+
+    /* Animation for logo rotation */
+    @keyframes rotateLogo {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Animation for logo rotation back */
+    @keyframes rotateLogoBack {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
     }
 
     .brand-name {
@@ -331,36 +418,36 @@
     <div class="sidebar-divider"></div>
 
     <nav class="nav flex-column">
-      <a href="/operator/dashboard" class="nav-link <?= current_url() == site_url('/operator/dashboard') ? 'active' : '' ?>">
+      <a href="/operator/dashboard" class="nav-link <?= current_url() == site_url('/operator/dashboard') ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
         <i class="bi bi-speedometer2"></i>
         <span>Dashboard</span>
       </a>
-      <a href="/operator/users" class="nav-link <?= strpos(current_url(), 'users') !== false ? 'active' : '' ?>">
+      <a href="/operator/users" class="nav-link <?= strpos(current_url(), 'users') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Kelola User Biasa">
         <i class="bi bi-people"></i>
         <span>Kelola User Biasa</span>
       </a>
-      <a href="/operator/surat-masuk" class="nav-link <?= strpos(current_url(), 'surat-masuk') !== false ? 'active' : '' ?>">
+      <a href="/operator/surat-masuk" class="nav-link <?= strpos(current_url(), 'surat-masuk') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Surat Masuk">
         <i class="bi bi-envelope"></i>
         <span>Surat Masuk</span>
-        <a href="/operator/surat-keluar" class="nav-link <?= strpos(current_url(), 'surat-keluar') !== false ? 'active' : '' ?>">
-          <i class="bi bi-envelope-open"></i>
-          <span>Surat Keluar</span>
-        </a>
       </a>
-      <a href="/operator/disposisi" class="nav-link <?= strpos(current_url(), 'disposisi') !== false ? 'active' : '' ?>">
+      <a href="/operator/surat-keluar" class="nav-link <?= strpos(current_url(), 'surat-keluar') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Surat Keluar">
+        <i class="bi bi-envelope-open"></i>
+        <span>Surat Keluar</span>
+      </a>
+      <a href="/operator/disposisi" class="nav-link <?= strpos(current_url(), 'disposisi') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Histori Disposisi">
         <i class="bi bi-share"></i>
         <span>Histori Disposisi</span>
       </a>
     </nav>
   </aside>
 
+  <!-- Sidebar Overlay for Mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand-lg navbar-light">
     <div class="container-fluid px-4">
-      <button class="btn d-lg-none me-2" id="sidebarToggle">
-        <i class="bi bi-list"></i>
-      </button>
-      <a href="/operator/dashboard" class="navbar-brand">
+      <a href="/operator/dashboard" class="navbar-brand" id="sidebarToggle">
         <img src="/uploads/logo.png" alt="Logo Gonet" class="brand-logo">
         <span class="arsip-surat">Arsip Surat <span class="brand-name">Gonet</span></span>
       </a>
@@ -379,14 +466,16 @@
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
               <a class="dropdown-item d-flex align-items-center" href="/operator/profile">
-                <i class="bi bi-person me-2"></i> 
+                <i class="bi bi-person me-2"></i>
                 <span>Profil Saya</span>
               </a>
             </li>
-            <li><hr class="dropdown-divider"></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
             <li>
               <a class="dropdown-item d-flex align-items-center" href="/logout">
-                <i class="bi bi-box-arrow-right me-2"></i> 
+                <i class="bi bi-box-arrow-right me-2"></i>
                 <span>Logout</span>
               </a>
             </li>
@@ -410,25 +499,127 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-  // Toggle sidebar on small screen
-  document.getElementById('sidebarToggle').addEventListener('click', function () {
-    document.getElementById('sidebarMenu').classList.toggle('show');
+  // Add mouse events for logo animation
+  const logo = document.querySelector('.brand-logo');
+  const navbarBrand = document.querySelector('.navbar-brand');
+  
+  navbarBrand.addEventListener('mouseenter', function() {
+    logo.style.animation = 'rotateLogo 0.7s forwards';
+  });
+  
+  navbarBrand.addEventListener('mouseleave', function() {
+    logo.style.animation = 'rotateLogoBack 0.7s forwards';
   });
 
-    // Tutup sidebar jika klik di luar sidebar saat tampil di layar kecil
-document.addEventListener('click', function (event) {
-  const sidebar = document.getElementById('sidebarMenu');
-  const toggle = document.getElementById('sidebarToggle');
+  // Toggle sidebar when clicking the logo
+  document.getElementById('sidebarToggle').addEventListener('click', function(e) {
+    // On desktop (width > 992px), prevent default and toggle sidebar
+    if (window.innerWidth > 992) {
+      e.preventDefault();
+      
+      // Toggle sidebar
+      document.body.classList.toggle('sidebar-collapsed');
+      
+      // Save state to localStorage
+      const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+      localStorage.setItem('sidebarCollapsed', isCollapsed);
+      
+      // Update tooltips
+      updateTooltips(isCollapsed);
+    } else {
+      // On mobile, prevent default and toggle sidebar with overlay
+      e.preventDefault();
+      toggleMobileSidebar();
+    }
+  });
 
-  const isSidebarOpen = sidebar.classList.contains('show');
-  const clickedInsideSidebar = sidebar.contains(event.target);
-  const clickedToggle = toggle.contains(event.target);
-
-  // Jika sidebar terbuka dan klik di luar sidebar dan toggle, tutup sidebar
-  if (isSidebarOpen && !clickedInsideSidebar && !clickedToggle) {
-    sidebar.classList.remove('show');
+  // Toggle sidebar on mobile with overlay
+  function toggleMobileSidebar() {
+    const sidebar = document.getElementById('sidebarMenu');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+    
+    // If sidebar is open, add event listener to close it when clicking outside
+    if (sidebar.classList.contains('show')) {
+      overlay.addEventListener('click', closeSidebarOnMobile);
+      document.addEventListener('keydown', handleEscapeKey);
+    } else {
+      overlay.removeEventListener('click', closeSidebarOnMobile);
+      document.removeEventListener('keydown', handleEscapeKey);
+    }
   }
-});
+
+  // Close sidebar when clicking outside on mobile
+  function closeSidebarOnMobile() {
+    const sidebar = document.getElementById('sidebarMenu');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    sidebar.classList.remove('show');
+    overlay.classList.remove('show');
+    overlay.removeEventListener('click', closeSidebarOnMobile);
+    document.removeEventListener('keydown', handleEscapeKey);
+  }
+
+  // Close sidebar when pressing Escape key
+  function handleEscapeKey(e) {
+    if (e.key === 'Escape') {
+      closeSidebarOnMobile();
+    }
+  }
+
+  // Update tooltips based on sidebar state
+  function updateTooltips(isCollapsed) {
+    const tooltipList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipList.forEach(function(tooltipTriggerEl) {
+      const tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+      if (tooltip) {
+        tooltip.dispose();
+      }
+      if (isCollapsed) {
+        new bootstrap.Tooltip(tooltipTriggerEl, {
+          trigger: 'hover',
+          placement: 'right',
+          container: 'body'
+        });
+      }
+    });
+  }
+
+  // Check saved state on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    if (isCollapsed) {
+      document.body.classList.add('sidebar-collapsed');
+    }
+    
+    // Initialize tooltips if sidebar is collapsed
+    if (isCollapsed) {
+      updateTooltips(true);
+    }
+    
+    // Prevent clicks inside sidebar from closing it
+    document.getElementById('sidebarMenu').addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+    
+    // Close sidebar when clicking on content area on mobile
+    document.querySelector('.content-wrapper').addEventListener('click', function() {
+      if (window.innerWidth <= 992 && document.getElementById('sidebarMenu').classList.contains('show')) {
+        closeSidebarOnMobile();
+      }
+    });
+  });
+
+  // Handle window resize
+  window.addEventListener('resize', function() {
+    if (window.innerWidth <= 992) {
+      // On mobile, ensure sidebar is hidden by default
+      closeSidebarOnMobile();
+      document.body.classList.remove('sidebar-collapsed');
+    }
+  });
 </script>
 <?= $this->renderSection('scripts') ?>
 </body>

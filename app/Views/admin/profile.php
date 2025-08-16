@@ -1,6 +1,7 @@
 <?= $this->extend('layouts/admin'); ?>
 
 <?= $this->section('content'); ?>
+<link rel="icon" href="<?= base_url('uploads/logo.png') ?>" type="image/png" />
 <?php $validation = session('validation') ?? \Config\Services::validation(); ?>
 
 <div class="container-fluid py-4">
