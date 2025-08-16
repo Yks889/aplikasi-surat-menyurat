@@ -121,7 +121,12 @@ class UserManagement extends BaseController
 
     public function update($id)
     {
-        $user = $this->userModel->where('role', 'user')->find($id); // hanya user role user
+        $operatorId = session()->get('user')['id'];
+        if (!$operatorId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
+        $user = $this->userModel->find($id);
 
         if (!$user) {
             return redirect()->to('/operator/users')->with('error', 'User tidak ditemukan atau tidak diizinkan.');
@@ -171,16 +176,12 @@ class UserManagement extends BaseController
 
     public function delete($id)
     {
-<<<<<<< HEAD
-        $user = $this->userModel->where('role', 'user')->find($id); // hanya user role user
-=======
         $operatorId = session()->get('user')['id'];
         if (!$operatorId) {
             return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
         }
 
         $user = $this->userModel->find($id);
->>>>>>> 7bae5a59916d9eb86c562efbb4df1d1c269b17c7
 
         if (!$user) {
             return redirect()->to('/operator/users')->with('error', 'Tidak dapat menghapus user ini.');
