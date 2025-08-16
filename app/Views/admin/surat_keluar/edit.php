@@ -2,7 +2,7 @@
 <?= $this->section('content') ?>
 
 <div class="container-fluid py-4">
-     <!-- Watermark Background - Adjusted for sidebar -->
+    <!-- Watermark Background - Adjusted for sidebar -->
     <div class="position-fixed top-0 start-0 w-100 h-100" style="
         background-image: url('/uploads/logo.png');
         background-repeat: no-repeat;
@@ -14,17 +14,17 @@
     "></div>
     <!-- Error Notification -->
     <?php if (session('errors')): ?>
-    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-4">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        <div>
-            <ul class="mb-0">
-                <?php foreach (session('errors') as $error): ?>
-                    <li><?= esc($error) ?></li>
-                <?php endforeach; ?>
-            </ul>
+        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-4">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div>
+                <ul class="mb-0">
+                    <?php foreach (session('errors') as $error): ?>
+                        <li><?= esc($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
     <?php endif; ?>
 
     <!-- Page Header -->
@@ -51,7 +51,7 @@
                         <div class="mb-3">
                             <label for="nomor_surat" class="form-label">Nomor Surat</label>
                             <input type="text" name="nomor_surat" id="nomor_surat"
-                                class="form-control" 
+                                class="form-control"
                                 value="<?= old('nomor_surat', $surat['nomor_surat']) ?>" readonly>
                             <small class="text-muted">Nomor akan digenerate ulang otomatis saat disimpan</small>
                         </div>
@@ -63,7 +63,7 @@
                                 class="form-select <?= $validation->hasError('perusahaan_id') ? 'is-invalid' : '' ?>">
                                 <option value="">-- Pilih Perusahaan --</option>
                                 <?php foreach ($perusahaan as $p): ?>
-                                    <option value="<?= $p['id'] ?>" 
+                                    <option value="<?= $p['id'] ?>"
                                         <?= old('perusahaan_id', $surat['perusahaan_id']) == $p['id'] ? 'selected' : '' ?>>
                                         <?= esc($p['nama']) ?>
                                     </option>
@@ -123,13 +123,12 @@
                         <!-- Penandatangan -->
                         <div class="mb-3">
                             <label for="penandatangan_id" class="form-label">Penandatangan</label>
-                            <select name="penandatangan_id" id="penandatangan_id"
-                                class="form-select <?= $validation->hasError('penandatangan_id') ? 'is-invalid' : '' ?>">
+                            <select class="form-select <?= $validation->hasError('penandatangan_id') ? 'is-invalid' : '' ?>"
+                                id="penandatangan_id" name="penandatangan_id" required>
                                 <option value="">-- Pilih Penandatangan --</option>
-                                <?php foreach ($penandatangan as $admin): ?>
-                                    <option value="<?= $admin['id'] ?>" 
-                                        <?= old('penandatangan_id', $surat['penandatangan_id']) == $admin['id'] ? 'selected' : '' ?>>
-                                        <?= esc($admin['full_name']) ?>
+                                <?php foreach ($penandatangan as $ttd): ?>
+                                    <option value="<?= $ttd['id'] ?>" <?= old('penandatangan_id') == $ttd['id'] ? 'selected' : '' ?>>
+                                        <?= esc($ttd['nama']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -163,7 +162,7 @@
                             </div>
                             <?php if (!empty($surat['file_surat'])): ?>
                                 <small class="text-muted d-block mt-1">
-                                    File saat ini: 
+                                    File saat ini:
                                     <a href="/uploads/surat_keluar/<?= esc($surat['file_surat']) ?>" target="_blank">
                                         <?= esc($surat['file_surat']) ?>
                                     </a>

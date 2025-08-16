@@ -52,9 +52,14 @@
                         <tr>
                             <td class="fw-bold">Status Pengajuan:</td>
                             <td>
-                                <span class="badge bg-<?= ($pengajuan['status'] === 'diterima') ? 'success' : (($pengajuan['status'] === 'ditolak') ? 'danger' : 'secondary') ?>">
-                                    <?= ucfirst($pengajuan['status']) ?>
-                                </span>
+                                <?php if ($pengajuan['status'] === 'diterima'): ?>
+                                    <span class="badge bg-success">Diproses</span>
+                                <?php elseif ($pengajuan['status'] === 'ditolak'): ?>
+                                    <span class="badge bg-danger">Ditolak</span>
+                                <?php else: ?>
+                                    <span class="badge bg-secondary">Belum Diproses</span>
+                                <?php endif; ?>
+
                             </td>
                         </tr>
                         <tr>
@@ -102,9 +107,13 @@
                                     <td><?= esc($form['dari']) ?></td>
                                     <td><?= esc($form['kepada']) ?></td>
                                     <td>
-                                        <span class="badge bg-<?= ($form['status'] === 'diterima') ? 'success' : (($form['status'] === 'ditolak') ? 'danger' : 'secondary') ?>">
-                                            <?= ucfirst($form['status']) ?>
-                                        </span>
+                                        <?php if ($form['status'] === 'diterima'): ?>
+                                            <span class="badge bg-success">Diproses</span>
+                                        <?php elseif ($form['status'] === 'ditolak'): ?>
+                                            <span class="badge bg-danger">Ditolak</span>
+                                        <?php else: ?>
+                                            <span class="badge bg-secondary">Belum Diproses</span>
+                                        <?php endif; ?>
                                     </td>
                                     <td><?= date('d/m/Y H:i', strtotime($form['created_at'])) ?></td>
                                 </tr>
