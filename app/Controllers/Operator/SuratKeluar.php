@@ -7,6 +7,8 @@ use App\Models\SuratKeluarModel;
 use App\Models\PerusahaanModel;
 use App\Models\UserModel;
 use App\Models\JenisSuratModel;
+use App\Models\ActivityModel;
+use CodeIgniter\I18n\Time;
 
 class SuratKeluar extends BaseController
 {
@@ -14,6 +16,7 @@ class SuratKeluar extends BaseController
     protected $perusahaanModel;
     protected $userModel;
     protected $jenisSuratModel;
+    protected $helpers = ['form', 'activity'];
 
     public function __construct()
     {
@@ -62,7 +65,7 @@ class SuratKeluar extends BaseController
     {
         $data = [
             'title' => 'Tambah Surat Keluar',
-            'user' => session()->get(),
+            'user' => session()->get('user'),
             'perusahaan' => $this->perusahaanModel->findAll(),
             'penandatangan' => $this->userModel->where('role', 'admin')->findAll(),
             'jenis_surat' => $this->jenisSuratModel->findAll(),
@@ -131,15 +134,29 @@ class SuratKeluar extends BaseController
             'created_by' => $createdBy
         ]);
 
+        // Catat aktivitas
+        activity_log(
+            $createdBy,
+            'Menambahkan Surat Keluar',
+            'Menambahkan surat keluar dengan nomor: ' . $nomorSurat,
+            'surat-keluar'
+        );
+
         return redirect()->to('/operator/surat-keluar')->with('message', 'Surat keluar berhasil ditambahkan');
     }
 
     public function edit($id)
     {
+        $surat = $this->suratKeluarModel->find($id);
+
+        if (!$surat) {
+            return redirect()->to('/operator/surat-keluar')->with('error', 'Data surat tidak ditemukan.');
+        }
+
         $data = [
             'title' => 'Edit Surat Keluar',
-            'user' => session()->get(),
-            'surat' => $this->suratKeluarModel->find($id),
+            'user' => session()->get('user'),
+            'surat' => $surat,
             'perusahaan' => $this->perusahaanModel->findAll(),
             'penandatangan' => $this->userModel->where('role', 'admin')->findAll(),
             'jenis_surat' => $this->jenisSuratModel->findAll(),
@@ -151,6 +168,11 @@ class SuratKeluar extends BaseController
 
     public function update($id)
     {
+        $surat = $this->suratKeluarModel->find($id);
+        if (!$surat) {
+            return redirect()->to('/operator/surat-keluar')->with('error', 'Data surat tidak ditemukan.');
+        }
+
         $rules = [
             'jenis_surat' => 'required',
             'untuk' => 'required',
@@ -174,7 +196,6 @@ class SuratKeluar extends BaseController
         $tanggalSurat = $this->request->getPost('tanggal_surat');
         $nomorSurat = $this->generateNomorSurat($jenisSurat['singkatan'], $perusahaan['singkatan'], $tanggalSurat);
 
-        $surat = $this->suratKeluarModel->find($id);
         $file = $this->request->getFile('file_surat');
 
         $data = [
@@ -200,18 +221,42 @@ class SuratKeluar extends BaseController
 
         $this->suratKeluarModel->update($id, $data);
 
+        // Catat aktivitas
+        activity_log(
+            session()->get('user')['id'],
+            'Mengedit Surat Keluar',
+            'Mengedit surat keluar dengan nomor: ' . $nomorSurat,
+            'surat-keluar'
+        );
+
         return redirect()->to('/operator/surat-keluar')->with('message', 'Surat keluar berhasil diperbarui');
     }
 
     public function delete($id)
     {
         $surat = $this->suratKeluarModel->find($id);
+        if (!$surat) {
+            return redirect()->to('/operator/surat-keluar')->with('error', 'Data surat tidak ditemukan.');
+        }
 
         if (!empty($surat['file_surat']) && file_exists('uploads/surat_keluar/' . $surat['file_surat'])) {
             unlink('uploads/surat_keluar/' . $surat['file_surat']);
         }
 
+        $activityModel = new ActivityModel();
+        $activityModel->where('type', 'surat-keluar')
+            ->like('description', $surat['nomor_surat'])
+            ->delete();
+
         $this->suratKeluarModel->delete($id);
+
+        // Catat aktivitas
+        activity_log(
+            session()->get('user')['id'],
+            'Menghapus Surat Keluar',
+            'Menghapus surat keluar dengan nomor: ' . $surat['nomor_surat'],
+            'surat-keluar'
+        );
 
         return redirect()->to('/operator/surat-keluar')->with('message', 'Surat keluar berhasil dihapus');
     }

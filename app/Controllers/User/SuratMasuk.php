@@ -10,6 +10,7 @@ class SuratMasuk extends BaseController
 {
     protected $suratMasukModel;
     protected $perusahaanModel;
+    protected $helpers = ['form', 'activity']; // Tambah helper activity
 
     public function __construct()
     {
@@ -68,16 +69,15 @@ class SuratMasuk extends BaseController
             'created_by' => $createdBy
         ]);
 
-        $activityModel = new \App\Models\ActivityModel();
+        // Panggil helper activity_log
         $nomorSurat = $this->request->getPost('nomor_surat');
-        $activityModel->insert([
-            'user_id' => session()->get('user')['id'],
-            'title' => 'Mengirim Surat',
-            'description' => 'Anda mengirim surat dengan nomor: ' . $nomorSurat,
-            'type' => 'surat-masuk'
-        ]);
+        activity_log(
+            $createdBy,
+            'Mengirim Surat Masuk',
+            'Mengirim surat dengan nomor: ' . $nomorSurat,
+            'surat-masuk'
+        );
 
-        
         return redirect()->to('/user/kirim-surat')->with('message', 'Surat masuk berhasil dikirim');
     }
 }
