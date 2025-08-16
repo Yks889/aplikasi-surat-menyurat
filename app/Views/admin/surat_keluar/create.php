@@ -1,6 +1,6 @@
 <?= $this->extend('layouts/admin') ?>
 <?= $this->section('content') ?>
-
+<link rel="icon" href="<?= base_url('uploads/logo.png') ?>" type="image/png" />
 <div class="container-fluid py-4">
     <!-- Watermark Background - Adjusted for sidebar -->
     <div class="position-fixed top-0 start-0 w-100 h-100" style="
