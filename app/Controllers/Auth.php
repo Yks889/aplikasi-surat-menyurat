@@ -8,7 +8,7 @@ use CodeIgniter\Controller;
 class Auth extends Controller
 {
     protected $userModel;
-    protected $helpers = ['form'];
+    protected $helpers = ['form', 'activity']; // Tambah helper activity
 
     public function __construct()
     {
@@ -44,6 +44,7 @@ class Auth extends Controller
         $user = $this->userModel->getUserByUsername($username);
 
         if ($user && password_verify($password, $user['password'])) {
+            // Set session
             session()->set([
                 'isLoggedIn' => true,
                 'user' => [
@@ -56,6 +57,14 @@ class Auth extends Controller
                 ]
             ]);
 
+            // Log aktivitas login
+            activity_log(
+                $user['id'],                // user_id
+                'Login Berhasil',           // judul
+                'User berhasil login ke sistem', // deskripsi
+                'login'                     // jenis
+            );
+
             return redirect()->to("/{$user['role']}/dashboard")
                              ->with('message', 'Selamat datang, ' . $user['full_name']);
         }
@@ -64,71 +73,92 @@ class Auth extends Controller
     }
 
     public function register()
-{
-    if ($this->request->getMethod() === 'POST') {
-        $rules = [
-        'full_name' => 'required|min_length[3]',
-        'username' => 'required|min_length[4]|is_unique[users.username]',
-        'email' => 'required|valid_email|is_unique[users.email]',
-        'password' => 'required|min_length[6]',
-        'password_confirm' => 'required|matches[password]',
-    ];
+    {
+        if ($this->request->getMethod() === 'POST') {
+            $rules = [
+                'full_name' => 'required|min_length[3]',
+                'username' => 'required|min_length[4]|is_unique[users.username]',
+                'email' => 'required|valid_email|is_unique[users.email]',
+                'password' => 'required|min_length[6]',
+                'password_confirm' => 'required|matches[password]',
+            ];
 
-    $messages = [
-        'full_name' => [
-            'required' => 'Nama lengkap wajib diisi.',
-            'min_length' => 'Nama lengkap minimal 3 karakter.'
-        ],
-        'username' => [
-            'required' => 'Username wajib diisi.',
-            'min_length' => 'Username minimal 4 karakter.',
-            'is_unique' => 'Username sudah digunakan.'
-        ],
-        'email' => [
-            'required' => 'Email wajib diisi.',
-            'valid_email' => 'Format email tidak valid.',
-            'is_unique' => 'Email sudah terdaftar.'
-        ],
-        'password' => [
-            'required' => 'Password wajib diisi.',
-            'min_length' => 'Password minimal 6 karakter.'
-        ],
-        'password_confirm' => [
-            'required' => 'Konfirmasi password wajib diisi.',
-            'matches' => 'Konfirmasi password tidak cocok.'
-        ]
-    ];
+            $messages = [
+                'full_name' => [
+                    'required' => 'Nama lengkap wajib diisi.',
+                    'min_length' => 'Nama lengkap minimal 3 karakter.'
+                ],
+                'username' => [
+                    'required' => 'Username wajib diisi.',
+                    'min_length' => 'Username minimal 4 karakter.',
+                    'is_unique' => 'Username sudah digunakan.'
+                ],
+                'email' => [
+                    'required' => 'Email wajib diisi.',
+                    'valid_email' => 'Format email tidak valid.',
+                    'is_unique' => 'Email sudah terdaftar.'
+                ],
+                'password' => [
+                    'required' => 'Password wajib diisi.',
+                    'min_length' => 'Password minimal 6 karakter.'
+                ],
+                'password_confirm' => [
+                    'required' => 'Konfirmasi password wajib diisi.',
+                    'matches' => 'Konfirmasi password tidak cocok.'
+                ]
+            ];
 
-        if (!$this->validate($rules, $messages)) {
-            return view('auth/register', [
-                'validation' => $this->validator
-            ]);
+            if (!$this->validate($rules, $messages)) {
+                return view('auth/register', [
+                    'validation' => $this->validator
+                ]);
+            }
+
+            $data = [
+                'full_name' => $this->request->getPost('full_name'),
+                'username'  => $this->request->getPost('username'),
+                'email'     => $this->request->getPost('email'),
+                'password'  => $this->request->getPost('password'),
+                'role'      => 'user',
+            ];
+
+            if (!$this->userModel->save($data)) {
+                dd($this->userModel->errors()); // Debug jika gagal insert
+            }
+
+            // Ambil ID user yang baru terdaftar
+            $newUserId = $this->userModel->getInsertID();
+
+            // Log aktivitas register
+            activity_log(
+                $newUserId,
+                'Registrasi Akun',
+                'User baru melakukan registrasi',
+                'register'
+            );
+
+            return redirect()->to('/login')->with('message', 'Registrasi berhasil. Silakan login.');
         }
 
-
-        $data = [
-            'full_name' => $this->request->getPost('full_name'),
-            'username'  => $this->request->getPost('username'),
-            'email'     => $this->request->getPost('email'),
-            'password'  => $this->request->getPost('password'),
-            'role'      => 'user',
-        ];
-
-        if (!$this->userModel->save($data)) {
-            dd($this->userModel->errors()); // Debug jika gagal insert
-        }
-
-        return redirect()->to('/login')->with('message', 'Registrasi berhasil. Silakan login.');
+        return view('auth/register', [
+            'title' => 'Register',
+            'validation' => \Config\Services::validation()
+        ]);
     }
-
-    return view('auth/register', [
-        'title' => 'Register',
-        'validation' => \Config\Services::validation() // Untuk akses awal halaman
-    ]);
-}
 
     public function logout()
     {
+        // Simpan log sebelum session dihapus
+        if (session()->get('isLoggedIn')) {
+            $user = session()->get('user');
+            activity_log(
+                $user['id'],
+                'Logout',
+                'User keluar dari sistem',
+                'logout'
+            );
+        }
+
         session()->destroy();
         return redirect()->to('/login')->with('message', 'Anda telah logout');
     }

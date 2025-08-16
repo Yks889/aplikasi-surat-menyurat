@@ -29,7 +29,7 @@
         </div>
         <div class="d-flex flex-column flex-md-row gap-2">
             <a href="/user/history-pengajuan/create" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-1"></i> Ajukan Baru
+                <i class="bi bi-plus-circle me-1"></i> Ajukan
             </a>
         </div>
     </div>

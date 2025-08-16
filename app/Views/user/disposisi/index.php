@@ -67,10 +67,10 @@
                                     <td><?= date('d/m/Y H:i', strtotime($d['created_at'])) ?></td>
                                     <td>
                                         <a href="/user/disposisi/detail/<?= $d['surat_id'] ?>" class="btn btn-sm btn-outline-info">
-                                            <i class="bi bi-info-circle"></i> Detail
+                                            <i class="bi bi-info-circle"></i>
                                         </a>
                                         <a href="/user/disposisi/ajukan/<?= $d['surat_id'] ?>" class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-send-check"></i> Ajukan
+                                            <i class="bi bi-send-check"></i>
                                         </a>
                                     </td>
                                 </tr>
