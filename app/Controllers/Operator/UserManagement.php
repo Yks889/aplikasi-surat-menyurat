@@ -15,14 +15,13 @@ class UserManagement extends BaseController
         $this->userModel = new UserModel();
     }
 
-    // Menampilkan daftar user dengan filter bulan & tahun
+    // Menampilkan daftar user dengan filter bulan & tahun, khusus role user
     public function index()
     {
         $bulan = $this->request->getGet('bulan') ?? 'all';
         $tahun = $this->request->getGet('tahun') ?? date('Y');
-        $role  = $this->request->getGet('role');
 
-        $builder = $this->userModel;
+        $builder = $this->userModel->where('role', 'user'); // hanya ambil user role = user
 
         // Filter bulan jika bukan 'all'
         if (!empty($bulan) && $bulan !== 'all') {
@@ -34,11 +33,6 @@ class UserManagement extends BaseController
             $builder->where('YEAR(created_at)', $tahun);
         }
 
-        // Filter role jika dipilih
-        if (!empty($role)) {
-            $builder->where('role', $role);
-        }
-
         $data = [
             'title'      => 'Kelola User',
             'user'       => session()->get(),
@@ -46,7 +40,6 @@ class UserManagement extends BaseController
             'validation' => \Config\Services::validation(),
             'bulan'      => $bulan,
             'tahun'      => $tahun,
-            'role'       => $role ?? '',
         ];
 
         return view('operator/users/index', $data);
@@ -90,7 +83,7 @@ class UserManagement extends BaseController
             'username'   => $this->request->getPost('username'),
             'password'   => $this->request->getPost('password'),
             'full_name'  => $this->request->getPost('full_name'),
-            'role'       => 'user',
+            'role'       => 'user', // otomatis role user
             'email'      => $this->request->getPost('email'),
         ];
 
@@ -110,9 +103,9 @@ class UserManagement extends BaseController
 
     public function edit($id)
     {
-        $userData = $this->userModel->find($id);
+        $userData = $this->userModel->where('role', 'user')->find($id); // hanya user role user
 
-        if (!$userData || $userData['role'] !== 'user') {
+        if (!$userData) {
             return redirect()->to('/operator/users')->with('error', 'User tidak ditemukan atau tidak diizinkan.');
         }
 
@@ -135,7 +128,7 @@ class UserManagement extends BaseController
 
         $user = $this->userModel->find($id);
 
-        if (!$user || $user['role'] !== 'user') {
+        if (!$user) {
             return redirect()->to('/operator/users')->with('error', 'User tidak ditemukan atau tidak diizinkan.');
         }
 
@@ -190,7 +183,7 @@ class UserManagement extends BaseController
 
         $user = $this->userModel->find($id);
 
-        if (!$user || $user['role'] !== 'user') {
+        if (!$user) {
             return redirect()->to('/operator/users')->with('error', 'Tidak dapat menghapus user ini.');
         }
 
