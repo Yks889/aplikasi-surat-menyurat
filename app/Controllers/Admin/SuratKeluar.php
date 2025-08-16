@@ -7,6 +7,7 @@ use App\Models\SuratKeluarModel;
 use App\Models\PerusahaanModel;
 use App\Models\UserModel;
 use App\Models\JenisSuratModel;
+use App\Models\TandaTanganModel;
 
 class SuratKeluar extends BaseController
 {
@@ -14,6 +15,7 @@ class SuratKeluar extends BaseController
     protected $perusahaanModel;
     protected $userModel;
     protected $jenisSuratModel;
+    protected $tandaTanganModel;
 
     public function __construct()
     {
@@ -21,6 +23,7 @@ class SuratKeluar extends BaseController
         $this->perusahaanModel = new PerusahaanModel();
         $this->userModel = new UserModel();
         $this->jenisSuratModel = new JenisSuratModel();
+        $this->tandaTanganModel = new TandaTanganModel();
     }
 
     public function index()
@@ -30,9 +33,9 @@ class SuratKeluar extends BaseController
         $perusahaanId = $this->request->getGet('perusahaan_id');
 
         $builder = $this->suratKeluarModel
-            ->select('surat_keluar.*, perusahaan.nama AS perusahaan, users.full_name AS penandatangan')
+            ->select('surat_keluar.*, perusahaan.nama AS perusahaan, tanda_tangan.nama AS penandatangan')
             ->join('perusahaan', 'perusahaan.id = surat_keluar.perusahaan_id', 'left')
-            ->join('users', 'users.id = surat_keluar.penandatangan_id', 'left')
+            ->join('tanda_tangan', 'tanda_tangan.id = surat_keluar.penandatangan_id', 'left')
             ->where('MONTH(tanggal_surat)', $bulan)
             ->where('YEAR(tanggal_surat)', $tahun);
 
@@ -64,7 +67,7 @@ class SuratKeluar extends BaseController
             'title' => 'Tambah Surat Keluar',
             'user' => session()->get(),
             'perusahaan' => $this->perusahaanModel->findAll(),
-            'penandatangan' => $this->userModel->where('role', 'admin')->findAll(),
+            'penandatangan' => $this->tandaTanganModel->findAll(),
             'jenis_surat' => $this->jenisSuratModel->findAll(),
             'validation' => \Config\Services::validation()
         ];
@@ -141,7 +144,7 @@ class SuratKeluar extends BaseController
             'user' => session()->get(),
             'surat' => $this->suratKeluarModel->find($id),
             'perusahaan' => $this->perusahaanModel->findAll(),
-            'penandatangan' => $this->userModel->where('role', 'admin')->findAll(),
+            'penandatangan' => $this->tandaTanganModel->findAll(),
             'jenis_surat' => $this->jenisSuratModel->findAll(),
             'validation' => \Config\Services::validation()
         ];

@@ -60,7 +60,8 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('ajukan/detail/(:num)', 'Admin\AjukanSurat::detail/$1');
     $routes->get('ajukan/terima/(:num)', 'Admin\AjukanSurat::terima/$1');
 
-
+    // Activities User
+    $routes->get('activity', 'Admin\ActivitiesUser::index');
 
 
 

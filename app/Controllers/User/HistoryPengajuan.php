@@ -22,10 +22,11 @@ class HistoryPengajuan extends BaseController
             return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
         }
 
-        // Ambil semua pengajuan milik user
         $pengajuanAll = $this->pengajuanModel
-            ->where('dari', $user['full_name'])
-            ->orderBy('created_at', 'DESC')
+            ->select('pengajuan_surat_keluar.*, surat_masuk.nomor_surat, surat_masuk.dari AS dari_surat_masuk, surat_masuk.perihal, surat_masuk.tgl_surat, surat_masuk.waktu_diterima, surat_masuk.file_surat')
+            ->join('surat_masuk', 'surat_masuk.id = pengajuan_surat_keluar.surat_masuk_id', 'left')
+            ->where('pengajuan_surat_keluar.dari', $user['full_name'])
+            ->orderBy('pengajuan_surat_keluar.created_at', 'DESC')
             ->findAll();
 
         return view('user/pengajuan/index', [
@@ -47,9 +48,8 @@ class HistoryPengajuan extends BaseController
         }
 
         $judul = $this->request->getPost('judul');
-        $deskripsi= $this->request->getPost('deskripsi');
+        $deskripsi = $this->request->getPost('deskripsi');
 
-        // Validasi sederhana
         if (!$judul || !$deskripsi) {
             return redirect()->back()->withInput()->with('error', 'Judul dan Deskripsi wajib diisi.');
         }
@@ -58,8 +58,8 @@ class HistoryPengajuan extends BaseController
             'judul' => $judul,
             'deskripsi' => $deskripsi,
             'dari' => $user['full_name'],
-            'kepada' => 'Admin', // Default
-            'status' => 'belum',  // Default
+            'kepada' => 'Admin',
+            'status' => 'belum',
             'surat_masuk_id' => null
         ]);
 
@@ -74,17 +74,28 @@ class HistoryPengajuan extends BaseController
             return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
         }
 
+        // Ambil data pengajuan + join surat masuk (hanya milik user yang login)
         $pengajuan = $this->pengajuanModel
-            ->where('id', $id)
-            ->where('dari', $user['full_name'])
+            ->select('pengajuan_surat_keluar.*, surat_masuk.nomor_surat, surat_masuk.dari AS dari_surat_masuk, surat_masuk.perihal, surat_masuk.tgl_surat, surat_masuk.waktu_diterima, surat_masuk.file_surat')
+            ->join('surat_masuk', 'surat_masuk.id = pengajuan_surat_keluar.surat_masuk_id', 'left')
+            ->where('pengajuan_surat_keluar.id', $id)
+            ->where('pengajuan_surat_keluar.dari', $user['full_name'])
             ->first();
 
         if (!$pengajuan) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Pengajuan tidak ditemukan.");
         }
 
+        // Ambil daftar form terkait (hanya milik user yang login)
+        $pengajuanForms = $this->pengajuanModel
+            ->where('surat_masuk_id', $pengajuan['surat_masuk_id'])
+            ->where('dari', $user['full_name'])
+            ->orderBy('created_at', 'DESC')
+            ->findAll();
+
         return view('user/pengajuan/detail', [
-            'pengajuan' => $pengajuan
+            'pengajuan' => $pengajuan,
+            'pengajuanForms' => $pengajuanForms
         ]);
     }
 }
