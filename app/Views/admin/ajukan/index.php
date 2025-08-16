@@ -74,12 +74,12 @@
                                             <i class="bi bi-info-circle"></i>
                                         </a>
                                         <?php if ($row['status'] === 'belum'): ?>
-                                            <a href="/admin/ajukan/terima/<?= $row['id'] ?>" class="btn btn-sm btn-success" title="Terima">
+                                            <a href="/admin/ajukan/terima/<?= $row['id'] ?>" class="btn btn-sm btn-outline-success" title="Terima">
                                                 <i class="bi bi-check-circle"></i>
                                             </a>
-                                            <button class="btn btn-sm btn-danger" onclick="tolakPengajuan(<?= $row['id'] ?>)" title="Tolak">
+                                            <a href="#" class="btn btn-sm btn-outline-danger" onclick="tolakPengajuan(<?= $row['id'] ?>); return false;" title="Tolak">
                                                 <i class="bi bi-x-circle"></i>
-                                            </button>
+                                            </a>
                                         <?php endif; ?>
                                     </div>
                                 </td>
@@ -134,6 +134,5 @@
             });
         }
     </script>
-
 
     <?= $this->endSection() ?>

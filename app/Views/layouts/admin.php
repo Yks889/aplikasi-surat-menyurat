@@ -429,8 +429,8 @@
             <span>Kelola User</span>
           </a>
           <a href="/admin/activity" class="nav-link <?= strpos(current_url(), 'activity') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Activities User">
-            <i class="bi bi-people"></i>
-            <span>Activities User</span>
+            <i class="bi bi-journal-text"></i>
+            <span>Aktivitas User</span>
           </a>
           <a href="/admin/surat-masuk" class="nav-link <?= strpos(current_url(), 'surat-masuk') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Surat Masuk">
             <i class="bi bi-envelope"></i>

@@ -45,7 +45,7 @@
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
-                            <th>Username</th>
+                            <th>User Name</th>
                             <th>Nama Lengkap</th>
                             <th>Role</th>
                             <th>Email</th>

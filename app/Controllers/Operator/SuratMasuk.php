@@ -8,6 +8,7 @@ use App\Models\PerusahaanModel;
 use App\Models\DisposisiModel;
 use App\Models\DisposisiUserModel;
 use App\Models\UserModel;
+use App\Models\ActivityModel;
 use CodeIgniter\I18n\Time;
 
 class SuratMasuk extends BaseController
@@ -16,6 +17,7 @@ class SuratMasuk extends BaseController
     protected $perusahaanModel;
     protected $disposisiModel;
     protected $userModel;
+    protected $helpers = ['form', 'activity']; // Tambah helper activity
 
     public function __construct()
     {
@@ -77,7 +79,7 @@ class SuratMasuk extends BaseController
     {
         $createdBy = session()->get('user')['id'];
 
-        if (!$this->validate([
+        $rules = [
             'nomor_surat' => 'required',
             'perusahaan_id' => 'required',
             'dari' => 'required',
@@ -88,7 +90,9 @@ class SuratMasuk extends BaseController
                 'mime_in[file_surat,application/pdf,image/jpeg,image/png,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]',
                 'max_size[file_surat,5120]'
             ]
-        ])) {
+        ];
+
+        if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
@@ -106,6 +110,14 @@ class SuratMasuk extends BaseController
             'waktu_diterima'  => date('Y-m-d H:i:s'),
             'created_by'      => $createdBy
         ]);
+
+        // Catat aktivitas
+        activity_log(
+            $createdBy,
+            'Menambahkan Surat Masuk',
+            'Menambahkan surat masuk dengan nomor: ' . $this->request->getPost('nomor_surat'),
+            'surat-masuk'
+        );
 
         return redirect()->to('/operator/surat-masuk')->with('message', 'Surat masuk berhasil ditambahkan');
     }
@@ -170,6 +182,14 @@ class SuratMasuk extends BaseController
 
         $this->suratMasukModel->update($id, $dataUpdate);
 
+        // Catat aktivitas
+        activity_log(
+            session()->get('user')['id'],
+            'Mengedit Surat Masuk',
+            'Mengedit surat masuk dengan nomor: ' . $this->request->getPost('nomor_surat'),
+            'surat-masuk'
+        );
+
         return redirect()->to('/operator/surat-masuk')->with('message', 'Surat berhasil diperbarui.');
     }
 
@@ -180,67 +200,61 @@ class SuratMasuk extends BaseController
             return redirect()->to('/operator/surat-masuk')->with('error', 'Data surat tidak ditemukan.');
         }
 
-        // Hapus file jika ada
         if (!empty($surat['file_surat']) && file_exists('uploads/surat_masuk/' . $surat['file_surat'])) {
             unlink('uploads/surat_masuk/' . $surat['file_surat']);
         }
 
-        // Hapus disposisi_user terkait
-        $disposisiModel = new \App\Models\DisposisiModel();
-        $disposisiUserModel = new \App\Models\DisposisiUserModel();
-
-        $disposisis = $disposisiModel->where('surat_id', $id)->findAll();
+        $disposisis = $this->disposisiModel->where('surat_id', $id)->findAll();
+        $disposisiUserModel = new DisposisiUserModel();
         foreach ($disposisis as $disposisi) {
             $disposisiUserModel->where('disposisi_id', $disposisi['id'])->delete();
         }
+        $this->disposisiModel->where('surat_id', $id)->delete();
 
-        // Hapus disposisi utama
-        $disposisiModel->where('surat_id', $id)->delete();
-
-        // Hapus activity terkait surat masuk ini
-        $activityModel = new \App\Models\ActivityModel();
+        $activityModel = new ActivityModel();
         $activityModel->where('type', 'surat-masuk')
             ->like('description', $surat['nomor_surat'])
             ->delete();
 
-        // Hapus data surat masuk
         $this->suratMasukModel->delete($id);
+
+        // Catat aktivitas
+        activity_log(
+            session()->get('user')['id'],
+            'Menghapus Surat Masuk',
+            'Menghapus surat masuk dengan nomor: ' . $surat['nomor_surat'],
+            'surat-masuk'
+        );
 
         return redirect()->to('/operator/surat-masuk')->with('message', 'Surat berhasil dihapus.');
     }
 
-
     public function kirimDisposisi($id)
     {
-        $disposisiModel = new DisposisiModel();
-        $disposisiUserModel = new DisposisiUserModel();
-
         $dariUserId = session()->get('user')['id'];
-        $keUserIds = $this->request->getPost('ke_user_ids'); // array checkbox
+        $keUserIds = $this->request->getPost('ke_user_ids');
         $catatan = $this->request->getPost('catatan');
 
         if (empty($keUserIds)) {
             return redirect()->back()->with('error', 'Pilih minimal satu pengguna tujuan.');
         }
 
-        // Cek apakah sudah ada disposisi sebelumnya
-        $existingDisposisi = $disposisiModel
+        $existingDisposisi = $this->disposisiModel
             ->where('surat_id', $id)
             ->where('dari_user_id', $dariUserId)
             ->first();
 
+        $disposisiUserModel = new DisposisiUserModel();
+
         if ($existingDisposisi) {
-            // Update catatan dan waktu
-            $disposisiModel->update($existingDisposisi['id'], [
+            $this->disposisiModel->update($existingDisposisi['id'], [
                 'catatan' => $catatan,
                 'dibaca_pada' => Time::now('Asia/Jakarta'),
                 'created_at' => Time::now('Asia/Jakarta')
             ]);
 
-            // Hapus semua user tujuan lama
             $disposisiUserModel->where('disposisi_id', $existingDisposisi['id'])->delete();
 
-            // Tambahkan user tujuan baru
             foreach ($keUserIds as $keUserId) {
                 $disposisiUserModel->insert([
                     'disposisi_id' => $existingDisposisi['id'],
@@ -249,11 +263,18 @@ class SuratMasuk extends BaseController
                 ]);
             }
 
+            // Catat aktivitas
+            activity_log(
+                $dariUserId,
+                'Memperbarui Disposisi',
+                'Memperbarui disposisi untuk surat ID: ' . $id,
+                'disposisi'
+            );
+
             return redirect()->back()->with('message', 'Disposisi berhasil diperbarui.');
         }
 
-        // Jika belum ada disposisi, buat baru
-        $disposisiId = $disposisiModel->insert([
+        $disposisiId = $this->disposisiModel->insert([
             'surat_id'     => $id,
             'dari_user_id' => $dariUserId,
             'catatan'      => $catatan,
@@ -268,6 +289,14 @@ class SuratMasuk extends BaseController
                 'status'       => 'belum dibaca'
             ]);
         }
+
+        // Catat aktivitas
+        activity_log(
+            $dariUserId,
+            'Mengirim Disposisi',
+            'Mengirim disposisi untuk surat ID: ' . $id,
+            'disposisi'
+        );
 
         return redirect()->back()->with('message', 'Disposisi berhasil dikirim.');
     }

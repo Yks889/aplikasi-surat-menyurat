@@ -8,6 +8,7 @@ use App\Models\UserModel;
 class UserManagement extends BaseController
 {
     protected $userModel;
+    protected $helpers = ['form', 'activity']; // Add activity helper
 
     public function __construct()
     {
@@ -62,6 +63,11 @@ class UserManagement extends BaseController
 
     public function store()
     {
+        $operatorId = session()->get('user')['id'];
+        if (!$operatorId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $rules = [
             'username'   => 'required|min_length[5]|is_unique[users.username]',
             'password'   => 'required|min_length[6]',
@@ -70,18 +76,27 @@ class UserManagement extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('validation', $this->validator);
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $dataUser = [
             'username'   => $this->request->getPost('username'),
-            'password'   => $this->request->getPost('password'), // hash jika perlu
+            'password'   => $this->request->getPost('password'),
             'full_name'  => $this->request->getPost('full_name'),
             'role'       => 'user', // otomatis role user
             'email'      => $this->request->getPost('email'),
         ];
 
         $this->userModel->save($dataUser);
+        $userId = $this->userModel->getInsertID();
+
+        // Log activity
+        activity_log(
+            $operatorId,
+            'Menambahkan User Baru',
+            'Menambahkan user dengan username: ' . $dataUser['username'],
+            'user-management'
+        );
 
         return redirect()->to('/operator/users')->with('message', 'User berhasil ditambahkan');
     }
@@ -128,7 +143,7 @@ class UserManagement extends BaseController
         }
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('validation', $this->validator);
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $data = [
@@ -143,22 +158,48 @@ class UserManagement extends BaseController
 
         $this->userModel->update($id, $data);
 
+        // Log activity
+        activity_log(
+            $operatorId,
+            'Memperbarui Data User',
+            'Memperbarui data user dengan ID: ' . $id,
+            'user-management'
+        );
+
         return redirect()->to('/operator/users')->with('message', 'User berhasil diperbarui');
     }
 
     public function delete($id)
     {
+<<<<<<< HEAD
         $user = $this->userModel->where('role', 'user')->find($id); // hanya user role user
+=======
+        $operatorId = session()->get('user')['id'];
+        if (!$operatorId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
+        $user = $this->userModel->find($id);
+>>>>>>> 7bae5a59916d9eb86c562efbb4df1d1c269b17c7
 
         if (!$user) {
             return redirect()->to('/operator/users')->with('error', 'Tidak dapat menghapus user ini.');
         }
 
-        if ($id == session()->get('userId')) {
+        if ($id == $operatorId) {
             return redirect()->back()->with('error', 'Tidak dapat menghapus akun sendiri');
         }
 
+        $username = $user['username'];
         $this->userModel->delete($id);
+
+        // Log activity
+        activity_log(
+            $operatorId,
+            'Menghapus User',
+            'Menghapus user dengan username: ' . $username,
+            'user-management'
+        );
 
         return redirect()->to('/operator/users')->with('message', 'User berhasil dihapus');
     }
