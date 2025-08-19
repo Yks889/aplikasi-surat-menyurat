@@ -8,6 +8,7 @@ use App\Models\TandaTanganModel;
 class TandaTangan extends BaseController
 {
     protected $tandaTanganModel;
+    protected $helpers = ['form', 'activity'];
 
     public function __construct()
     {
@@ -16,10 +17,15 @@ class TandaTangan extends BaseController
 
     public function index()
     {
+        $adminId = session()->get('user')['id'] ?? null;
+        if (!$adminId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $data = [
             'title' => 'Tanda Tangan Digital',
             'user' => session()->get('user'),
-            'tandaTangan' => $this->tandaTanganModel->findAll(),
+            'tandaTangan' => $this->tandaTanganModel->orderBy('uploaded_at', 'DESC')->findAll(),
             'validation' => \Config\Services::validation()
         ];
 
@@ -28,44 +34,109 @@ class TandaTangan extends BaseController
 
     public function upload()
     {
+        $adminId = session()->get('user')['id'] ?? null;
+        if (!$adminId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $rules = [
-            'nama' => 'required|min_length[3]',
+            'nama' => 'required|min_length[3]|max_length[100]',
             'file_ttd' => [
                 'uploaded[file_ttd]',
-                'mime_in[file_ttd,image/jpeg,image/png,image/gif]',
-                'max_size[file_ttd,1024]'
+                'mime_in[file_ttd,image/png,image/jpeg,image/gif]',
+                'max_size[file_ttd,1024]',
+                'is_image[file_ttd]'
             ]
         ];
 
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        $messages = [
+            'file_ttd' => [
+                'mime_in' => 'Format file harus PNG, JPG, atau GIF',
+                'max_size' => 'Ukuran file maksimal 1MB'
+            ]
+        ];
+
+        if (!$this->validate($rules, $messages)) {
+            return redirect()->back()
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
         }
 
         $nama = $this->request->getPost('nama');
         $file = $this->request->getFile('file_ttd');
-        $fileName = $file->getRandomName();
+
+        // Generate unique filename
+        $fileName = 'ttd_' . time() . '_' . $file->getRandomName();
         $file->move('uploads/tanda_tangan', $fileName);
 
-        // Simpan langsung dengan nama, tanpa user_id
-        $this->tandaTanganModel->save([
-            'nama' => $nama,
-            'file' => $fileName,
-            'uploaded_at' => date('Y-m-d H:i:s')
-        ]);
+        try {
+            $this->tandaTanganModel->save([
+                'nama' => $nama,
+                'file' => $fileName,
+                'uploaded_by' => $adminId,
+                'uploaded_at' => date('Y-m-d H:i:s')
+            ]);
 
-        return redirect()->to('/admin/tanda-tangan')->with('message', 'Tanda tangan berhasil diupload');
+            // Log activity
+            activity_log(
+                $adminId,
+                'Mengupload Tanda Tangan',
+                'Mengupload tanda tangan digital: ' . $nama,
+                'tanda-tangan'
+            );
+
+            return redirect()->to('/admin/tanda-tangan')
+                ->with('message', 'Tanda tangan berhasil diupload');
+
+        } catch (\Exception $e) {
+            // Clean up if error occurs
+            if (file_exists('uploads/tanda_tangan/' . $fileName)) {
+                unlink('uploads/tanda_tangan/' . $fileName);
+            }
+
+            log_message('error', 'Error uploading tanda tangan: ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Gagal mengupload tanda tangan. Silakan coba lagi.');
+        }
     }
 
     public function delete($id)
     {
-        $ttd = $this->tandaTanganModel->find($id);
-
-        if ($ttd && file_exists('uploads/tanda_tangan/' . $ttd['file'])) {
-            unlink('uploads/tanda_tangan/' . $ttd['file']);
+        $adminId = session()->get('user')['id'] ?? null;
+        if (!$adminId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
         }
 
-        $this->tandaTanganModel->delete($id);
+        $ttd = $this->tandaTanganModel->find($id);
+        if (!$ttd) {
+            return redirect()->to('/admin/tanda-tangan')
+                ->with('error', 'Tanda tangan tidak ditemukan');
+        }
 
-        return redirect()->to('/admin/tanda-tangan')->with('message', 'Tanda tangan berhasil dihapus');
+        try {
+            // Log activity before deletion
+            activity_log(
+                $adminId,
+                'Menghapus Tanda Tangan',
+                'Menghapus tanda tangan digital: ' . $ttd['nama'],
+                'tanda-tangan'
+            );
+
+            // Delete file if exists
+            if ($ttd['file'] && file_exists('uploads/tanda_tangan/' . $ttd['file'])) {
+                unlink('uploads/tanda_tangan/' . $ttd['file']);
+            }
+
+            $this->tandaTanganModel->delete($id);
+
+            return redirect()->to('/admin/tanda-tangan')
+                ->with('message', 'Tanda tangan berhasil dihapus');
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error deleting tanda tangan: ' . $e->getMessage());
+            return redirect()->to('/admin/tanda-tangan')
+                ->with('error', 'Gagal menghapus tanda tangan. Silakan coba lagi.');
+        }
     }
 }
