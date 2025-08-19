@@ -8,6 +8,7 @@ use App\Models\UserModel;
 class UserManagement extends BaseController
 {
     protected $userModel;
+    protected $helpers = ['form', 'activity']; // Add activity helper
 
     public function __construct()
     {
@@ -72,6 +73,11 @@ class UserManagement extends BaseController
     // Proses simpan user baru
     public function store()
     {
+        $adminId = session()->get('user')['id'];
+        if (!$adminId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $rules = [
             'username'   => 'required|min_length[5]|is_unique[users.username]',
             'password'   => 'required|min_length[6]',
@@ -81,19 +87,27 @@ class UserManagement extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('validation', $this->validator);
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $dataUser = [
             'username'   => $this->request->getPost('username'),
             'password'   => $this->request->getPost('password'),
-            // 'password'   => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'full_name'  => $this->request->getPost('full_name'),
             'role'       => $this->request->getPost('role'),
             'email'      => $this->request->getPost('email')
         ];
 
         $this->userModel->save($dataUser);
+        $userId = $this->userModel->getInsertID();
+
+        // Log activity
+        activity_log(
+            $adminId,
+            'Menambahkan User Baru',
+            'Menambahkan user dengan username: ' . $dataUser['username'] . ' dan role: ' . $dataUser['role'],
+            'user-management'
+        );
 
         return redirect()->to('/admin/users')->with('message', 'User berhasil ditambahkan');
     }
@@ -114,6 +128,11 @@ class UserManagement extends BaseController
     // Proses update user
     public function update($id)
     {
+        $adminId = session()->get('user')['id'];
+        if (!$adminId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $user = $this->userModel->find($id);
 
         $usernameRules = 'required|min_length[5]';
@@ -133,7 +152,7 @@ class UserManagement extends BaseController
         }
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('validation', $this->validator);
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $data = [
@@ -149,17 +168,45 @@ class UserManagement extends BaseController
 
         $this->userModel->update($id, $data);
 
+        // Log activity
+        activity_log(
+            $adminId,
+            'Memperbarui Data User',
+            'Memperbarui data user dengan ID: ' . $id . ' (Role baru: ' . $data['role'] . ')',
+            'user-management'
+        );
+
         return redirect()->to('/admin/users')->with('message', 'User berhasil diperbarui');
     }
 
     // Hapus user
     public function delete($id)
     {
-        if ($id == session()->get('userId')) {
+        $adminId = session()->get('user')['id'];
+        if (!$adminId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
+        if ($id == $adminId) {
             return redirect()->back()->with('error', 'Tidak dapat menghapus akun sendiri');
         }
 
+        $user = $this->userModel->find($id);
+        if (!$user) {
+            return redirect()->to('/admin/users')->with('error', 'User tidak ditemukan');
+        }
+
+        $username = $user['username'];
+        $role = $user['role'];
         $this->userModel->delete($id);
+
+        // Log activity
+        activity_log(
+            $adminId,
+            'Menghapus User',
+            'Menghapus user dengan username: ' . $username . ' (Role: ' . $role . ')',
+            'user-management'
+        );
 
         return redirect()->to('/admin/users')->with('message', 'User berhasil dihapus');
     }

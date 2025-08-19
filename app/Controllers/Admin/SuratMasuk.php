@@ -10,13 +10,13 @@ use App\Models\DisposisiUserModel;
 use App\Models\UserModel;
 use CodeIgniter\I18n\Time;
 
-
 class SuratMasuk extends BaseController
 {
     protected $suratMasukModel;
     protected $perusahaanModel;
     protected $disposisiModel;
     protected $userModel;
+    protected $helpers = ['form', 'activity']; // Add activity helper
 
     public function __construct()
     {
@@ -51,7 +51,7 @@ class SuratMasuk extends BaseController
             'tahun' => $tahun,
             'perusahaan_id' => $perusahaanId,
             'user' => session()->get('user'),
-            'users' => $this->userModel->where('role', 'user')->findAll(), // ✅ hanya user bisa Untuk dropdown disposisi
+            'users' => $this->userModel->where('role', 'user')->findAll(),
         ];
 
         return view('admin/surat_masuk/index', $data);
@@ -76,7 +76,10 @@ class SuratMasuk extends BaseController
 
     public function store()
     {
-        $createdBy = session()->get('user')['id'];
+        $adminId = session()->get('user')['id'];
+        if (!$adminId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
 
         if (!$this->validate([
             'nomor_surat' => 'required',
@@ -97,16 +100,28 @@ class SuratMasuk extends BaseController
         $fileName = $file->getRandomName();
         $file->move('uploads/surat_masuk', $fileName);
 
+        $nomorSurat = $this->request->getPost('nomor_surat');
+        $perusahaanId = $this->request->getPost('perusahaan_id');
+        $perusahaan = $this->perusahaanModel->find($perusahaanId);
+
         $this->suratMasukModel->save([
-            'nomor_surat'     => $this->request->getPost('nomor_surat'),
-            'perusahaan_id'   => $this->request->getPost('perusahaan_id'),
+            'nomor_surat'     => $nomorSurat,
+            'perusahaan_id'   => $perusahaanId,
             'dari'            => $this->request->getPost('dari'),
             'perihal'         => $this->request->getPost('perihal'),
             'file_surat'      => $fileName,
             'tgl_surat'       => $this->request->getPost('tgl_surat'),
             'waktu_diterima'  => date('Y-m-d H:i:s'),
-            'created_by'      => $createdBy
+            'created_by'      => $adminId
         ]);
+
+        // Log activity
+        activity_log(
+            $adminId,
+            'Menambahkan Surat Masuk',
+            'Menambahkan surat masuk dengan nomor: ' . $nomorSurat . ' dari perusahaan: ' . ($perusahaan ? $perusahaan['nama'] : ''),
+            'surat-masuk'
+        );
 
         return redirect()->to('/admin/surat-masuk')->with('message', 'Surat masuk berhasil ditambahkan');
     }
@@ -132,6 +147,11 @@ class SuratMasuk extends BaseController
 
     public function update($id)
     {
+        $adminId = session()->get('user')['id'];
+        if (!$adminId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $surat = $this->suratMasukModel->find($id);
         if (!$surat) {
             return redirect()->to('/admin/surat-masuk')->with('error', 'Data surat tidak ditemukan.');
@@ -171,11 +191,24 @@ class SuratMasuk extends BaseController
 
         $this->suratMasukModel->update($id, $dataUpdate);
 
+        // Log activity
+        activity_log(
+            $adminId,
+            'Memperbarui Surat Masuk',
+            'Memperbarui surat masuk dengan ID: ' . $id . ' (Nomor: ' . $dataUpdate['nomor_surat'] . ')',
+            'surat-masuk'
+        );
+
         return redirect()->to('/admin/surat-masuk')->with('message', 'Surat berhasil diperbarui.');
     }
 
     public function delete($id)
     {
+        $adminId = session()->get('user')['id'];
+        if (!$adminId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $surat = $this->suratMasukModel->find($id);
         if (!$surat) {
             return redirect()->to('/admin/surat-masuk')->with('error', 'Data surat tidak ditemukan.');
@@ -198,6 +231,14 @@ class SuratMasuk extends BaseController
         // Hapus disposisi utama
         $disposisiModel->where('surat_id', $id)->delete();
 
+        // Log activity sebelum menghapus activity terkait
+        activity_log(
+            $adminId,
+            'Menghapus Surat Masuk',
+            'Menghapus surat masuk dengan nomor: ' . $surat['nomor_surat'],
+            'surat-masuk'
+        );
+
         // Hapus activity terkait surat masuk ini
         $activityModel = new \App\Models\ActivityModel();
         $activityModel->where('type', 'surat-masuk')
@@ -210,18 +251,28 @@ class SuratMasuk extends BaseController
         return redirect()->to('/admin/surat-masuk')->with('message', 'Surat berhasil dihapus.');
     }
 
-
     public function kirimDisposisi($id)
     {
+        $adminId = session()->get('user')['id'];
+        if (!$adminId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $disposisiModel = new DisposisiModel();
         $disposisiUserModel = new DisposisiUserModel();
 
-        $dariUserId = session()->get('user')['id'];
-        $keUserIds = $this->request->getPost('ke_user_ids'); // array checkbox
+        $dariUserId = $adminId;
+        $keUserIds = $this->request->getPost('ke_user_ids');
         $catatan = $this->request->getPost('catatan');
 
         if (empty($keUserIds)) {
             return redirect()->back()->with('error', 'Pilih minimal satu pengguna tujuan.');
+        }
+
+        // Get surat details for logging
+        $surat = $this->suratMasukModel->find($id);
+        if (!$surat) {
+            return redirect()->back()->with('error', 'Surat tidak ditemukan.');
         }
 
         // Cek apakah sudah ada disposisi sebelumnya
@@ -250,6 +301,14 @@ class SuratMasuk extends BaseController
                 ]);
             }
 
+            // Log activity
+            activity_log(
+                $adminId,
+                'Memperbarui Disposisi Surat',
+                'Memperbarui disposisi untuk surat: ' . $surat['nomor_surat'],
+                'disposisi'
+            );
+
             return redirect()->back()->with('message', 'Disposisi berhasil diperbarui.');
         }
 
@@ -269,6 +328,14 @@ class SuratMasuk extends BaseController
                 'status'       => 'belum dibaca'
             ]);
         }
+
+        // Log activity
+        activity_log(
+            $adminId,
+            'Mengirim Disposisi Surat',
+            'Mengirim disposisi untuk surat: ' . $surat['nomor_surat'] . ' ke ' . count($keUserIds) . ' penerima',
+            'disposisi'
+        );
 
         return redirect()->back()->with('message', 'Disposisi berhasil dikirim.');
     }
