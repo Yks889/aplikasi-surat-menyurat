@@ -2,7 +2,7 @@
 <?= $this->section('content') ?>
 <link rel="icon" href="<?= base_url('uploads/logo.png') ?>" type="image/png" />
 <div class="container-fluid py-4">
-     <!-- Watermark Background - Adjusted for sidebar -->
+    <!-- Watermark Background -->
     <div class="position-fixed top-0 start-0 w-100 h-100" style="
         background-image: url('/uploads/logo.png');
         background-repeat: no-repeat;
@@ -12,6 +12,7 @@
         pointer-events: none;
         z-index: -1;
     "></div>
+
     <!-- Notification Alert -->
     <?php if (session()->getFlashdata('message')) : ?>
         <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4">
@@ -20,7 +21,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
-
 
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
         <div class="mb-3 mb-md-0">
@@ -59,7 +59,9 @@
                                     <?= !empty($row['surat_masuk_id']) ? 'Berdasarkan Surat Masuk' : 'Pengajuan Langsung' ?>
                                 </td>
                                 <td>
-                                    <?php if ($row['status'] === 'diterima'): ?>
+                                    <?php if ($row['status'] === 'selesai'): ?>
+                                        <span class="badge bg-primary">Selesai</span>
+                                    <?php elseif ($row['status'] === 'diterima'): ?>
                                         <span class="badge bg-success">Diproses</span>
                                     <?php elseif ($row['status'] === 'ditolak'): ?>
                                         <span class="badge bg-danger">Ditolak</span>
@@ -74,7 +76,7 @@
                                             <i class="bi bi-info-circle"></i>
                                         </a>
                                         <?php if ($row['status'] === 'belum'): ?>
-                                            <a href="/admin/ajukan/terima/<?= $row['id'] ?>" class="btn btn-sm btn-outline-success" title="Terima">
+                                            <a href="/admin/ajukan/formSurat/<?= $row['id'] ?>" class="btn btn-sm btn-outline-success" title="Terima">
                                                 <i class="bi bi-check-circle"></i>
                                             </a>
                                             <a href="#" class="btn btn-sm btn-outline-danger" onclick="tolakPengajuan(<?= $row['id'] ?>); return false;" title="Tolak">
@@ -97,7 +99,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-
 
     <script>
         $(document).ready(function() {
@@ -134,5 +135,4 @@
             });
         }
     </script>
-
     <?= $this->endSection() ?>
