@@ -8,7 +8,7 @@ class PengajuanSuratKeluarModel extends Model
 {
     protected $table = 'pengajuan_surat_keluar';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['judul', 'deskripsi', 'dari', 'kepada', 'surat_masuk_id', 'status'];
+    protected $allowedFields = ['judul', 'user_id', 'deskripsi', 'dari', 'kepada', 'surat_masuk_id', 'status'];
     protected $useTimestamps = true;
 }
     
