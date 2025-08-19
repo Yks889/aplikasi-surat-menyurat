@@ -84,7 +84,6 @@ class JenisSurat extends BaseController
             ];
 
             $this->jenisSuratModel->save($jenisSuratData);
-            $jenisSuratId = $this->jenisSuratModel->getInsertID();
 
             // Log activity
             activity_log(
@@ -217,14 +216,7 @@ class JenisSurat extends BaseController
         }
 
         try {
-            // Check if jenis surat is being used
-            $isUsed = $this->jenisSuratModel->isUsed($id);
-            if ($isUsed) {
-                return redirect()->to('/admin/jenis-surat')
-                    ->with('error', 'Jenis surat tidak dapat dihapus karena masih digunakan');
-            }
-
-            // Log activity before deletion
+            // Log activity sebelum dihapus
             activity_log(
                 $adminId,
                 'Menghapus Jenis Surat',
@@ -232,6 +224,7 @@ class JenisSurat extends BaseController
                 'jenis-surat'
             );
 
+            // Hapus langsung tanpa cek isUsed
             $this->jenisSuratModel->delete($id);
 
             return redirect()->to('/admin/jenis-surat')
