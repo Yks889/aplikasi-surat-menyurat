@@ -4,30 +4,33 @@ namespace App\Controllers\User;
 
 use App\Controllers\BaseController;
 use App\Models\PengajuanSuratKeluarModel;
+use App\Models\UserModel; // tambahkan
 use Config\Services;
 
 class HistoryPengajuan extends BaseController
 {
     protected $pengajuanModel;
-    protected $helpers = ['activity']; // Add activity helper
+    protected $userModel;
+    protected $helpers = ['activity'];
 
     public function __construct()
     {
         $this->pengajuanModel = new PengajuanSuratKeluarModel();
+        $this->userModel = new UserModel();
     }
 
     public function index()
     {
         $user = session()->get('user');
-
         if (!$user) {
             return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
         }
 
         $pengajuanAll = $this->pengajuanModel
-            ->select('pengajuan_surat_keluar.*, surat_masuk.nomor_surat, surat_masuk.dari AS dari_surat_masuk, surat_masuk.perihal, surat_masuk.tgl_surat, surat_masuk.waktu_diterima, surat_masuk.file_surat')
+            ->select('pengajuan_surat_keluar.*, users.full_name, surat_masuk.nomor_surat, surat_masuk.dari AS dari_surat_masuk, surat_masuk.perihal, surat_masuk.tgl_surat, surat_masuk.waktu_diterima, surat_masuk.file_surat')
+            ->join('users', 'users.id = pengajuan_surat_keluar.user_id')
             ->join('surat_masuk', 'surat_masuk.id = pengajuan_surat_keluar.surat_masuk_id', 'left')
-            ->where('pengajuan_surat_keluar.dari', $user['full_name'])
+            ->where('pengajuan_surat_keluar.user_id', $user['id'])
             ->orderBy('pengajuan_surat_keluar.created_at', 'DESC')
             ->findAll();
 
@@ -44,7 +47,6 @@ class HistoryPengajuan extends BaseController
     public function store()
     {
         $user = session()->get('user');
-
         if (!$user) {
             return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
         }
@@ -59,13 +61,13 @@ class HistoryPengajuan extends BaseController
         $this->pengajuanModel->insert([
             'judul' => $judul,
             'deskripsi' => $deskripsi,
-            'dari' => $user['full_name'],
+            'user_id' => $user['id'], // pakai id user
+            'dari'           => $user['full_name'],
             'kepada' => 'Admin',
             'status' => 'belum',
             'surat_masuk_id' => null
         ]);
 
-        // Log activity
         activity_log(
             $user['id'],
             'Membuat Pengajuan Baru',
@@ -79,27 +81,25 @@ class HistoryPengajuan extends BaseController
     public function detail($id)
     {
         $user = session()->get('user');
-
         if (!$user) {
             return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
         }
 
-        // Ambil data pengajuan + join surat masuk (hanya milik user yang login)
         $pengajuan = $this->pengajuanModel
-            ->select('pengajuan_surat_keluar.*, surat_masuk.nomor_surat, surat_masuk.dari AS dari_surat_masuk, surat_masuk.perihal, surat_masuk.tgl_surat, surat_masuk.waktu_diterima, surat_masuk.file_surat')
+            ->select('pengajuan_surat_keluar.*, users.full_name, surat_masuk.nomor_surat, surat_masuk.dari AS dari_surat_masuk, surat_masuk.perihal, surat_masuk.tgl_surat, surat_masuk.waktu_diterima, surat_masuk.file_surat')
+            ->join('users', 'users.id = pengajuan_surat_keluar.user_id')
             ->join('surat_masuk', 'surat_masuk.id = pengajuan_surat_keluar.surat_masuk_id', 'left')
             ->where('pengajuan_surat_keluar.id', $id)
-            ->where('pengajuan_surat_keluar.dari', $user['full_name'])
+            ->where('pengajuan_surat_keluar.user_id', $user['id']) // filter by user_id
             ->first();
 
         if (!$pengajuan) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Pengajuan tidak ditemukan.");
         }
 
-        // Ambil daftar form terkait (hanya milik user yang login)
         $pengajuanForms = $this->pengajuanModel
             ->where('surat_masuk_id', $pengajuan['surat_masuk_id'])
-            ->where('dari', $user['full_name'])
+            ->where('user_id', $user['id'])
             ->orderBy('created_at', 'DESC')
             ->findAll();
 
