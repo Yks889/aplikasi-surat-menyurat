@@ -122,17 +122,25 @@ class SuratKeluar extends BaseController
         $fileName = $file->getRandomName();
         $file->move('uploads/surat_keluar', $fileName);
 
+        // Simpan surat keluar
         $this->suratKeluarModel->save([
             'kode_surat' => $jenisSurat['singkatan'],
             'nomor_surat' => $nomorSurat,
             'untuk' => $this->request->getPost('untuk'),
             'perusahaan_id' => $this->request->getPost('perusahaan_id'),
-            'tanggal_surat' => $this->request->getPost('tanggal_surat'),
+            'tanggal_surat' => $tanggalSurat,
             'perihal' => $this->request->getPost('perihal'),
             'penandatangan_id' => $this->request->getPost('penandatangan_id'),
             'file_surat' => $fileName,
             'created_by' => $createdBy
         ]);
+
+        // Cek apakah ini surat keluar dari pengajuan
+        $pengajuanId = $this->request->getPost('pengajuan_id');
+        if (!empty($pengajuanId)) {
+            $pengajuanModel = new \App\Models\PengajuanSuratKeluarModel();
+            $pengajuanModel->update($pengajuanId, ['status' => 'selesai']);
+        }
 
         return redirect()->to('/admin/surat-keluar')->with('message', 'Surat keluar berhasil ditambahkan');
     }

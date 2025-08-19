@@ -59,6 +59,7 @@ $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('ajukan/tolak/(:num)', 'Admin\AjukanSurat::tolak/$1');
     $routes->get('ajukan/detail/(:num)', 'Admin\AjukanSurat::detail/$1');
     $routes->get('ajukan/terima/(:num)', 'Admin\AjukanSurat::terima/$1');
+    $routes->get('ajukan/formSurat/(:num)','Admin\AjukanSurat::formSurat/$1');
 
     // Activity User
     $routes->get('activity', 'Admin\Activity::index');

@@ -62,5 +62,29 @@ class AjukanSurat extends BaseController
             'pengajuanForms' => $pengajuanForms
         ]);
     }
-    
+
+    public function formSurat($id)
+    {
+        $pengajuanModel = new \App\Models\PengajuanSuratKeluarModel();
+        $pengajuan = $pengajuanModel->find($id);
+
+        if (!$pengajuan) {
+            return redirect()->back()->with('error', 'Data pengajuan tidak ditemukan.');
+        }
+
+        // Data dropdown
+        $perusahaan = (new \App\Models\PerusahaanModel())->findAll();
+        $jenisSurat = (new \App\Models\JenisSuratModel())->findAll();
+        $penandatangan = (new \App\Models\TandaTanganModel())->findAll();
+
+        $data = [
+            'pengajuan' => $pengajuan,
+            'perusahaan' => $perusahaan,
+            'jenis_surat' => $jenisSurat,
+            'penandatangan' => $penandatangan,
+            'validation' => \Config\Services::validation()
+        ];
+
+        return view('admin/surat_keluar/form_pengajuan', $data);
+    }
 }
