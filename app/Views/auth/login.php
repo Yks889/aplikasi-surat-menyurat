@@ -18,8 +18,6 @@
             --dark-color: #212529;
             --success-color: #4bb543;
             --error-color: #ff3333;
-            --labubu-pink: #FF9EB5;
-            --labubu-purple: #B28DFF;
         }
 
         body {
@@ -154,7 +152,7 @@
         }
 
         .login-card:hover {
-            transform: translateY(-5px) rotate(1deg);
+            transform: translateY(-8px);
             box-shadow: 0 12px 30px rgba(67, 97, 238, 0.15);
         }
 
@@ -165,7 +163,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--labubu-pink), var(--labubu-purple), var(--primary-color));
+            background: linear-gradient(135deg, #3f37c9, #4361ee, #4cc9f0);
             background-size: 200% 100%;
             animation: gradientBG 3s ease infinite;
         }
@@ -270,7 +268,7 @@
         }
 
         .brand-name {
-            background: linear-gradient(135deg, var(--labubu-pink), var(--labubu-purple), var(--primary-color));
+            background: linear-gradient(135deg, #3f37c9, #4361ee, #4cc9f0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -500,7 +498,6 @@
                                 Ingat saya
                             </label>
                         </div>
-                        <a href="/forgot-password" class="forgot-link">Lupa password?</a>
                     </div>
 
                     <div class="d-grid mb-3 animate__animated animate__fadeInUp">
