@@ -5,11 +5,13 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use App\Models\PengajuanSuratKeluarModel;
 use App\Models\UserModel;
+use Config\Services;
 
 class AjukanSurat extends BaseController
 {
     protected $pengajuanSuratKeluarModel;
     protected $userModel;
+    protected $helpers = ['activity']; // Add activity helper
 
     public function __construct()
     {
@@ -32,15 +34,44 @@ class AjukanSurat extends BaseController
 
     public function terima($id)
     {
+        $userId = session()->get('user')['id'];
+        if (!$userId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $this->pengajuanSuratKeluarModel->update($id, ['status' => 'diterima']);
+
+        // Log activity
+        activity_log(
+            $userId,
+            'Menerima Pengajuan Surat',
+            'Menerima pengajuan surat keluar dengan ID ' . $id,
+            'pengajuan_surat'
+        );
+
         return redirect()->back()->with('message', 'Pengajuan berhasil diterima.');
     }
 
     public function tolak($id)
     {
+        $userId = session()->get('user')['id'];
+        if (!$userId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $this->pengajuanSuratKeluarModel->update($id, ['status' => 'ditolak']);
+
+        // Log activity
+        activity_log(
+            $userId,
+            'Menolak Pengajuan Surat',
+            'Menolak pengajuan surat keluar dengan ID ' . $id,
+            'pengajuan_surat'
+        );
+
         return redirect()->back()->with('message', 'Pengajuan ditolak.');
     }
+
     public function detail($id)
     {
         $pengajuan = $this->pengajuanSuratKeluarModel
@@ -65,6 +96,11 @@ class AjukanSurat extends BaseController
 
     public function formSurat($id)
     {
+        $userId = session()->get('user')['id'];
+        if (!$userId) {
+            return redirect()->to('/login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $pengajuanModel = new \App\Models\PengajuanSuratKeluarModel();
         $pengajuan = $pengajuanModel->find($id);
 
@@ -77,12 +113,20 @@ class AjukanSurat extends BaseController
         $jenisSurat = (new \App\Models\JenisSuratModel())->findAll();
         $penandatangan = (new \App\Models\TandaTanganModel())->findAll();
 
+        // Log activity
+        activity_log(
+            $userId,
+            'Mengakses Form Surat',
+            'Mengakses form surat untuk pengajuan ID ' . $id,
+            'pengajuan_surat'
+        );
+
         $data = [
             'pengajuan' => $pengajuan,
             'perusahaan' => $perusahaan,
             'jenis_surat' => $jenisSurat,
             'penandatangan' => $penandatangan,
-            'validation' => \Config\Services::validation()
+            'validation' => Services::validation()
         ];
 
         return view('admin/surat_keluar/form_pengajuan', $data);
