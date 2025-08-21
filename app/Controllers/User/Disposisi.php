@@ -156,6 +156,7 @@ class Disposisi extends BaseController
         $user = session('user');
 
         $this->pengajuanModel->save([
+            'user_id' => $createdBy, // tambahkan ini
             'judul' => $this->request->getPost('judul'),
             'deskripsi' => $this->request->getPost('catatan'),
             'dari' => $user['full_name'],
