@@ -3,7 +3,7 @@
 <link rel="icon" href="<?= base_url('uploads/logo.png') ?>" type="image/png" />
 
 <div class="container-fluid py-4">
-     <!-- Watermark Background - Adjusted for sidebar -->
+    <!-- Watermark Background - Adjusted for sidebar -->
     <div class="position-fixed top-0 start-0 w-100 h-100" style="
         background-image: url('/uploads/logo.png');
         background-repeat: no-repeat;
@@ -73,10 +73,13 @@
                                             <span class="badge bg-success">Diproses</span>
                                         <?php elseif ($row['status'] === 'ditolak'): ?>
                                             <span class="badge bg-danger">Ditolak</span>
+                                        <?php elseif ($row['status'] === 'selesai'): ?>
+                                            <span class="badge bg-primary">Selesai</span>
                                         <?php else: ?>
                                             <span class="badge bg-secondary">Belum Diproses</span>
                                         <?php endif; ?>
                                     </td>
+
                                     <td><?= date('d/m/Y H:i', strtotime($row['created_at'])) ?></td>
                                     <td class="text-end">
                                         <a href="/user/history-pengajuan/detail/<?= $row['id'] ?>" class="btn btn-sm btn-outline-info" title="Detail Pengajuan">
