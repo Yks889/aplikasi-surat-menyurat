@@ -18,8 +18,6 @@
             --dark-color: #212529;
             --success-color: #4bb543;
             --error-color: #ff3333;
-            --labubu-pink: #FF9EB5;
-            --labubu-purple: #B28DFF;
         }
 
         body {
@@ -83,18 +81,18 @@
             }
         }
 
-        /* Labubu character */
-        .labubu-character {
+        /* Gonet character */
+        .Gonet-character {
             position: absolute;
             width: 120px;
             bottom: 20px;
             right: 20px;
             z-index: 1;
             transform-origin: bottom center;
-            animation: labubuBounce 2s ease infinite;
+            animation: GonetBounce 2s ease infinite;
         }
 
-        @keyframes labubuBounce {
+        @keyframes GonetBounce {
 
             0%,
             100% {
@@ -316,11 +314,6 @@
             transition: all 0.3s ease;
         }
 
-        .form-check-label a:hover {
-            color: var(--labubu-purple);
-            text-decoration: none;
-        }
-
         .login-link {
             text-align: center;
             margin-top: 1rem;
@@ -333,22 +326,6 @@
             font-weight: 500;
             transition: all 0.3s ease;
             position: relative;
-        }
-
-        .login-link a:hover {
-            color: var(--labubu-purple);
-            text-decoration: none;
-        }
-
-        .login-link a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--labubu-pink);
-            transition: width 0.3s ease;
         }
 
         .login-link a:hover::after {
@@ -430,7 +407,7 @@
                 padding: 1.5rem;
             }
 
-            .labubu-character {
+            .Gonet-character {
                 width: 80px;
                 bottom: 10px;
                 right: 10px;
@@ -445,20 +422,20 @@
 
 <body>
     <!-- Floating decorative elements -->
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
+    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Gonet character">
+    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Gonet character">
+    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Gonet character">
+    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Gonet character">
+    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Gonet character">
+    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Gonet character">
 
-    <!-- Labubu character -->
-    <img src="<?= base_url('uploads/logo1.png') ?>" class="labubu-character animate__animated animate__bounceInUp" alt="Labubu character">
+    <!-- Gonet character -->
+    <img src="<?= base_url('uploads/logo1.png') ?>" class="Gonet-character animate__animated animate__bounceInUp" alt="Gonet character">
 
     <div class="register-container animate__animated animate__fadeIn">
         <div class="register-header">
             <img src="/uploads/logo.png" alt="Logo Sistem Arsip Surat" class="logo-img animate__animated animate__rotateIn">
-            <h2>Daftar <span class="brand-name">Gonet</span></h2>
+            <h2>Daftar <span class="brand-name">GONET</span></h2>
             <p class="animate__animated animate__fadeIn">Buat akun untuk mengakses sistem</p>
         </div>
 
@@ -644,10 +621,10 @@
                 alert.classList.add('show');
             });
 
-            // Make Labubu interactive
-            const labubu = document.querySelector('.labubu-character');
-            if (labubu) {
-                labubu.addEventListener('click', function() {
+            // Make Gonet interactive
+            const Gonet = document.querySelector('.Gonet-character');
+            if (Gonet) {
+                Gonet.addEventListener('click', function() {
                     this.classList.add('animate__animated', 'animate__tada');
                     setTimeout(() => {
                         this.classList.remove('animate__animated', 'animate__tada');
