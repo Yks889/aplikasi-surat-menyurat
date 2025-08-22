@@ -2,9 +2,10 @@
 <?php if ($user && $user['role'] === 'operator') : ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= $title ?? 'Dashboard' ?> | Sistem Arsip Surat</title>
   <link rel="icon" href="<?= base_url('/public/uploads/logo.png') ?>" type="image/png">
 
@@ -25,13 +26,78 @@
       --sidebar-width: 280px;
       --sidebar-collapsed-width: 80px;
       --navbar-height: 75px;
-      --sidebar-bg: #0f172a;
-      --sidebar-text: #e2e8f0;
-      --sidebar-active: rgba(67, 97, 238, 0.2);
+      --sidebar-bg: #ffffff;
+      --sidebar-text: #64748b;
+      --sidebar-active: rgba(67, 97, 238, 0.1);
+      --sidebar-hover: rgba(67, 97, 238, 0.05);
       --content-bg: #f8fafc;
       --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --sidebar-hover: rgba(100, 116, 139, 0.2);
+      --border-color: #e2e8f0;
+    }
+
+    /* Dark Mode Variables */
+    [data-theme="dark"] {
+      --primary: #5e72e4;
+      --primary-dark: #4a5fc9;
+      --primary-light: rgba(94, 114, 228, 0.1);
+      --sidebar-bg: #1a2236;
+      --sidebar-text: #a0aec0;
+      --sidebar-active: rgba(94, 114, 228, 0.2);
+      --sidebar-hover: rgba(94, 114, 228, 0.1);
+      --content-bg: #121726;
+      --border-color: #2d3748;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    }
+
+    [data-theme="dark"] body {
+      color: #e2e8f0;
+      background-color: var(--content-bg);
+    }
+
+    [data-theme="dark"] .main-header {
+      background: #1a2236;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    [data-theme="dark"] .content-wrapper {
+      background-color: var(--content-bg);
+    }
+
+    [data-theme="dark"] .dropdown-menu {
+      background-color: #1a2236;
+      border-color: var(--border-color);
+      color: #e2e8f0;
+    }
+
+    [data-theme="dark"] .dropdown-item {
+      color: #e2e8f0;
+    }
+
+    [data-theme="dark"] .dropdown-item:hover {
+      background-color: var(--primary-light);
+      color: var(--primary);
+    }
+
+    [data-theme="dark"] .user-name {
+      color: #e2e8f0 !important;
+    }
+
+    [data-theme="dark"] .user-panel small {
+      color: #a0aec0;
+    }
+
+    [data-theme="dark"] .sidebar-divider {
+      background: var(--border-color);
+    }
+
+    [data-theme="dark"] .arsip-surat {
+      color: #ffffff !important;
+    }
+
+    [data-theme="dark"] .navbar .text-muted,
+    [data-theme="dark"] .user-panel small {
+      color: #e2e8f0 !important;
     }
 
     body {
@@ -40,6 +106,7 @@
       color: #334155;
       min-height: 100vh;
       padding-left: var(--sidebar-width);
+      padding-top: var(--navbar-height);
       transition: var(--transition);
     }
 
@@ -53,15 +120,14 @@
     .main-header {
       height: var(--navbar-height);
       background: white;
-      box-shadow: 0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04);
-      z-index: 1040;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      z-index: 1060;
       position: fixed;
       top: 0;
-      left: var(--sidebar-width);
+      left: 0;
       right: 0;
       transition: var(--transition);
-      backdrop-filter: blur(8px);
-      background-color: rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid var(--border-color);
     }
 
     .navbar-brand {
@@ -83,27 +149,17 @@
     .main-sidebar {
       width: var(--sidebar-width);
       position: fixed;
-      top: 0;
+      top: var(--navbar-height);;
       left: 0;
       bottom: 0;
-      background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+      background: var(--sidebar-bg);
       color: var(--sidebar-text);
       overflow-y: auto;
       padding: 1.5rem 0;
       z-index: 1050;
       transition: var(--transition);
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .main-sidebar::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 120px;
-      background: linear-gradient(180deg, rgba(67, 97, 238, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
-      pointer-events: none;
+      border-right: 1px solid var(--border-color);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
     }
 
     .main-sidebar .nav-link {
@@ -117,21 +173,17 @@
       font-weight: 500;
       transition: var(--transition);
       position: relative;
-      opacity: 0.9;
     }
 
     .main-sidebar .nav-link:hover {
       background: var(--sidebar-hover);
-      color: white;
-      opacity: 1;
+      color: var(--primary);
       transform: translateX(5px);
     }
 
     .main-sidebar .nav-link.active {
-      background: linear-gradient(90deg, rgba(67, 97, 238, 0.3) 0%, rgba(67, 97, 238, 0.1) 100%);
-      color: white;
-      border-left: 3px solid var(--primary);
-      opacity: 1;
+      background: var(--sidebar-active);
+      color: var(--primary);
       font-weight: 600;
     }
 
@@ -144,7 +196,7 @@
     }
 
     .main-sidebar .nav-link.active i {
-      color: var(--primary-light);
+      color: var(--primary);
     }
 
     /* User Panel */
@@ -155,7 +207,7 @@
       z-index: 1;
     }
 
-    .user-panel > div {
+    .user-panel>div {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -163,7 +215,7 @@
 
     .user-panel i {
       font-size: 1.5rem;
-      color: var(--primary-light);
+      color: white;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       width: 48px;
       height: 48px;
@@ -171,7 +223,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 6px rgba(67, 97, 238, 0.3);
+      box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
     }
 
     .user-panel small {
@@ -190,44 +242,23 @@
       text-overflow: ellipsis;
       overflow: hidden;
       font-weight: 600;
-      color: white;
+      color: #1e293b;
     }
 
     /* Content */
     .content-wrapper {
       flex: 1;
-      margin-top: var(--navbar-height);
       padding: 2rem;
       transition: var(--transition);
     }
 
-    /* Sidebar Overlay for Mobile */
-    .sidebar-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1040;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-
-    .sidebar-overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
-
     /* Dropdown Menu */
     .dropdown-menu {
-      border: none;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
       border-radius: 8px;
       padding: 0.5rem;
       margin-top: 8px;
-      border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .dropdown-item {
@@ -251,16 +282,34 @@
 
     /* Navbar avatar */
     .nav-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 36px;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: var(--sidebar-text);
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: var(--transition);
+      margin-right: 0.75rem;
+    }
+
+    .theme-toggle:hover {
+      color: var(--primary);
+      background-color: var(--sidebar-hover);
     }
 
     /* Collapsed Sidebar State */
@@ -271,10 +320,6 @@
     .sidebar-collapsed .main-sidebar {
       width: var(--sidebar-collapsed-width);
       overflow: hidden;
-    }
-
-    .sidebar-collapsed .main-header {
-      left: var(--sidebar-collapsed-width);
     }
 
     .sidebar-collapsed .main-sidebar .nav-link {
@@ -305,9 +350,27 @@
     }
 
     .sidebar-collapsed .main-sidebar .nav-link.active {
-      border-left: none;
       border-radius: 8px;
-      background: rgba(67, 97, 238, 0.3);
+      background: rgba(67, 97, 238, 0.15);
+    }
+
+    /* Sidebar Overlay for Mobile */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1040;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .sidebar-overlay.show {
+      opacity: 1;
+      visibility: visible;
     }
 
     @media (min-width: 993px) {
@@ -328,7 +391,7 @@
 
       .main-sidebar.show {
         transform: translateX(0);
-        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
       }
 
       .main-header {
@@ -356,9 +419,9 @@
 
     /* Gonet Branding */
     .brand-logo {
-      height: 35px;
+      height: 43px;
       margin-right: 10px;
-      transition: transform 0.3s ease;
+      transition: transform 1s ease;
       transform-origin: center center;
     }
 
@@ -391,238 +454,277 @@
     /* Sidebar divider */
     .sidebar-divider {
       height: 1px;
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--border-color);
       margin: 1rem 1.5rem;
     }
   </style>
 </head>
+
 <body>
-<div class="wrapper">
+  <div class="wrapper">
 
-  <!-- Sidebar -->
-  <aside class="main-sidebar" id="sidebarMenu">
-    <div class="user-panel">
-      <div>
-        <?php if ($user['photo'] ?? false) : ?>
-          <img src="/uploads/profiles/<?= $user['photo'] ?>" class="rounded-circle" width="48" height="48" alt="Foto Profil">
-        <?php else : ?>
-          <i class="bi bi-person-circle"></i>
-        <?php endif; ?>
-        <div class="user-info">
-          <div class="user-name"><?= esc($user['full_name'] ?? 'Guest') ?></div>
-          <small><?= esc(ucfirst($user['role'] ?? '')) ?></small>
+    <!-- Sidebar -->
+    <aside class="main-sidebar" id="sidebarMenu">
+
+      <nav class="nav flex-column">
+        <a href="/operator/dashboard" class="nav-link <?= current_url() == site_url('/operator/dashboard') ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+          <i class="bi bi-speedometer2"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="/operator/users" class="nav-link <?= strpos(current_url(), 'users') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Kelola User Biasa">
+          <i class="bi bi-people"></i>
+          <span>Kelola User Biasa</span>
+        </a>
+        <a href="/operator/surat-masuk" class="nav-link <?= strpos(current_url(), 'surat-masuk') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Surat Masuk">
+          <i class="bi bi-envelope"></i>
+          <span>Surat Masuk</span>
+        </a>
+        <a href="/operator/surat-keluar" class="nav-link <?= strpos(current_url(), 'surat-keluar') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Surat Keluar">
+          <i class="bi bi-envelope-open"></i>
+          <span>Surat Keluar</span>
+        </a>
+        <a href="/operator/disposisi" class="nav-link <?= strpos(current_url(), 'disposisi') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Histori Disposisi">
+          <i class="bi bi-share"></i>
+          <span>Histori Disposisi</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand-lg navbar-light">
+      <div class="container-fluid px-4">
+        <a href="/operator/dashboard" class="navbar-brand" id="sidebarToggle">
+          <img src="/uploads/logo.png" alt="Logo Gonet" class="brand-logo">
+          <span class="arsip-surat">Arsip Surat <span class="brand-name">GONET</span></span>
+        </a>
+
+        <div class="d-flex align-items-center ms-auto">
+          <!-- Theme Toggle Button -->
+          <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+            <i class="bi bi-sun-fill" id="themeIcon"></i>
+          </button>
+          
+          <div class="dropdown">
+            <a class="dropdown-toggle d-flex align-items-center text-decoration-none" href="#" data-bs-toggle="dropdown">
+              <?php if ($user['photo'] ?? false) : ?>
+                <!-- Foto Profil -->
+                <img src="/uploads/profiles/<?= esc($user['photo']) ?>" 
+                    alt="Foto Profil" 
+                    class="rounded-circle me-2" 
+                    width="43" height="43"
+                    style="object-fit: cover;">
+              <?php else : ?>
+                <!-- Avatar fallback seperti sidebar -->
+                <div class="nav-avatar me-2">
+                  <i class="bi bi-person-circle"></i>
+                </div>
+              <?php endif; ?>
+
+              <div class="d-none d-md-block">
+                <div class="fw-semibold user-name"><?= esc($user['full_name'] ?? 'Guest') ?></div>
+                <small class="text-muted" style="font-size: 0.75rem;"><?= esc(ucfirst($user['role'] ?? '')) ?></small>
+              </div>
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item d-flex align-items-center" href="/operator/profile">
+                  <i class="bi bi-person me-2"></i>
+                  <span>Profil Saya</span>
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center" href="/logout">
+                  <i class="bi bi-box-arrow-right me-2"></i>
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="sidebar-divider"></div>
-
-    <nav class="nav flex-column">
-      <a href="/operator/dashboard" class="nav-link <?= current_url() == site_url('/operator/dashboard') ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
-        <i class="bi bi-speedometer2"></i>
-        <span>Dashboard</span>
-      </a>
-      <a href="/operator/users" class="nav-link <?= strpos(current_url(), 'users') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Kelola User Biasa">
-        <i class="bi bi-people"></i>
-        <span>Kelola User Biasa</span>
-      </a>
-      <a href="/operator/surat-masuk" class="nav-link <?= strpos(current_url(), 'surat-masuk') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Surat Masuk">
-        <i class="bi bi-envelope"></i>
-        <span>Surat Masuk</span>
-      </a>
-      <a href="/operator/surat-keluar" class="nav-link <?= strpos(current_url(), 'surat-keluar') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Surat Keluar">
-        <i class="bi bi-envelope-open"></i>
-        <span>Surat Keluar</span>
-      </a>
-      <a href="/operator/disposisi" class="nav-link <?= strpos(current_url(), 'disposisi') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Histori Disposisi">
-        <i class="bi bi-share"></i>
-        <span>Histori Disposisi</span>
-      </a>
     </nav>
-  </aside>
 
-  <!-- Sidebar Overlay for Mobile -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid px-4">
-      <a href="/operator/dashboard" class="navbar-brand" id="sidebarToggle">
-        <img src="/uploads/logo.png" alt="Logo Gonet" class="brand-logo">
-        <span class="arsip-surat">Arsip Surat <span class="brand-name">Gonet</span></span>
-      </a>
-
-      <div class="d-flex align-items-center ms-auto">
-        <div class="dropdown">
-          <a class="dropdown-toggle d-flex align-items-center text-decoration-none" href="#" data-bs-toggle="dropdown">
-            <div class="nav-avatar me-2">
-              <?= substr(esc($user['full_name'] ?? 'G'), 0, 1) ?>
-            </div>
-            <div class="d-none d-md-block">
-              <div class="fw-semibold"><?= esc($user['full_name'] ?? 'Guest') ?></div>
-              <small class="text-muted" style="font-size: 0.75rem;"><?= esc(ucfirst($user['role'] ?? '')) ?></small>
-            </div>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="/operator/profile">
-                <i class="bi bi-person me-2"></i>
-                <span>Profil Saya</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="/logout">
-                <i class="bi bi-box-arrow-right me-2"></i>
-                <span>Logout</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+    <!-- Content -->
+    <div class="content-wrapper">
+      <div class="container-fluid">
+        <?= $this->renderSection('content') ?>
       </div>
     </div>
-  </nav>
 
-  <!-- Content -->
-  <div class="content-wrapper">
-    <div class="container-fluid">
-      <?= $this->renderSection('content') ?>
-    </div>
   </div>
 
-</div>
+  <!-- JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // Theme Toggle Functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const htmlElement = document.documentElement;
 
-<!-- JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-  // Add mouse events for logo animation
-  const logo = document.querySelector('.brand-logo');
-  const navbarBrand = document.querySelector('.navbar-brand');
-  
-  navbarBrand.addEventListener('mouseenter', function() {
-    logo.style.animation = 'rotateLogo 0.7s forwards';
-  });
-  
-  navbarBrand.addEventListener('mouseleave', function() {
-    logo.style.animation = 'rotateLogoBack 0.7s forwards';
-  });
+    // Check for saved theme preference or respect OS preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-  // Toggle sidebar when clicking the logo
-  document.getElementById('sidebarToggle').addEventListener('click', function(e) {
-    // On desktop (width > 992px), prevent default and toggle sidebar
-    if (window.innerWidth > 992) {
-      e.preventDefault();
-      
-      // Toggle sidebar
-      document.body.classList.toggle('sidebar-collapsed');
-      
-      // Save state to localStorage
-      const isCollapsed = document.body.classList.contains('sidebar-collapsed');
-      localStorage.setItem('sidebarCollapsed', isCollapsed);
-      
-      // Update tooltips
-      updateTooltips(isCollapsed);
+    // Set initial theme
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      htmlElement.setAttribute('data-theme', 'dark');
+      themeIcon.classList.remove('bi-sun-fill');
+      themeIcon.classList.add('bi-moon-stars-fill');
     } else {
-      // On mobile, prevent default and toggle sidebar with overlay
-      e.preventDefault();
-      toggleMobileSidebar();
+      htmlElement.removeAttribute('data-theme');
+      themeIcon.classList.remove('bi-moon-stars-fill');
+      themeIcon.classList.add('bi-sun-fill');
     }
-  });
 
-  // Toggle sidebar on mobile with overlay
-  function toggleMobileSidebar() {
-    const sidebar = document.getElementById('sidebarMenu');
-    const overlay = document.getElementById('sidebarOverlay');
+    // Toggle theme
+    themeToggle.addEventListener('click', () => {
+      if (htmlElement.getAttribute('data-theme') === 'dark') {
+        htmlElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+        themeIcon.classList.remove('bi-moon-stars-fill');
+        themeIcon.classList.add('bi-sun-fill');
+      } else {
+        htmlElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        themeIcon.classList.remove('bi-sun-fill');
+        themeIcon.classList.add('bi-moon-stars-fill');
+      }
+    });
+
+    // Add mouse events for logo animation
+    const logo = document.querySelector('.brand-logo');
+    const navbarBrand = document.querySelector('.navbar-brand');
     
-    sidebar.classList.toggle('show');
-    overlay.classList.toggle('show');
+    navbarBrand.addEventListener('mouseenter', function() {
+      logo.style.animation = 'rotateLogo 0.7s forwards';
+    });
     
-    // If sidebar is open, add event listener to close it when clicking outside
-    if (sidebar.classList.contains('show')) {
-      overlay.addEventListener('click', closeSidebarOnMobile);
-      document.addEventListener('keydown', handleEscapeKey);
-    } else {
+    navbarBrand.addEventListener('mouseleave', function() {
+      logo.style.animation = 'rotateLogoBack 0.7s forwards';
+    });
+
+    // Toggle sidebar when clicking the logo
+    document.getElementById('sidebarToggle').addEventListener('click', function(e) {
+      // On desktop (width > 992px), prevent default and toggle sidebar
+      if (window.innerWidth > 992) {
+        e.preventDefault();
+        
+        // Toggle sidebar
+        document.body.classList.toggle('sidebar-collapsed');
+        
+        // Save state to localStorage
+        const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+        localStorage.setItem('sidebarCollapsed', isCollapsed);
+        
+        // Update tooltips
+        updateTooltips(isCollapsed);
+      } else {
+        // On mobile, prevent default and toggle sidebar with overlay
+        e.preventDefault();
+        toggleMobileSidebar();
+      }
+    });
+
+    // Toggle sidebar on mobile with overlay
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('sidebarMenu');
+      const overlay = document.getElementById('sidebarOverlay');
+      
+      sidebar.classList.toggle('show');
+      overlay.classList.toggle('show');
+      
+      // If sidebar is open, add event listener to close it when clicking outside
+      if (sidebar.classList.contains('show')) {
+        overlay.addEventListener('click', closeSidebarOnMobile);
+        document.addEventListener('keydown', handleEscapeKey);
+      } else {
+        overlay.removeEventListener('click', closeSidebarOnMobile);
+        document.removeEventListener('keydown', handleEscapeKey);
+      }
+    }
+
+    // Close sidebar when clicking outside on mobile
+    function closeSidebarOnMobile() {
+      const sidebar = document.getElementById('sidebarMenu');
+      const overlay = document.getElementById('sidebarOverlay');
+      
+      sidebar.classList.remove('show');
+      overlay.classList.remove('show');
       overlay.removeEventListener('click', closeSidebarOnMobile);
       document.removeEventListener('keydown', handleEscapeKey);
     }
-  }
 
-  // Close sidebar when clicking outside on mobile
-  function closeSidebarOnMobile() {
-    const sidebar = document.getElementById('sidebarMenu');
-    const overlay = document.getElementById('sidebarOverlay');
-    
-    sidebar.classList.remove('show');
-    overlay.classList.remove('show');
-    overlay.removeEventListener('click', closeSidebarOnMobile);
-    document.removeEventListener('keydown', handleEscapeKey);
-  }
-
-  // Close sidebar when pressing Escape key
-  function handleEscapeKey(e) {
-    if (e.key === 'Escape') {
-      closeSidebarOnMobile();
-    }
-  }
-
-  // Update tooltips based on sidebar state
-  function updateTooltips(isCollapsed) {
-    const tooltipList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipList.forEach(function(tooltipTriggerEl) {
-      const tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
-      if (tooltip) {
-        tooltip.dispose();
-      }
-      if (isCollapsed) {
-        new bootstrap.Tooltip(tooltipTriggerEl, {
-          trigger: 'hover',
-          placement: 'right',
-          container: 'body'
-        });
-      }
-    });
-  }
-
-  // Check saved state on page load
-  document.addEventListener('DOMContentLoaded', function() {
-    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-    if (isCollapsed) {
-      document.body.classList.add('sidebar-collapsed');
-    }
-    
-    // Initialize tooltips if sidebar is collapsed
-    if (isCollapsed) {
-      updateTooltips(true);
-    }
-    
-    // Prevent clicks inside sidebar from closing it
-    document.getElementById('sidebarMenu').addEventListener('click', function(e) {
-      e.stopPropagation();
-    });
-    
-    // Close sidebar when clicking on content area on mobile
-    document.querySelector('.content-wrapper').addEventListener('click', function() {
-      if (window.innerWidth <= 992 && document.getElementById('sidebarMenu').classList.contains('show')) {
+    // Close sidebar when pressing Escape key
+    function handleEscapeKey(e) {
+      if (e.key === 'Escape') {
         closeSidebarOnMobile();
       }
-    });
-  });
-
-  // Handle window resize
-  window.addEventListener('resize', function() {
-    if (window.innerWidth <= 992) {
-      // On mobile, ensure sidebar is hidden by default
-      closeSidebarOnMobile();
-      document.body.classList.remove('sidebar-collapsed');
     }
-  });
-</script>
-<?= $this->renderSection('scripts') ?>
+
+    // Update tooltips based on sidebar state
+    function updateTooltips(isCollapsed) {
+      const tooltipList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipList.forEach(function(tooltipTriggerEl) {
+        const tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+        if (tooltip) {
+          tooltip.dispose();
+        }
+        if (isCollapsed) {
+          new bootstrap.Tooltip(tooltipTriggerEl, {
+            trigger: 'hover',
+            placement: 'right',
+            container: 'body'
+          });
+        }
+      });
+    }
+
+    // Check saved state on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+      if (isCollapsed) {
+        document.body.classList.add('sidebar-collapsed');
+      }
+      
+      // Initialize tooltips if sidebar is collapsed
+      if (isCollapsed) {
+        updateTooltips(true);
+      }
+      
+      // Prevent clicks inside sidebar from closing it
+      document.getElementById('sidebarMenu').addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+      
+      // Close sidebar when clicking on content area on mobile
+      document.querySelector('.content-wrapper').addEventListener('click', function() {
+        if (window.innerWidth <= 992 && document.getElementById('sidebarMenu').classList.contains('show')) {
+          closeSidebarOnMobile();
+        }
+      });
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth <= 992) {
+        // On mobile, ensure sidebar is hidden by default
+        closeSidebarOnMobile();
+        document.body.classList.remove('sidebar-collapsed');
+      }
+    });
+  </script>
+  <?= $this->renderSection('scripts') ?>
 </body>
+
 </html>
 <?php else : ?>
   <h1 style="text-align: center; margin-top: 50px;">Akses Ditolak</h1>
