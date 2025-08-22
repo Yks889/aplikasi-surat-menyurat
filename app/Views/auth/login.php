@@ -4,34 +4,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="<?= base_url('uploads/logo.png') ?>" type="image/png" />
-    <title>Login | Sistem Arsip Surat</title>
+    <title><?= esc($title) ?> | Sistem Arsip Surat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --accent-color: #4cc9f0;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #4bb543;
-            --error-color: #ff3333;
+        body {
+            background: #f5f7fb;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+        .login-wrapper {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            overflow-x: hidden;
+            max-width: 950px;
+            width: 100%;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
             position: relative;
         }
 
-        /* Animasi floating elements */
+        .login-left {
+            flex: 1;
+            display: flex;
+            background-image: url(/uploads/bg-login.png);
+            background-size: cover;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .login-right {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 100px;
+        }
+
+        .login-right h2 {
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .login-right p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .form-control {
+            height: 48px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+        }
+
+        .btn-login {
+            width: 100%;
+            height: 48px;
+            border-radius: 10px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #4a6cf7, #6c8ff7);
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, #3c5edc, #5c7de6);
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        .register-link a {
+            color: #4a6cf7;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 20px;
+        }
+
+        .brand-name {
+            background: linear-gradient(135deg, #3f37c9, #4361ee, #4cc9f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        /* Animasi fade-in + slide */
+        @keyframes fadeSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-wrapper {
+            animation: fadeSlideIn 1s ease-out;
+        }
+
         .floating-element {
             position: absolute;
             opacity: 0.15;
@@ -40,31 +156,73 @@
         }
 
         .floating-element:nth-child(1) {
-            top: 10%;
+            top: 5%;
             left: 5%;
-            width: 60px;
+            width: 50px;
             animation-delay: 0s;
         }
 
         .floating-element:nth-child(2) {
-            top: 60%;
+            top: 10%;
             left: 80%;
-            width: 80px;
-            animation-delay: 1s;
+            width: 70px;
+            animation-delay: 0.5s;
         }
 
         .floating-element:nth-child(3) {
-            top: 30%;
-            left: 75%;
+            top: 20%;
+            left: 60%;
+            width: 60px;
+            animation-delay: 1s;
+        }
+
+        .floating-element:nth-child(4) {
+            top: 35%;
+            left: 15%;
+            width: 80px;
+            animation-delay: 1.5s;
+        }
+
+        .floating-element:nth-child(5) {
+            top: 50%;
+            left: 85%;
             width: 50px;
             animation-delay: 2s;
         }
 
-        .floating-element:nth-child(4) {
-            top: 80%;
+        .floating-element:nth-child(6) {
+            top: 65%;
             left: 10%;
-            width: 70px;
+            width: 75px;
+            animation-delay: 2.5s;
+        }
+
+        .floating-element:nth-child(7) {
+            top: 75%;
+            left: 60%;
+            width: 60px;
             animation-delay: 3s;
+        }
+
+        .floating-element:nth-child(8) {
+            top: 85%;
+            left: 30%;
+            width: 50px;
+            animation-delay: 3.5s;
+        }
+
+        .floating-element:nth-child(9) {
+            top: 40%;
+            left: 45%;
+            width: 65px;
+            animation-delay: 4s;
+        }
+
+        .floating-element:nth-child(10) {
+            top: 90%;
+            left: 80%;
+            width: 55px;
+            animation-delay: 4.5s;
         }
 
         @keyframes float {
@@ -81,18 +239,17 @@
             }
         }
 
-        /* Labubu character */
-        .labubu-character {
+        .gonet-brand {
             position: absolute;
             width: 120px;
             bottom: 20px;
             right: 20px;
             z-index: 1;
             transform-origin: bottom center;
-            animation: labubuBounce 2s ease infinite;
+            animation: gonetBounce 2s ease infinite;
         }
 
-        @keyframes labubuBounce {
+        @keyframes gonetBounce {
 
             0%,
             100% {
@@ -103,453 +260,82 @@
                 transform: translateY(-20px) rotate(5deg);
             }
         }
-
-        .login-container {
-            width: 100%;
-            max-width: 360px;
-            animation: fadeInDown 0.6s;
-            padding: 0 15px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .login-header img {
-            height: 90px;
-            margin-bottom: 0.75rem;
-            transition: transform 0.3s ease;
-        }
-
-        .login-header img:hover {
-            transform: rotate(5deg) scale(1.05);
-        }
-
-        .login-header h1 {
-            font-weight: 700;
-            color: var(--dark-color);
-            margin-bottom: 0.25rem;
-            font-size: 1.5rem;
-        }
-
-        .login-header p {
-            color: #6c757d;
-            font-size: 0.85rem;
-        }
-
-        .login-card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: white;
-            position: relative;
-        }
-
-        .login-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(67, 97, 238, 0.15);
-        }
-
-        .login-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(135deg, #3f37c9, #4361ee, #4cc9f0);
-            background-size: 200% 100%;
-            animation: gradientBG 3s ease infinite;
-        }
-
-        @keyframes gradientBG {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        .login-card-body {
-            padding: 1.75rem;
-        }
-
-        .form-control {
-            height: 44px;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-            padding-left: 15px;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .btn-login {
-            background-color: var(--primary-color);
-            border: none;
-            height: 44px;
-            border-radius: 8px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-login:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-3px);
-        }
-
-        .btn-login::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: rotate(30deg);
-            transition: all 0.3s ease;
-        }
-
-        .btn-login:hover::after {
-            left: 100%;
-        }
-
-        .form-floating-label {
-            position: relative;
-            margin-bottom: 1.25rem;
-        }
-
-        .form-floating-label input {
-            width: 100%;
-            padding: 1rem 1rem 0.5rem 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            height: 44px;
-            font-size: 0.9rem;
-        }
-
-        .form-floating-label label {
-            position: absolute;
-            top: 13px;
-            left: 15px;
-            color: #adb5bd;
-            transition: all 0.2s;
-            pointer-events: none;
-            font-size: 0.9rem;
-        }
-
-        .form-floating-label input:focus+label,
-        .form-floating-label input:not(:placeholder-shown)+label {
-            top: 5px;
-            left: 15px;
-            font-size: 0.7rem;
-            color: var(--primary-color);
-        }
-
-        .brand-name {
-            background: linear-gradient(135deg, #3f37c9, #4361ee, #4cc9f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            font-weight: 800;
-            animation: gradientText 3s ease infinite;
-            background-size: 200% 200%;
-        }
-
-        @keyframes gradientText {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        .footer-text {
-            font-size: 0.8rem;
-            color: #6c757d;
-            margin-top: 1.5rem;
-            animation: fadeIn 2s ease;
-        }
-
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.25rem;
-            font-size: 0.85rem;
-        }
-
-        .form-check-input:checked {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        .forgot-link {
-            color: #6c757d;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .forgot-link:hover {
-            color: var(--primary-color);
-            transform: translateX(3px);
-        }
-
-        .forgot-link::after {
-            content: '→';
-            position: absolute;
-            right: -15px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .forgot-link:hover::after {
-            opacity: 1;
-            right: -20px;
-        }
-
-        .register-link {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.85rem;
-        }
-
-        .register-link a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .register-link a:hover {
-            color: var(--labubu-purple);
-            text-decoration: none;
-        }
-
-        .register-link a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--labubu-pink);
-            transition: width 0.3s ease;
-        }
-
-        .register-link a:hover::after {
-            width: 100%;
-        }
-
-        /* Alert styles */
-        .alert {
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            font-size: 0.85rem;
-            margin-bottom: 1.25rem;
-            transition: all 0.5s ease;
-            transform-origin: top;
-        }
-
-        .alert.show {
-            animation: alertPop 0.5s ease;
-        }
-
-        @keyframes alertPop {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-
-            70% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 576px) {
-            .login-card-body {
-                padding: 1.5rem;
-            }
-
-            .labubu-character {
-                width: 80px;
-                bottom: 10px;
-                right: 10px;
-            }
-
-            .floating-element {
-                display: none;
-            }
-        }
     </style>
 </head>
 
 <body>
     <!-- Floating decorative elements -->
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
-    <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Labubu character">
+    <?php for ($i = 1; $i <= 10; $i++): ?>
+        <img src="<?= base_url('uploads/logo.png') ?>" class="floating-element animate__animated animate__fadeIn" alt="Gonet Logo">
+    <?php endfor; ?>
 
-    <!-- Labubu character -->
-    <img src="<?= base_url('uploads/logo1.png') ?>" class="labubu-character animate__animated animate__bounceInUp" alt="Labubu character">
+    <img src="<?= base_url('uploads/logo1.png') ?>" class="gonet-brand animate__animated animate__bounceInUp" alt="gonet-brand">
 
-    <div class="login-container animate__animated animate__fadeIn">
-        <div class="login-header">
-            <img src="/uploads/logo.png" alt="Logo Sistem Arsip Surat" class="logo-img animate__animated animate__rotateIn">
-            <h1>Arsip Surat <span class="brand-name">Gonet</span></h1>
-            <p class="animate__animated animate__fadeIn">Masuk untuk mengakses sistem</p>
+    <div class="login-wrapper">
+        <!-- Bagian kiri -->
+        <div class="login-left">
         </div>
 
-        <div class="card login-card">
-            <div class="card-body login-card-body">
-                <!-- Flashdata messages -->
-                <?php if (session()->getFlashdata('message')) : ?>
-                    <div class="alert alert-success alert-dismissible fade show show" role="alert">
-                        <i class="bi bi-check-circle-fill me-2"></i>
-                        <?= session()->getFlashdata('message') ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (session()->getFlashdata('error')) : ?>
-                    <div class="alert alert-danger alert-dismissible fade show show" role="alert">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        <?= session()->getFlashdata('error') ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (session()->getFlashdata('errors')) : ?>
-                    <div class="alert alert-danger alert-dismissible fade show show" role="alert">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        <ul class="mb-0" style="font-size: 0.85rem;">
-                            <?php foreach (session()->getFlashdata('errors') as $err) : ?>
-                                <li><?= esc($err) ?></li>
-                            <?php endforeach ?>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-                    </div>
-                <?php endif; ?>
-
-                <form action="/login" method="post" class="needs-validation" novalidate>
-                    <?= csrf_field() ?>
-
-                    <div class="form-floating-label mb-3 animate__animated animate__fadeInLeft">
-                        <input type="text" class="form-control <?= ($validation->hasError('username')) ? 'is-invalid' : '' ?>"
-                            name="username" placeholder=" " value="<?= old('username') ?>" required>
-                        <label for="username"><i class="bi bi-person me-2"></i>Username</label>
-                        <div class="invalid-feedback" style="font-size: 0.8rem;">
-                            <?= $validation->getError('username') ?: 'Harap masukkan username Anda' ?>
-                        </div>
-                    </div>
-
-                    <div class="form-floating-label mb-3 animate__animated animate__fadeInRight">
-                        <input type="password" class="form-control <?= ($validation->hasError('password')) ? 'is-invalid' : '' ?>"
-                            name="password" placeholder=" " required>
-                        <label for="password"><i class="bi bi-lock me-2"></i>Password</label>
-                        <div class="invalid-feedback" style="font-size: 0.8rem;">
-                            <?= $validation->getError('password') ?: 'Harap masukkan password Anda' ?>
-                        </div>
-                    </div>
-
-                    <div class="remember-forgot mb-3 animate__animated animate__fadeInUp">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="rememberMe">
-                            <label class="form-check-label" for="rememberMe" style="font-size: 0.85rem;">
-                                Ingat saya
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="d-grid mb-3 animate__animated animate__fadeInUp">
-                        <button type="submit" class="btn btn-primary btn-login">
-                            <i class="bi bi-box-arrow-in-right me-2"></i> Masuk
-                        </button>
-                    </div>
-
-                    <div class="register-link animate__animated animate__fadeInUp">
-                        Belum punya akun? <a href="/register">Daftar sekarang</a>
-                    </div>
-                </form>
+        <!-- Bagian kanan -->
+        <div class="login-right">
+            <div class="logo">
+                <img src="<?= base_url('uploads/logo.png'); ?>" alt="Logo">
             </div>
-        </div>
+            <h2>Arsip Surat <span class="brand-name">Gonet</span></h2>
+            <p>Masuk untuk mengakses sistem</p>
 
-        <div class="footer-text text-center animate__animated animate__fadeIn">
-            &copy; <?= date('Y') ?> Sistem Arsip Surat. All rights reserved.
+            <!-- Flash Message -->
+            <?php if (session()->getFlashdata('message')): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= session()->getFlashdata('message'); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
+            <?php if (session()->getFlashdata('error')): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= session()->getFlashdata('error'); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
+            <!-- Form Login -->
+            <form action="<?= base_url('login'); ?>" method="post">
+                <?= csrf_field(); ?>
+                <div class="mb-3">
+                    <input type="text" name="username" class="form-control" placeholder="Username"
+                        value="<?= old('username'); ?>" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="Password" required>
+                </div>
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Ingat saya</label>
+                </div>
+                <button type="submit" class="btn-login"><i class="bi bi-box-arrow-in-right"></i> Masuk</button>
+            </form>
+
+            <!-- Link Register -->
+            <div class="register-link">
+                Belum punya akun? <a href="<?= base_url('register'); ?>">Daftar sekarang</a>
+            </div>
+
+            <footer>© <?= date('Y'); ?> Sistem Arsip Surat. All rights reserved.</footer>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Form validation
-        (function() {
-            'use strict'
-
-            var forms = document.querySelectorAll('.needs-validation')
-
-            Array.prototype.slice.call(forms)
-                .forEach(function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-
-        // Add animation to alerts
         document.addEventListener('DOMContentLoaded', function() {
             const alerts = document.querySelectorAll('.alert.show');
             alerts.forEach(alert => {
                 alert.classList.add('show');
             });
 
-            // Make Labubu interactive
-            const labubu = document.querySelector('.labubu-character');
-            if (labubu) {
-                labubu.addEventListener('click', function() {
+            const gonet = document.querySelector('.gonet-brand');
+            if (gonet) {
+                gonet.addEventListener('click', function() {
                     this.classList.add('animate__animated', 'animate__tada');
                     setTimeout(() => {
                         this.classList.remove('animate__animated', 'animate__tada');
