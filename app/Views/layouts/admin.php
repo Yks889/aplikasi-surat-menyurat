@@ -601,6 +601,7 @@
 
     // Check for saved theme preference - default to light mode for new users
     const savedTheme = localStorage.getItem(themeKey);
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
     // Set initial theme - default to light mode if no preference saved
     if (savedTheme === 'light' || (!savedTheme && prefersDark)) {
