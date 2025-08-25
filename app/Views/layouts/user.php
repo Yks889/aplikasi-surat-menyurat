@@ -466,7 +466,7 @@
     <!-- Sidebar -->
     <aside class="main-sidebar" id="sidebarMenu">
      
-
+      
       <nav class="nav flex-column">
         <a href="/user/dashboard" class="nav-link <?= current_url() == site_url('/user/dashboard') ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
           <i class="bi bi-speedometer2"></i>
@@ -511,14 +511,12 @@
           <div class="dropdown">
             <a class="dropdown-toggle d-flex align-items-center text-decoration-none" href="#" data-bs-toggle="dropdown">
               <?php if ($user['photo'] ?? false) : ?>
-                <!-- Foto Profil -->
                 <img src="/uploads/profiles/<?= esc($user['photo']) ?>" 
                     alt="Foto Profil" 
                     class="rounded-circle me-2" 
                     width="42" height="42"
                     style="object-fit: cover;">
               <?php else : ?>
-                <!-- Avatar fallback seperti sidebar -->
                 <div class="nav-avatar me-2">
                   <i class="bi bi-person-circle"></i>
                 </div>
@@ -571,8 +569,13 @@
     const themeIcon = document.getElementById('themeIcon');
     const htmlElement = document.documentElement;
 
+    // Buat kunci unik untuk setiap pengguna dengan menggabungkan ID
+    const userId = '<?= $user["id"] ?? "guest" ?>'; // Pastikan user ID tersedia di session
+    const themeKey = `theme_user_${userId}`; // Kunci unik per pengguna
+    const sidebarKey = `sidebarCollapsed_${userId}`; // Kunci unik untuk sidebar state
+
     // Check for saved theme preference or respect OS preference
-    const savedTheme = localStorage.getItem('theme');
+    const savedTheme = localStorage.getItem(themeKey);
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     // Set initial theme
@@ -590,12 +593,12 @@
     themeToggle.addEventListener('click', () => {
       if (htmlElement.getAttribute('data-theme') === 'dark') {
         htmlElement.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
+        localStorage.setItem(themeKey, 'light');
         themeIcon.classList.remove('bi-moon-stars-fill');
         themeIcon.classList.add('bi-sun-fill');
       } else {
         htmlElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
+        localStorage.setItem(themeKey, 'dark');
         themeIcon.classList.remove('bi-sun-fill');
         themeIcon.classList.add('bi-moon-stars-fill');
       }
@@ -622,9 +625,9 @@
         // Toggle sidebar
         document.body.classList.toggle('sidebar-collapsed');
         
-        // Save state to localStorage
+        // Save state to localStorage dengan kunci unik
         const isCollapsed = document.body.classList.contains('sidebar-collapsed');
-        localStorage.setItem('sidebarCollapsed', isCollapsed);
+        localStorage.setItem(sidebarKey, isCollapsed);
         
         // Update tooltips
         updateTooltips(isCollapsed);
@@ -691,7 +694,8 @@
 
     // Check saved state on page load
     document.addEventListener('DOMContentLoaded', function() {
-      const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+      // Gunakan kunci unik untuk sidebar state
+      const isCollapsed = localStorage.getItem(sidebarKey) === 'true';
       if (isCollapsed) {
         document.body.classList.add('sidebar-collapsed');
       }

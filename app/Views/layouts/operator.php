@@ -570,6 +570,11 @@
     const themeIcon = document.getElementById('themeIcon');
     const htmlElement = document.documentElement;
 
+    // Buat kunci unik untuk setiap pengguna dengan menggabungkan ID
+    const userId = '<?= $user["id"] ?? "guest" ?>'; // Pastikan user ID tersedia di session
+    const themeKey = `theme_operator_${userId}`; // Kunci unik per pengguna
+    const sidebarKey = `sidebarCollapsed_${userId}`; // Kunci unik untuk sidebar state 
+
     // Check for saved theme preference or respect OS preference
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;

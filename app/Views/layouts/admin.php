@@ -593,8 +593,13 @@
     const themeIcon = document.getElementById('themeIcon');
     const htmlElement = document.documentElement;
 
+// Buat kunci unik untuk setiap pengguna dengan menggabungkan ID
+    const userId = '<?= $user["id"] ?? "guest" ?>'; // Pastikan user ID tersedia di session
+    const themeKey = `theme_admin_${userId}`; // Kunci unik per pengguna
+    const sidebarKey = `sidebarCollapsed_${userId}`; // Kunci unik untuk sidebar state
+
     // Check for saved theme preference or respect OS preference
-    const savedTheme = localStorage.getItem('theme');
+    const savedTheme = localStorage.getItem(themeKey);
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     // Set initial theme
@@ -612,12 +617,12 @@
     themeToggle.addEventListener('click', () => {
       if (htmlElement.getAttribute('data-theme') === 'dark') {
         htmlElement.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
+        localStorage.setItem(themeKey, 'light');
         themeIcon.classList.remove('bi-moon-stars-fill');
         themeIcon.classList.add('bi-sun-fill');
       } else {
         htmlElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
+        localStorage.setItem(themeKey, 'dark');
         themeIcon.classList.remove('bi-sun-fill');
         themeIcon.classList.add('bi-moon-stars-fill');
       }
@@ -688,7 +693,7 @@
 
     // Close sidebar when pressing Escape key
     function handleEscapeKey(e) {
-      if (e.key === 'Escape') {
+      if (e.key === 'Eescape') {
         closeSidebarOnMobile();
       }
     }
