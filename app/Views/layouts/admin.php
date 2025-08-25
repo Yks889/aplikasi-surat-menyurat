@@ -589,30 +589,34 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    // Theme Toggle Functionality
+    // Theme Toggle Functionality - FIXED VERSION
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
     const htmlElement = document.documentElement;
 
-    // Buat kunci unik untuk setiap pengguna dengan menggabungkan ID
-    const userId = '<?= $user["id"] ?? "guest" ?>'; // Pastikan user ID tersedia di session
-    const themeKey = `theme_admin_${userId}`; // Kunci unik per pengguna
+    // Buat kunci unik untuk setiap pengguna
+    const userId = '<?= $user["id"] ?? "guest" ?>';
+    const themeKey = `theme_admin_${userId}`;
     const sidebarKey = `sidebarCollapsed_${userId}`; // Kunci unik untuk sidebar state
 
-    // Check for saved theme preference - default to light mode for new users
+    // Check for saved theme preference
     const savedTheme = localStorage.getItem(themeKey);
     
-    // Set initial theme - default to light mode if no preference saved
-    if (savedTheme === 'light' || (!savedTheme && prefersDark)) {
-      htmlElement.setAttribute('data-theme', 'light');
+    // Set initial theme berdasarkan preferensi yang disimpan
+    if (savedTheme === 'dark') {
+      htmlElement.setAttribute('data-theme', 'dark');
       themeIcon.classList.remove('bi-sun-fill');
       themeIcon.classList.add('bi-moon-stars-fill');
     } else {
-      // Default to light mode for new users
+      // Default ke light mode jika tidak ada preferensi tersimpan
       htmlElement.removeAttribute('data-theme');
-      localStorage.setItem(themeKey, 'light'); // Set default to light
       themeIcon.classList.remove('bi-moon-stars-fill');
       themeIcon.classList.add('bi-sun-fill');
+      
+      // Simpan default theme jika belum ada
+      if (!savedTheme) {
+        localStorage.setItem(themeKey, 'light');
+      }
     }
 
     // Toggle theme
