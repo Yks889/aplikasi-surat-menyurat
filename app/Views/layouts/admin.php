@@ -465,6 +465,7 @@
 
     <!-- Sidebar -->
     <aside class="main-sidebar" id="sidebarMenu">
+    
 
       <nav class="nav flex-column">
         <a href="/admin/dashboard" class="nav-link <?= current_url() == site_url('/admin/dashboard') ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
@@ -593,17 +594,23 @@
     const themeIcon = document.getElementById('themeIcon');
     const htmlElement = document.documentElement;
 
-    // Check for saved theme preference or respect OS preference
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Buat kunci unik untuk setiap pengguna dengan menggabungkan ID
+    const userId = '<?= $user["id"] ?? "guest" ?>'; // Pastikan user ID tersedia di session
+    const themeKey = `theme_admin_${userId}`; // Kunci unik per pengguna
+    const sidebarKey = `sidebarCollapsed_${userId}`; // Kunci unik untuk sidebar state
 
-    // Set initial theme
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      htmlElement.setAttribute('data-theme', 'dark');
+    // Check for saved theme preference - default to light mode for new users
+    const savedTheme = localStorage.getItem(themeKey);
+    
+    // Set initial theme - default to light mode if no preference saved
+    if (savedTheme === 'light' || (!savedTheme && prefersDark)) {
+      htmlElement.setAttribute('data-theme', 'light');
       themeIcon.classList.remove('bi-sun-fill');
       themeIcon.classList.add('bi-moon-stars-fill');
     } else {
+      // Default to light mode for new users
       htmlElement.removeAttribute('data-theme');
+      localStorage.setItem(themeKey, 'light'); // Set default to light
       themeIcon.classList.remove('bi-moon-stars-fill');
       themeIcon.classList.add('bi-sun-fill');
     }
@@ -612,12 +619,12 @@
     themeToggle.addEventListener('click', () => {
       if (htmlElement.getAttribute('data-theme') === 'dark') {
         htmlElement.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
+        localStorage.setItem(themeKey, 'light');
         themeIcon.classList.remove('bi-moon-stars-fill');
         themeIcon.classList.add('bi-sun-fill');
       } else {
         htmlElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
+        localStorage.setItem(themeKey, 'dark');
         themeIcon.classList.remove('bi-sun-fill');
         themeIcon.classList.add('bi-moon-stars-fill');
       }
@@ -646,7 +653,7 @@
         
         // Save state to localStorage
         const isCollapsed = document.body.classList.contains('sidebar-collapsed');
-        localStorage.setItem('sidebarCollapsed', isCollapsed);
+        localStorage.setItem(sidebarKey, isCollapsed);
         
         // Update tooltips
         updateTooltips(isCollapsed);
@@ -713,7 +720,7 @@
 
     // Check saved state on page load
     document.addEventListener('DOMContentLoaded', function() {
-      const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+      const isCollapsed = localStorage.getItem(sidebarKey) === 'true';
       if (isCollapsed) {
         document.body.classList.add('sidebar-collapsed');
       }
