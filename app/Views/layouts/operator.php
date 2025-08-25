@@ -565,43 +565,46 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    // Theme Toggle Functionality
+    // Theme Toggle Functionality - FIXED VERSION
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
     const htmlElement = document.documentElement;
 
-    // Buat kunci unik untuk setiap pengguna dengan menggabungkan ID
-    const userId = '<?= $user["id"] ?? "guest" ?>'; // Pastikan user ID tersedia di session
-    const themeKey = `theme_operator_${userId}`; // Kunci unik per pengguna
-    const sidebarKey = `sidebarCollapsed_${userId}`; // Kunci unik untuk sidebar state 
+    // Buat kunci unik untuk setiap pengguna
+    const userId = '<?= $user["id"] ?? "guest" ?>';
+    const themeKey = `theme_operator_${userId}`;
+    const sidebarKey = `sidebarCollapsed_${userId}`;
 
-    // Check for saved theme preference or respect OS preference
+    // Check for saved theme preference
     const savedTheme = localStorage.getItem(themeKey);
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    // Set initial theme
-    if (savedTheme === 'light' || (!savedTheme && prefersDark)) {
-      htmlElement.setAttribute('data-theme', 'light');
+    
+    // Set initial theme berdasarkan preferensi yang disimpan
+    if (savedTheme === 'dark') {
+      htmlElement.setAttribute('data-theme', 'dark');
       themeIcon.classList.remove('bi-sun-fill');
       themeIcon.classList.add('bi-moon-stars-fill');
-      // Default to light mode for new users
     } else {
+      // Default ke light mode jika tidak ada preferensi tersimpan
       htmlElement.removeAttribute('data-theme');
-      localStorage.setItem(themeKey, 'light');
       themeIcon.classList.remove('bi-moon-stars-fill');
       themeIcon.classList.add('bi-sun-fill');
+      
+      // Simpan default theme jika belum ada
+      if (!savedTheme) {
+        localStorage.setItem(themeKey, 'light');
+      }
     }
 
     // Toggle theme
     themeToggle.addEventListener('click', () => {
       if (htmlElement.getAttribute('data-theme') === 'dark') {
         htmlElement.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
+        localStorage.setItem(themeKey, 'light');
         themeIcon.classList.remove('bi-moon-stars-fill');
         themeIcon.classList.add('bi-sun-fill');
       } else {
         htmlElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
+        localStorage.setItem(themeKey, 'dark');
         themeIcon.classList.remove('bi-sun-fill');
         themeIcon.classList.add('bi-moon-stars-fill');
       }
@@ -630,7 +633,7 @@
         
         // Save state to localStorage
         const isCollapsed = document.body.classList.contains('sidebar-collapsed');
-        localStorage.setItem('sidebarCollapsed', isCollapsed);
+        localStorage.setItem(sidebarKey, isCollapsed);
         
         // Update tooltips
         updateTooltips(isCollapsed);
@@ -697,7 +700,7 @@
 
     // Check saved state on page load
     document.addEventListener('DOMContentLoaded', function() {
-      const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+      const isCollapsed = localStorage.getItem(sidebarKey) === 'true';
       if (isCollapsed) {
         document.body.classList.add('sidebar-collapsed');
       }
