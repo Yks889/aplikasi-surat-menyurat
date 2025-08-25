@@ -576,16 +576,18 @@
     const sidebarKey = `sidebarCollapsed_${userId}`; // Kunci unik untuk sidebar state 
 
     // Check for saved theme preference or respect OS preference
-    const savedTheme = localStorage.getItem('theme');
+    const savedTheme = localStorage.getItem(themeKey);
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     // Set initial theme
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      htmlElement.setAttribute('data-theme', 'dark');
+    if (savedTheme === 'light' || (!savedTheme && prefersDark)) {
+      htmlElement.setAttribute('data-theme', 'light');
       themeIcon.classList.remove('bi-sun-fill');
       themeIcon.classList.add('bi-moon-stars-fill');
+      // Default to light mode for new users
     } else {
       htmlElement.removeAttribute('data-theme');
+      localStorage.setItem(themeKey, 'light');
       themeIcon.classList.remove('bi-moon-stars-fill');
       themeIcon.classList.add('bi-sun-fill');
     }
