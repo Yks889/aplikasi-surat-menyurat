@@ -13,16 +13,17 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- font -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
   <!-- Custom CSS -->
   <style>
     :root {
       --primary: #4361ee;
       --primary-dark: #3a0ca3;
-      --primary-light: #f0f5ff;
-      --secondary: #6c757d;
+      --primary-light: #f0f5ff; 
       --sidebar-width: 280px;
       --sidebar-collapsed-width: 80px;
       --navbar-height: 75px;
@@ -34,6 +35,12 @@
       --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       --border-color: #e2e8f0;
+    }
+
+    .main-sidebar nav {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
 
     /* Dark Mode Variables */
@@ -100,8 +107,17 @@
       color: #e2e8f0 !important;
     }
 
+    [data-theme="dark"] .sidebar-profile {
+      background: rgba(94, 114, 228, 0.1);
+      border-color: var(--border-color);
+    }
+
+    [data-theme="dark"] .sidebar-profile:hover {
+      background: rgba(94, 114, 228, 0.2);
+    }
+
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: 'Outfit', sans-serif;
       background-color: var(--content-bg);
       color: #334155;
       min-height: 100vh;
@@ -110,11 +126,6 @@
       transition: var(--transition);
     }
 
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
 
     /* Navbar */
     .main-header {
@@ -178,7 +189,7 @@
     .main-sidebar .nav-link:hover {
       background: var(--sidebar-hover);
       color: var(--primary);
-      transform: translateX(5px);
+      transform: translateY(-5px);
     }
 
     .main-sidebar .nav-link.active {
@@ -213,37 +224,6 @@
       gap: 12px;
     }
 
-    .user-panel i {
-      font-size: 1.5rem;
-      color: white;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
-    }
-
-    .user-panel small {
-      color: #94a3b8;
-      font-size: 0.8rem;
-      display: block;
-      margin-top: 4px;
-    }
-
-    .user-info {
-      overflow: hidden;
-    }
-
-    .user-name {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      font-weight: 600;
-      color: #1e293b;
-    }
 
     /* Content */
     .content-wrapper {
@@ -280,20 +260,6 @@
       color: var(--primary);
     }
 
-    /* Navbar avatar */
-    .nav-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 600;
-      font-size: 36px;
-    }
-
     /* Theme Toggle Button */
     .theme-toggle {
       background: none;
@@ -310,6 +276,66 @@
     .theme-toggle:hover {
       color: var(--primary);
       background-color: var(--sidebar-hover);
+    }
+
+    /* Sidebar Profile Section */
+    .sidebar-profile {
+      padding: 1rem 1.5rem;
+      margin: 1rem;
+      border-radius: 8px;
+      background: var(--primary-light);
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    .sidebar-profile:hover {
+      background: rgba(67, 97, 238, 0.15);
+      transform: translateY(-5px);
+    }
+
+    .sidebar-profile a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--sidebar-text);
+    }
+
+    .sidebar-profile .profile-info {
+      overflow: hidden;
+    }
+
+    .sidebar-profile .profile-name {
+      font-weight: 600;
+      color: var(--primary-dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar-profile .profile-role {
+      font-size: 0.8rem;
+      color: var(--sidebar-text);
+    }
+
+    .sidebar-profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .sidebar-profile .nav-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 1.2rem;
     }
 
     /* Collapsed Sidebar State */
@@ -352,6 +378,33 @@
     .sidebar-collapsed .main-sidebar .nav-link.active {
       border-radius: 8px;
       background: rgba(67, 97, 238, 0.15);
+    }
+
+    /* Sidebar Profile and Logout in Collapsed State */
+    .sidebar-collapsed .sidebar-profile,
+    .sidebar-collapsed .sidebar-logout {
+      display: flex !important;
+      justify-content: center;
+      padding: 0.75rem;
+      margin: 0.25rem 0.5rem;
+    }
+
+    .sidebar-collapsed .sidebar-profile a,
+    .sidebar-collapsed .sidebar-logout {
+      justify-content: center;
+    }
+
+    .sidebar-collapsed .sidebar-profile .profile-info,
+    .sidebar-collapsed .sidebar-logout span {
+      display: none;
+    }
+
+    .sidebar-collapsed .sidebar-profile {
+      padding: 0.75rem;
+    }
+
+    .sidebar-collapsed .sidebar-profile a {
+      gap: 0;
     }
 
     /* Sidebar Overlay for Mobile */
@@ -457,6 +510,83 @@
       background: var(--border-color);
       margin: 1rem 1.5rem;
     }
+
+    /* Animation for logout button */
+    .sidebar-logout {
+      transition: all 0.3s ease;
+    }
+
+    .sidebar-logout:hover {
+      background-color: rgba(220, 53, 69, 0.1) !important;
+      color: #dc3545 !important;
+    }
+
+    .sidebar-logout:hover i {
+      color: #dc3545 !important;
+      transform: translateY(-3px);
+      transition: transform 0.3s ease;
+    }
+
+    /* Custom styles for SweetAlert2 */
+    .swal2-popup {
+      border-radius: 12px !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+      overflow: hidden;
+    }
+
+    .swal2-title {
+      font-size: 1.5rem !important;
+      font-weight: 600 !important;
+      color: #1e293b !important;
+    }
+
+    .swal2-html-container {
+      font-size: 1rem !important;
+      color: #64748b !important;
+    }
+
+    .btn-logout-confirm {
+      background-color: #dc3545 !important;
+      border-color: #dc3545 !important;
+      border-radius: 8px !important;
+      padding: 0.5rem 1.5rem !important;
+      font-weight: 500 !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .btn-logout-confirm:hover {
+      background-color: #bb2d3b !important;
+      border-color: #bb2d3b !important;
+      transform: translateY(-2px);
+    }
+
+    .btn-logout-cancel {
+      background-color: #6c757d !important;
+      border-color: #6c757d !important;
+      border-radius: 8px !important;
+      padding: 0.5rem 1.5rem !important;
+      font-weight: 500 !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .btn-logout-cancel:hover {
+      background-color: #5c636a !important;
+      border-color: #5c636a !important;
+      transform: translateY(-2px);
+    }
+
+    [data-theme="dark"] .swal2-popup {
+      background-color: #1a2236 !important;
+      border: 1px solid var(--border-color) !important;
+    }
+
+    [data-theme="dark"] .swal2-title {
+      color: #e2e8f0 !important;
+    }
+
+    [data-theme="dark"] .swal2-html-container {
+      color: #a0aec0 !important;
+    }
   </style>
 </head>
 
@@ -465,8 +595,6 @@
 
     <!-- Sidebar -->
     <aside class="main-sidebar" id="sidebarMenu">
-    
-
       <nav class="nav flex-column">
         <a href="/admin/dashboard" class="nav-link <?= current_url() == site_url('/admin/dashboard') ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
           <i class="bi bi-speedometer2"></i>
@@ -489,7 +617,7 @@
           <span>Surat Keluar</span>
         </a>
         <a href="/admin/ajukan" class="nav-link <?= strpos(current_url(), 'ajukan') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Pengajuan Surat">
-          <i class="bi bi-envelope-open"></i>
+          <i class="bi bi-file-earmark-plus"></i>
           <span>Pengajuan Surat</span>
         </a>
         <a href="/admin/disposisi" class="nav-link <?= strpos(current_url(), 'disposisi') !== false ? 'active' : '' ?>" data-bs-toggle="tooltip" data-bs-placement="right" title="Histori Disposisi">
@@ -511,8 +639,33 @@
           <i class="bi bi-file-earmark-text"></i>
           <span>Jenis Surat</span>
         </a>
-      </nav>
-    </aside>
+
+        
+        <!-- Bagian bawah (profil + logout) -->
+        <div class="mt-auto">
+          <div class="sidebar-divider"></div>
+          <div class="sidebar-profile">
+        <a href="/admin/profile">
+          <?php if ($user['photo'] ?? false) : ?>
+            <img src="/uploads/profiles/<?= esc($user['photo']) ?>" alt="Foto Profil">
+          <?php else : ?>
+            <div class="nav-avatar">
+              <i class="bi bi-person-circle"></i>
+            </div>
+          <?php endif; ?>
+          <div class="profile-info">
+            <div class="profile-name"><?= esc($user['full_name'] ?? 'Guest') ?></div>
+            <div class="profile-role"><?= esc($user['role'] ?? '') ?></div>
+          </div>
+        </a>
+      </div>
+      <a href="#" class="nav-link sidebar-logout" id="logoutButton">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </nav>
+</aside>
 
     <!-- Sidebar Overlay for Mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -530,47 +683,6 @@
           <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
             <i class="bi bi-sun-fill" id="themeIcon"></i>
           </button>
-          
-          <div class="dropdown">
-            <a class="dropdown-toggle d-flex align-items-center text-decoration-none" href="#" data-bs-toggle="dropdown">
-              <?php if ($user['photo'] ?? false) : ?>
-                <!-- Foto Profil -->
-                <img src="/uploads/profiles/<?= esc($user['photo']) ?>" 
-                    alt="Foto Profil" 
-                    class="rounded-circle me-2" 
-                    width="42" height="42"
-                    style="object-fit: cover;">
-              <?php else : ?>
-                <!-- Avatar fallback seperti sidebar -->
-                <div class="nav-avatar me-2">
-                  <i class="bi bi-person-circle"></i>
-                </div>
-              <?php endif; ?>
-
-              <div class="d-none d-md-block">
-                <div class="fw-semibold user-name"><?= esc($user['full_name'] ?? 'Guest') ?></div>
-                <small class="text-muted" style="font-size: 0.75rem;"><?= esc($user['role'] ?? '') ?></small>
-              </div>
-            </a>
-
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="/admin/profile">
-                  <i class="bi bi-person me-2"></i>
-                  <span>Profil Saya</span>
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="/logout">
-                  <i class="bi bi-box-arrow-right me-2"></i>
-                  <span>Logout</span>
-                </a>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
     </nav>
@@ -754,6 +866,74 @@
         closeSidebarOnMobile();
         document.body.classList.remove('sidebar-collapsed');
       }
+    });
+
+    // Logout Confirmation
+    document.getElementById('logoutButton').addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // SweetAlert2 confirmation with custom animations
+      Swal.fire({
+        title: 'Konfirmasi Logout',
+        text: 'Apakah Anda yakin ingin keluar dari sistem?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Logout',
+        cancelButtonText: 'Batal',
+        reverseButtons: true,
+        customClass: {
+          popup: 'animate__animated animate__slideInDown',
+          actions: 'swal2-actions-logout',
+          confirmButton: 'btn-logout-confirm',
+          cancelButton: 'btn-logout-cancel'
+        },
+        showClass: {
+          popup: 'animate__animated animate__slideInDown animate__faster'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__slideOutUp animate__faster'
+        },
+        didOpen: () => {
+          // Tambahkan efek smooth setelah popup terbuka
+          const popup = Swal.getPopup();
+          popup.style.transform = 'translateY(0)';
+          popup.style.opacity = '1';
+          popup.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
+        },
+        willClose: () => {
+          // Tambahkan efek smooth saat popup akan ditutup
+          const popup = Swal.getPopup();
+          popup.style.transform = 'translateY(-50px)';
+          popup.style.opacity = '0';
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Show loading animation
+          Swal.fire({
+            title: 'Logging out...',
+            text: 'Sedang memproses logout',
+            icon: 'info',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading()
+            },
+            showClass: {
+              popup: 'animate__animated animate__fadeIn animate__faster'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOut animate__faster'
+            }
+          });
+          
+          // Redirect to logout after a short delay
+          setTimeout(() => {
+            window.location.href = '/logout';
+          }, 1000);
+        }
+      });
     });
   </script>
   <?= $this->renderSection('scripts') ?>

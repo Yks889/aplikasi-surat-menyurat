@@ -28,10 +28,10 @@
             <h2 class="h4 mb-1"><i class="bi bi-envelope me-2 text-primary"></i>Daftar Surat Masuk</h2>
         </div>
         <div class="d-flex flex-column flex-md-row gap-2">
-            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
+            <button type="button" class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
                 <i class="bi bi-funnel me-1"></i> Filter
             </button>
-            <a href="/admin/surat-masuk/tambah" class="btn btn-primary">
+            <a href="/admin/surat-masuk/tambah" class="btn btn-primary d-flex align-items-center">
                 <i class="bi bi-plus-circle me-1"></i> Tambah
             </a>
         </div>
@@ -39,12 +39,12 @@
 
     <!-- Table -->
     <div class="card border-0 shadow-sm">
-        <div class="card-body">
+        <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0" id="suratMasukTable">
-                    <thead class="table-light">
+                <table class="table table-hover mb-0 modern-table" id="suratMasukTable">
+                    <thead>
                         <tr>
-                            <th>No</th>
+                            <th class="ps-4">No</th>
                             <th>Nomor Surat</th>
                             <th>Perusahaan</th>
                             <th>Dari</th>
@@ -52,35 +52,59 @@
                             <th>Tgl. Surat</th>
                             <th>Tgl. Diterima</th>
                             <th>Pengirim</th>
-                            <th class="text-end">Aksi</th>
+                            <th class="text-end pe-4">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($suratMasuk as $index => $surat): ?>
                             <tr>
-                                <td class="text-center"><?= $index + 1 ?></td>
-                                <td><?= esc($surat['nomor_surat']) ?></td>
-                                <td><?= esc($surat['perusahaan']) ?></td>
+                                <td class="ps-4"><?= $index + 1 ?></td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <div class="fw-semibold"><?= esc($surat['nomor_surat']) ?></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark"><?= esc($surat['perusahaan']) ?></span>
+                                </td>
                                 <td><?= esc($surat['dari']) ?></td>
-                                <td><?= esc($surat['perihal']) ?></td>
-                                <td><?= date('d/m/Y', strtotime($surat['tgl_surat'])) ?></td>
-                                <td><?= date('d/m/Y H:i', strtotime($surat['waktu_diterima'])) ?></td>
-                                <td><?= esc($surat['pengirim'] ?? '-') ?></td>
-                                <td class="text-end">
-                                    <div class="d-flex justify-content-end gap-2">
-                                        <a href="/uploads/surat_masuk/<?= esc($surat['file_surat']) ?>" target="_blank" class="btn btn-sm btn-outline-primary" title="Lihat File">
+                                <td>
+                                    <div class="text-truncate" style="max-width: 200px;" title="<?= esc($surat['perihal']) ?>">
+                                        <?= esc($surat['perihal']) ?>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-nowrap">
+                                        <?= date('d/m/Y', strtotime($surat['tgl_surat'])) ?>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-nowrap">
+                                        <?= date('d/m/Y H:i', strtotime($surat['waktu_diterima'])) ?>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span><?= esc($surat['pengirim'] ?? '-') ?></span>
+                                    </div>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="d-flex justify-content-end gap-1">
+                                        <a href="/uploads/surat_masuk/<?= esc($surat['file_surat']) ?>" target="_blank" class="btn btn-sm btn-icon btn-outline-primary" title="Lihat File">
                                             <i class="bi bi-file-earmark-text"></i>
                                         </a>
-                                        <a href="/admin/disposisi/detail/<?= $surat['id'] ?>" class="btn btn-sm btn-outline-info" title="Detail Disposisi">
+                                        <a href="/admin/disposisi/detail/<?= $surat['id'] ?>" class="btn btn-sm btn-icon btn-outline-info" title="Detail Disposisi">
                                             <i class="bi bi-info-circle"></i>
                                         </a>
-                                        <a href="/admin/surat-masuk/edit/<?= $surat['id'] ?>" class="btn btn-sm btn-outline-warning" title="Edit">
+                                        <a href="/admin/surat-masuk/edit/<?= $surat['id'] ?>" class="btn btn-sm btn-icon btn-outline-warning" title="Edit">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <button onclick="confirmDelete(<?= $surat['id'] ?>)" class="btn btn-sm btn-outline-danger" title="Hapus">
+                                        <button onclick="confirmDelete(<?= $surat['id'] ?>)" class="btn btn-sm btn-icon btn-outline-danger" title="Hapus">
                                             <i class="bi bi-trash"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalDisposisi<?= $surat['id'] ?>">
+                                        <button type="button" class="btn btn-sm btn-icon btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalDisposisi<?= $surat['id'] ?>">
                                             <i class="bi bi-send"></i>
                                         </button>
                                     </div>
@@ -211,6 +235,86 @@
     </div>
 </div>
 
+<style>
+.modern-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.modern-table thead th {
+    background: linear-gradient(to bottom, #f8f9fc, #e9ecef);
+    border-bottom: 2px solid #dee2e6;
+    padding: 12px 16px;
+    font-weight: 600;
+    color: #495057;
+    vertical-align: middle;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modern-table tbody td {
+    padding: 16px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+.modern-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.modern-table tbody tr:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.modern-table .btn-icon {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.modern-table .btn-icon:hover {
+    transform: translateY(-2px);
+}
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+}
+
+@media (max-width: 768px) {
+    .modern-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .modern-table thead th {
+        padding: 10px 12px;
+        font-size: 0.875rem;
+    }
+    
+    .modern-table tbody td {
+        padding: 12px;
+        font-size: 0.875rem;
+    }
+}
+</style>
+
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
@@ -233,7 +337,8 @@
                     next: "Selanjutnya",
                     previous: "Sebelumnya"
                 }
-            }
+            },
+            dom: '<"row"<"col-md-6"l><"col-md-6"f>>rt<"row"<"col-md-6"i><"col-md-6"p>>'
         });
 
         <?php if (session()->getFlashdata('error')): ?>
