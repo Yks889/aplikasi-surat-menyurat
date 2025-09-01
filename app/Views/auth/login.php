@@ -8,14 +8,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="icon" href="<?= base_url('uploads/logo.png') ?>" type="image/png" />
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             background: #f5f7fb;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Outfit', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            overflow: hidden;
         }
 
         .login-wrapper {
@@ -261,6 +266,24 @@
                 transform: translateY(-20px) rotate(5deg);
             }
         }
+        
+        /* Custom styles for SweetAlert2 */
+        .swal2-popup {
+            border-radius: 12px !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+            overflow: hidden;
+        }
+
+        .swal2-title {
+            font-size: 1.5rem !important;
+            font-weight: 600 !important;
+            color: #1e293b !important;
+        }
+
+        .swal2-html-container {
+            font-size: 1rem !important;
+            color: #64748b !important;
+        }
     </style>
 </head>
 
@@ -282,7 +305,7 @@
             <div class="logo">
                 <img src="<?= base_url('uploads/logo.png'); ?>" alt="Logo">
             </div>
-            <h2>Arsip Surat <span class="brand-name">Gonet</span></h2>
+            <h2>Arsip Surat <span class="brand-name">GONET</span></h2>
             <p>Masuk untuk mengakses sistem</p>
 
             <!-- Flash Message -->
@@ -301,7 +324,7 @@
             <?php endif; ?>
 
             <!-- Form Login -->
-            <form action="<?= base_url('login'); ?>" method="post">
+            <form action="<?= base_url('login'); ?>" method="post" id="loginForm">
                 <?= csrf_field(); ?>
                 <div class="mb-3">
                     <input type="text" name="username" class="form-control" placeholder="Username"
@@ -314,7 +337,7 @@
                     <input type="checkbox" id="remember" name="remember">
                     <label for="remember">Ingat saya</label>
                 </div>
-                <button type="submit" class="btn-login"><i class="bi bi-box-arrow-in-right"></i> Masuk</button>
+                <button type="submit" class="btn-login" id="loginButton"><i class="bi bi-box-arrow-in-right"></i> Masuk</button>
             </form>
 
             <!-- Link Register -->
@@ -327,6 +350,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const alerts = document.querySelectorAll('.alert.show');
@@ -343,6 +367,38 @@
                     }, 1000);
                 });
             }
+
+            // Handle form submission with loading animation
+            const loginForm = document.getElementById('loginForm');
+            const loginButton = document.getElementById('loginButton');
+            
+            loginForm.addEventListener('submit', function(e) {
+                // Prevent default form submission
+                e.preventDefault();
+                
+                // Show loading animation
+                Swal.fire({
+                    title: 'Logging in...',
+                    text: 'Sedang memproses login',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    },
+                    showClass: {
+                        popup: 'animate__animated animate__fadeIn animate__faster'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOut animate__faster'
+                    }
+                });
+                
+                // Submit the form after a short delay to show the animation
+                setTimeout(() => {
+                    loginForm.submit();
+                }, 500);
+            });
         });
     </script>
 </body>
